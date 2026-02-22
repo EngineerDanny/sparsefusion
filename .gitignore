@@ -54,3 +54,4 @@ scripts/local_tune_lambda_gamma_results*.csv
 data/processed/*.csv
 .vscode/settings.json
 .lintr
+scripts/hpc/
