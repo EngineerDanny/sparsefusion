@@ -3,6 +3,40 @@
 # 1) Build fusion constraints only for non-zero edges in G.
 # 2) Construct sparse matrices from triplets (i, j, x) in one shot.
 
+.validate_l2new_common <- function(lambda, gamma) {
+  if (!is.numeric(lambda) || length(lambda) != 1L || is.na(lambda) || !is.finite(lambda) || lambda < 0) {
+    stop("Parameter 'lambda' must be a finite non-negative scalar.")
+  }
+  if (!is.numeric(gamma) || length(gamma) != 1L || is.na(gamma) || !is.finite(gamma) || gamma < 0) {
+    stop("Parameter 'gamma' must be a finite non-negative scalar.")
+  }
+}
+
+.sanitize_l2_graph <- function(G, k) {
+  if (is.null(G)) {
+    out <- matrix(1, k, k)
+    diag(out) <- 0
+    return(out)
+  }
+
+  if (!is.matrix(G) || nrow(G) != k || ncol(G) != k) {
+    stop("G must be a square matrix with dimensions equal to the number of groups.")
+  }
+  if (any(!is.finite(G))) {
+    stop("G must contain only finite values.")
+  }
+  if (any(G < 0)) {
+    stop("G must contain non-negative weights.")
+  }
+
+  if (max(abs(G - t(G))) > 1e-12) {
+    warning("G is not symmetric; symmetrizing as (G + t(G)) / 2.")
+    G <- (G + t(G)) / 2
+  }
+  diag(G) <- 0
+  G
+}
+
 #' Generate transformed matrices for fused L2 using sparse edge construction.
 #'
 #' @param X Covariates matrix (n by p).
@@ -318,6 +352,7 @@ generateBlockDiagonalMatricesNew <- function(
 #' @param lambda Sparsity hyperparameter.
 #' @param G Fusion matrix.
 #' @param gamma Fusion multiplier.
+#' @param intercept Whether to include a per-group intercept in the linear model.
 #' @param scaling Whether to scale each subgroup.
 #' @param ... Additional parameters passed to glmnet.
 #'
@@ -329,16 +364,12 @@ fusedL2DescentGLMNetNew <- function(
     lambda = NULL,
     G = NULL,
     gamma = 1,
+    intercept = FALSE,
     scaling = FALSE,
     ...) {
-  if (!is.numeric(gamma) || length(gamma) != 1 || gamma < 0) {
-    stop("gamma must be a non-negative scalar.")
-  }
-
-  if (is.null(G)) {
-    k <- length(sort(unique(groups)))
-    G <- matrix(1, k, k)
-  }
+  num.groups <- length(sort(unique(groups)))
+  .validate_l2new_common(lambda = lambda, gamma = gamma)
+  G <- .sanitize_l2_graph(G = G, k = num.groups)
 
   transformed <- .build_l2new_augmented(
     X = X,
@@ -346,11 +377,11 @@ fusedL2DescentGLMNetNew <- function(
     groups = groups,
     G = G,
     gamma = gamma,
+    intercept = isTRUE(intercept),
     scaling = scaling
   )
   transformed.x <- transformed$X_aug
   transformed.y <- transformed$y_aug
-  num.groups <- transformed$num_groups
   group.names <- transformed$group.names
 
   if (scaling) {
@@ -369,11 +400,15 @@ fusedL2DescentGLMNetNew <- function(
   )
 
   coef.temp <- coef(glmnet.result, s = lambda * correction.factor)
-  beta.mat <- matrix(
-    coef.temp[2:length(coef.temp)],
-    nrow = transformed$p_eff,
-    ncol = num.groups
-  )
+  coef.vec <- as.numeric(coef.temp)[-1L]
+  expected_n <- transformed$p_eff * num.groups
+  if (length(coef.vec) != expected_n) {
+    stop(
+      "Unexpected coefficient vector length: got ", length(coef.vec),
+      ", expected ", expected_n, "."
+    )
+  }
+  beta.mat <- matrix(coef.vec, nrow = transformed$p_eff, ncol = num.groups)
   colnames(beta.mat) <- group.names
 
   return(beta.mat)

@@ -232,7 +232,7 @@ generateBlockDiagonalMatrices <- function(X, Y, groups, G, intercept = FALSE,
 #'   lambda = c(0, 0.001, 0.1, 1),
 #'   gamma = 0.001
 #' )
-fusedL2DescentGLMNet <- function(X, y, groups, lambda = NULL, G = NULL, gamma = 1, scaling = FALSE, ...) {
+fusedL2DescentGLMNet <- function(X, y, groups, lambda = NULL, G = NULL, gamma = 1, intercept = FALSE, scaling = FALSE, ...) {
   # use_scaling = (length(unique(table(groups))) > 1)
 
   # Smart default for G
@@ -241,7 +241,14 @@ fusedL2DescentGLMNet <- function(X, y, groups, lambda = NULL, G = NULL, gamma = 
     G <- matrix(1, k, k)
   }
 
-  transformed.data <- generateBlockDiagonalMatrices(X, y, groups, G, scaling = scaling)
+  transformed.data <- generateBlockDiagonalMatrices(
+    X,
+    y,
+    groups,
+    G,
+    intercept = isTRUE(intercept),
+    scaling = scaling
+  )
   transformed.x <- transformed.data$X
   transformed.x.f <- transformed.data$X.fused
   transformed.y <- transformed.data$Y
