@@ -350,7 +350,7 @@ p <- ggplot(plot_df, aes(x = delta_log10_time, y = delta_log10_memory)) +
   ) +
   guides(color = "none")
 
-ggsave(out_png, plot = p, width = 7, height = 5.5, dpi = 300)
+ggsave(out_png, plot = p, width = 7, height = 5.5, dpi = 500)
 
 cat("Saved plot: ", out_png, "\n", sep = "")
 cat("Saved points: ", out_points_csv, "\n", sep = "")
