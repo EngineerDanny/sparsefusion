@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2025 - Spack)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: fuserplus_jmlr.aux
+The style file: plainnat.bst
+Database file #1: fuserplus_refs.bib
+You've used 45 entries,
+            2773 wiz_defined-function locations,
+            849 strings with 12353 characters,
+and the built_in function-call counts, 19770 in all, are:
+= -- 1802
+> -- 1104
+< -- 33
++ -- 379
+- -- 333
+* -- 1578
+:= -- 3049
+add.period$ -- 156
+call.type$ -- 45
+change.case$ -- 237
+chr.to.int$ -- 44
+cite$ -- 90
+duplicate$ -- 875
+empty$ -- 1622
+format.name$ -- 406
+if$ -- 4113
+int.to.chr$ -- 2
+int.to.str$ -- 1
+missing$ -- 29
+newline$ -- 254
+num.names$ -- 180
+pop$ -- 470
+preamble$ -- 1
+purify$ -- 201
+quote$ -- 0
+skip$ -- 709
+stack$ -- 0
+substring$ -- 680
+swap$ -- 83
+text.length$ -- 4
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 485
+warning$ -- 0
+while$ -- 187
+width$ -- 0
+write$ -- 618
