@@ -5,6 +5,8 @@
 .RData
 .Ruserdata
 .Rproj.user/
+*.csv
+*.svg
 
 # R package build/check artifacts
 *.Rcheck/
@@ -28,7 +30,6 @@ MD5
 
 # build artifacts
 build/
-figures/
 
 # generated dataset downloads (keep hand-curated top-level files in data/raw)
 data/raw/*/
