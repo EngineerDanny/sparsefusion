@@ -6,6 +6,7 @@ Fused lasso for high-dimensional regression over groups.
 - L1 fusion regression (`fusedLassoProximal`)
 - L2 fusion regression (`fusedL2DescentGLMNet`)
 - development solver variants for L1 benchmarking: `operator`, `operator_ws`, `dense_sort`, `dfs_chain`, `chain_specialized`
+- benchmark tuner work under `build/`, centered on a unified nonmonotone axis-only pattern-search family
 
 ## Installation
 
@@ -105,3 +106,25 @@ R -q -e "testthat::test_dir('tests/testthat')"
 - `operator` / `operator_ws` are edge-explicit methods and are the general reference paths.
 
 For detailed modeling examples, see `vignettes/subgroup_fusion.Rmd`.
+
+## Tuner Benchmarks
+
+The active benchmark comparison set for hyper-parameter tuning is:
+
+- `grid`
+- `random`
+- `hooke_jeeves`
+- `lbfgsb_multistart`
+- `glmnet_seeded`
+- `fusetune`
+
+`fusetune` is the primary tuning method — a derivative-free coordinate search with nonmonotone acceptance, designed for efficient 2D (lambda, gamma) hyperparameter tuning of fused regression models. It uses solver-aware internal defaults:
+
+- `L1` defaults to a balanced profile
+- `L2` defaults to a conservative tuned profile
+
+Explicit modes still override the internal default:
+
+- `v2_mode=fast`
+- `v2_mode=balanced`
+- `v2_mode=accurate`
