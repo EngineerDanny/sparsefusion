@@ -115,20 +115,16 @@ The active benchmark comparison set for hyper-parameter tuning is:
 - `random`
 - `hooke_jeeves`
 - `lbfgsb_multistart`
-- `nloptr_sbplx`
 - `glmnet_seeded`
-- `pattern_search_axisonly_nonmonotone_v2`
+- `fusetune`
 
-`pattern_search_axisonly_nonmonotone_v2` is the retained public pattern-search family.
-It uses solver-aware internal defaults when `v2_mode` is not supplied:
+`fusetune` is the primary tuning method — a derivative-free coordinate search with nonmonotone acceptance, designed for efficient 2D (lambda, gamma) hyperparameter tuning of fused regression models. It uses solver-aware internal defaults:
 
-- `L1` defaults to a balanced `v2` profile
-- `L2` defaults to the previous conservative tuned profile
+- `L1` defaults to a balanced profile
+- `L2` defaults to a conservative tuned profile
 
 Explicit modes still override the internal default:
 
 - `v2_mode=fast`
 - `v2_mode=balanced`
 - `v2_mode=accurate`
-
-Older tuner variants and experimental direct-search branches under `build/` should be treated as historical unless they are part of a specific archived result tree that was intentionally kept.

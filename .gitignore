@@ -56,3 +56,4 @@ data/processed/*.csv
 .lintr
 scripts/hpc/
 inst/slides/
+publication/
