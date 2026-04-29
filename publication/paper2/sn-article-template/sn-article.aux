@@ -1,0 +1,129 @@
+\relax 
+\bibstyle{sn-mathphys-num}
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\Newlabel{2}{2}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{tibshirani1996lasso,fan2001scad,zou2005elastic,yuan2006group,zou2006adaptive,simon2013sparsegroup}
+\citation{tibshirani2005fused}
+\citation{friedman2007pathwise,hoefling2010path,tibshirani2011genlasso,arnold2015genlassodual,ye2010efficientfused}
+\citation{bondell2008oscar,gertheiss2010categorical}
+\citation{obozinski2011supportunion}
+\citation{friedman2008glasso,danaher2014jgl}
+\citation{stone1974cv}
+\citation{arlot2010cv}
+\citation{cawley2010overfitting,varma2006bias,ambroise2002selectionbias}
+\citation{bergstra2012random}
+\citation{bergstra2011algorithms}
+\citation{jones1998ego,snoek2012practicalbo}
+\citation{hutter2011smac}
+\citation{li2018hyperband}
+\citation{akiba2019optuna}
+\citation{feurer2019hpo}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Related Work}{section.2}{}}
+\citation{hooke1961direct}
+\citation{nelder1965simplex}
+\citation{torczon1997pattern,lewis1999patternbound}
+\citation{audet2006mads}
+\citation{kolda2003direct,conn2009dfo,audethare2017blackbox,kelley2011implicit}
+\citation{byrd1995lbfgsb,zhu1997lbfgsb}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Problem Setup and \textsc  {FuseTune}{}}{3}{section.3}\protected@file@percent }
+\newlabel{sec:method}{{3}{3}{Problem Setup and \method {}}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Fused regression tuning problem}{3}{subsection.3.1}\protected@file@percent }
+\newlabel{eq:generic_objective}{{1}{3}{Fused regression tuning problem}{equation.1}{}}
+\newlabel{eq:log_param}{{2}{3}{Fused regression tuning problem}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}The \textsc  {FuseTune}{} search policy}{3}{subsection.3.2}\protected@file@percent }
+\citation{bergstra2012random}
+\citation{hooke1961direct,byrd1995lbfgsb,zhu1997lbfgsb}
+\citation{friedman2010glmnet}
+\citation{jones1998ego,snoek2012practicalbo}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Efficiency metric}{4}{subsection.3.3}\protected@file@percent }
+\newlabel{eq:normalized_gain}{{3}{4}{Efficiency metric}{equation.3}{}}
+\newlabel{eq:gain_per_second}{{4}{4}{Efficiency metric}{equation.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Experimental Design}{4}{section.4}\protected@file@percent }
+\newlabel{sec:design}{{4}{4}{Experimental Design}{section.4}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces \textsc  {FuseTune}{}}}{4}{algorithm.1}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{alg:fusetune}{{1}{4}{\method {}}{algorithm.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Method panel}{4}{subsection.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Search trajectories of \textsc  {FuseTune}{} on a stylized validation surface in $(\log \lambda ,\log \gamma )$ space. Contour lines represent cross-validation RMSE levels; darker shading indicates lower (better) values. (a)~The $\ell _1$ branch starts at the box center and navigates via axis-aligned coordinate moves with nonmonotone acceptance. (b)~The $\ell _2$ branch starts from a \texttt  {glmnet}-derived $\lambda $ seed, screens a small set of $\lambda $ candidates at low $\gamma $, refines $\gamma $ vertically, and adjusts $\lambda $ only when justified.}}{5}{figure.caption.3}\protected@file@percent }
+\newlabel{fig:concept}{{1}{5}{Search trajectories of \method {} on a stylized validation surface in $(\log \lambda ,\log \gamma )$ space. Contour lines represent cross-validation RMSE levels; darker shading indicates lower (better) values. (a)~The $\ell _1$ branch starts at the box center and navigates via axis-aligned coordinate moves with nonmonotone acceptance. (b)~The $\ell _2$ branch starts from a \texttt {glmnet}-derived $\lambda $ seed, screens a small set of $\lambda $ candidates at low $\gamma $, refines $\gamma $ vertically, and adjusts $\lambda $ only when justified}{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Real-data suites}{5}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Synthetic regime benchmark}{5}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Surface diagnostics}{5}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Results}{5}{section.5}\protected@file@percent }
+\newlabel{sec:results}{{5}{5}{Results}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Method roles}{5}{subsection.5.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Retained method panel and roles.}}{6}{table.caption.5}\protected@file@percent }
+\newlabel{tab:methods}{{1}{6}{Retained method panel and roles}{table.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Real-data \(\ell _1\) results}{6}{subsection.5.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Real-data \(\ell _2\) results}{6}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Synthetic results}{6}{subsection.5.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Surface diagnostics}{6}{subsection.5.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Real-data \(\ell _1\) comparison between \texttt  {glmnet\_seeded} and \texttt  {fusetune}. Speedup is relative to \texttt  {glmnet\_seeded}.}}{7}{table.caption.6}\protected@file@percent }
+\newlabel{tab:real_l1}{{2}{7}{Real-data \(\ell _1\) comparison between \texttt {glmnet\_seeded} and \codeid . Speedup is relative to \texttt {glmnet\_seeded}}{table.caption.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Real-data \(\ell _2\) results. The best RMSE method is reported over the retained method panel.}}{7}{table.caption.7}\protected@file@percent }
+\newlabel{tab:real_l2}{{3}{7}{Real-data \(\ell _2\) results. The best RMSE method is reported over the retained method panel}{table.caption.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{7}{section.6}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{7}{Discussion}{section.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{7}{section.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Real-data comparison between \texttt  {fusetune}{} and \texttt  {glmnet\_seeded}. Each point is a dataset. Values to the right of the vertical line indicate that \texttt  {fusetune}{} is faster; values below the horizontal line indicate that \texttt  {fusetune}{} attains lower test RMSE. The \(\ell _1\) panel shows a clear practical win for \texttt  {fusetune}. The \(\ell _2\) panel is more mixed on RMSE, but still strongly favors \texttt  {fusetune}{} on elapsed time.}}{8}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:real_efficiency}{{2}{8}{Real-data comparison between \codeid {} and \texttt {glmnet\_seeded}. Each point is a dataset. Values to the right of the vertical line indicate that \codeid {} is faster; values below the horizontal line indicate that \codeid {} attains lower test RMSE. The \(\ell _1\) panel shows a clear practical win for \codeid . The \(\ell _2\) panel is more mixed on RMSE, but still strongly favors \codeid {} on elapsed time}{figure.caption.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Synthetic family summary using retained baselines only. The ``best retained baseline'' column excludes \texttt  {bayesian\_opt}, which is reported in the appendix.}}{8}{table.caption.9}\protected@file@percent }
+\newlabel{tab:synth_summary}{{4}{8}{Synthetic family summary using retained baselines only. The ``best retained baseline'' column excludes \texttt {bayesian\_opt}, which is reported in the appendix}{table.caption.9}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Limitations}{8}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subparagraph}{Acknowledgements}{8}{section*.12}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Synthetic family comparison by normalized gain per second. The \(\ell _1\) panels show a clear efficiency advantage for \texttt  {fusetune}. The redesigned \(\ell _2\) panels show the same pattern in \texttt  {fusion\_helpful\_chain} and a strong cost-quality compromise in the other two families.}}{9}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:synth_family}{{3}{9}{Synthetic family comparison by normalized gain per second. The \(\ell _1\) panels show a clear efficiency advantage for \codeid . The redesigned \(\ell _2\) panels show the same pattern in \texttt {fusion\_helpful\_chain} and a strong cost-quality compromise in the other two families}{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces \(\ell _2\) validation-surface diagnostics for two representative datasets. (a)~shows per-fold marginals together with their across-fold means; (b)~shows single-fold marginals. In both cases the preferred regularization regime is not stable across datasets: \texttt  {school\_ilea} pushes the optimum toward very weak fusion, while \texttt  {beijing\_air\_quality} favors a clearly positive fusion level.}}{9}{figure.caption.11}\protected@file@percent }
+\newlabel{fig:surface_diag}{{4}{9}{\(\ell _2\) validation-surface diagnostics for two representative datasets. (a)~shows per-fold marginals together with their across-fold means; (b)~shows single-fold marginals. In both cases the preferred regularization regime is not stable across datasets: \texttt {school\_ilea} pushes the optimum toward very weak fusion, while \texttt {beijing\_air\_quality} favors a clearly positive fusion level}{figure.caption.11}{}}
+\bibdata{sn-bibliography}
+\bibcite{tibshirani1996lasso}{{1}{1996}{{Tibshirani}}{{}}}
+\bibcite{fan2001scad}{{2}{2001}{{Fan and Li}}{{}}}
+\bibcite{zou2005elastic}{{3}{2005}{{Zou and Hastie}}{{}}}
+\bibcite{yuan2006group}{{4}{2006}{{Yuan and Lin}}{{}}}
+\bibcite{zou2006adaptive}{{5}{2006}{{Zou}}{{}}}
+\bibcite{simon2013sparsegroup}{{6}{2013}{{Simon et~al.}}{{}}}
+\bibcite{tibshirani2005fused}{{7}{2005}{{Tibshirani et~al.}}{{}}}
+\bibcite{friedman2007pathwise}{{8}{2007}{{Friedman et~al.}}{{}}}
+\bibcite{hoefling2010path}{{9}{2010}{{Hoefling}}{{}}}
+\bibcite{tibshirani2011genlasso}{{10}{2011}{{Tibshirani and Taylor}}{{}}}
+\bibcite{arnold2015genlassodual}{{11}{2016}{{Arnold and Tibshirani}}{{}}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Supplementary synthetic baselines}{10}{appendix.1.A}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {B}Why the \(\ell _2\) redesign mattered}{10}{appendix.1.B}\protected@file@percent }
+\bibcite{ye2010efficientfused}{{12}{2010}{{Liu et~al.}}{{}}}
+\bibcite{bondell2008oscar}{{13}{2008}{{Bondell and Reich}}{{}}}
+\bibcite{gertheiss2010categorical}{{14}{2010}{{Gertheiss and Tutz}}{{}}}
+\bibcite{obozinski2011supportunion}{{15}{2011}{{Obozinski et~al.}}{{}}}
+\bibcite{friedman2008glasso}{{16}{2008}{{Friedman et~al.}}{{}}}
+\bibcite{danaher2014jgl}{{17}{2014}{{Danaher et~al.}}{{}}}
+\bibcite{stone1974cv}{{18}{1974}{{Stone}}{{}}}
+\bibcite{arlot2010cv}{{19}{2010}{{Arlot and Celisse}}{{}}}
+\bibcite{cawley2010overfitting}{{20}{2010}{{Cawley and Talbot}}{{}}}
+\bibcite{varma2006bias}{{21}{2006}{{Varma and Simon}}{{}}}
+\bibcite{ambroise2002selectionbias}{{22}{2002}{{Ambroise and McLachlan}}{{}}}
+\bibcite{bergstra2012random}{{23}{2012}{{Bergstra and Bengio}}{{}}}
+\@writefile{lot}{\contentsline {table}{\numberline {A1}{\ignorespaces Overall synthetic benchmark summaries including \texttt  {bayesian\_opt}.}}{11}{table.caption.14}\protected@file@percent }
+\newlabel{tab:appendix_synth_overall}{{A1}{11}{Overall synthetic benchmark summaries including \texttt {bayesian\_opt}}{table.caption.14}{}}
+\bibcite{bergstra2011algorithms}{{24}{2011}{{Bergstra et~al.}}{{}}}
+\bibcite{jones1998ego}{{25}{1998}{{Jones et~al.}}{{}}}
+\bibcite{snoek2012practicalbo}{{26}{2012}{{Snoek et~al.}}{{}}}
+\bibcite{hutter2011smac}{{27}{2011}{{Hutter et~al.}}{{}}}
+\bibcite{li2018hyperband}{{28}{2018}{{Li et~al.}}{{}}}
+\bibcite{akiba2019optuna}{{29}{2019}{{Akiba et~al.}}{{}}}
+\bibcite{feurer2019hpo}{{30}{2019}{{Feurer and Hutter}}{{}}}
+\bibcite{hooke1961direct}{{31}{1961}{{Hooke and Jeeves}}{{}}}
+\bibcite{nelder1965simplex}{{32}{1965}{{Nelder and Mead}}{{}}}
+\bibcite{torczon1997pattern}{{33}{1997}{{Torczon}}{{}}}
+\bibcite{lewis1999patternbound}{{34}{1999}{{Lewis and Torczon}}{{}}}
+\bibcite{audet2006mads}{{35}{2006}{{Audet and Dennis}}{{}}}
+\bibcite{kolda2003direct}{{36}{2003}{{Kolda et~al.}}{{}}}
+\bibcite{conn2009dfo}{{37}{2009}{{Conn et~al.}}{{}}}
+\bibcite{audethare2017blackbox}{{38}{2017}{{Audet and Hare}}{{}}}
+\bibcite{kelley2011implicit}{{39}{2011}{{Kelley}}{{}}}
+\bibcite{byrd1995lbfgsb}{{40}{1995}{{Byrd et~al.}}{{}}}
+\bibcite{zhu1997lbfgsb}{{41}{1997}{{Zhu et~al.}}{{}}}
+\bibcite{friedman2010glmnet}{{42}{2010}{{Friedman et~al.}}{{}}}
+\gdef \@abspage@last{13}

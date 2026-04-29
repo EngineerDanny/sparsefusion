@@ -55,6 +55,3 @@ data/processed/*.csv
 .vscode/
 .lintr
 scripts/hpc/
-inst/slides/
-publication/
-paper/
