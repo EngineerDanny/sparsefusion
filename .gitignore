@@ -55,3 +55,4 @@ data/processed/*.csv
 .vscode/settings.json
 .lintr
 scripts/hpc/
+*paper
