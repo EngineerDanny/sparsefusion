@@ -264,6 +264,40 @@ benchmarked L1/L2 sparse-graph solvers. \\
 \end{tabular}
 \end{table}
 
+Figures~\ref{fig:concept-l1} and~\ref{fig:concept-l2} summarize the main
+computational distinction between the legacy fused-regression representation
+and the sparse-graph representation used in \fuserplus. In both cases the
+statistical model is defined by a graph on the $k$ groups, with an edge
+weight indicating how strongly two subgroup coefficient vectors should be
+encouraged to agree. The legacy construction first expands this modeling graph
+into a dense algebraic object over many group pairs. That expansion is benign
+for small $k$, but it becomes the dominant cost when the intended graph is
+sparse, because computation is then driven by the number of possible group
+pairs rather than by the number of modeled edges.
+
+Figure~\ref{fig:concept-l1} describes the L1 fusion case. The nonsmooth
+penalty is represented by an operator that maps the coefficient matrix to
+absolute coefficient differences across fused group pairs. The full-edge
+operator stores and applies constraints for the expanded group-pair
+construction, whereas the active-edge operator stores only the $m$ nonzero
+edges of the graph. The right panel is therefore not just a complexity
+summary: it illustrates the change in the dominant algebraic object from a
+group-expanded constraint matrix to a sparse edge list, which changes the
+fusion-side scaling from depending on powers of $k$ to depending linearly on
+the number of graph edges.
+
+Figure~\ref{fig:concept-l2} gives the analogous picture for L2 fusion. In the
+quadratic case, fusion can be represented by augmenting the regression design
+with pseudo-observations that penalize differences between subgroup
+coefficients. The legacy construction emits augmented rows for the expanded
+set of group pairs; the active-edge construction emits sparse triplets only for
+edges with nonzero fusion weight. Thus the same modeling graph produces a much
+smaller linear-algebra problem whenever $m \ll k^2$. These two figures motivate
+the solver descriptions in Section~\ref{sec:solvers} and the scaling
+experiments reported below: the central question is whether preserving the
+edge-level graph representation yields the same fitted objective at lower
+runtime and memory cost.
+
 \begin{figure}[t]
   \centering
   \includegraphics[width=.95\textwidth]{figures/concept1.png}
@@ -438,6 +472,7 @@ convention.
 \end{proof}
 
 \section{Sparse-Graph Solvers}
+\label{sec:solvers}
 
 \subsection{Exact L1 Operator Solver}
 
@@ -503,21 +538,6 @@ procedure. It is the central exact L1 routine in \fuserplus.
 \State \Return $\hat B$
 \end{algorithmic}
 \end{algorithm}
-
-\subsection{Working-Set Active-Edge Variant}
-
-The package also includes a working-set extension of the active-edge operator.
-This variant maintains an active edge set $A\subseteq E$, solves the smoothed
-problem on $A$, then scores inactive edges by
-\[
-  s_e = \gamma w_e \norm{\beta_{u_e}-\beta_{v_e}}_\infty.
-\]
-The highest-scoring inactive edges are added in later outer rounds. An optional
-screening rule scores zero-point likelihood-gradient gaps,
-$\norm{\nabla \ell_u(0)-\nabla \ell_v(0)}_\infty$, and can drop edges whose
-score is below a margin-adjusted fusion threshold. This method is treated as
-an implementation variant rather than the main benchmark method, because its
-behavior depends on the screening and expansion schedule.
 
 \subsection{Chain-Specialized L1 Approximation}
 
@@ -925,32 +945,6 @@ because the implementation still carries fixed R and matrix overheads.
   \label{fig:l1-timing}
 \end{figure}
 
-\begin{table}[t]
-\centering
-\caption{Selected L1 benchmark rows from the completed HPC summary. RMSE and
-fit time are means across five outer folds; memory is mean fit-worker peak
-RSS in MB.}
-\label{tab:l1-selected}
-\begin{tabular}{llrrr}
-\toprule
-Dataset & Method & RMSE & Time (s) & Memory (MB) \\
-\midrule
-electricity\_load & old\_l1 & 57.5290 & 90.148 & 290.0 \\
-electricity\_load & operator & 57.5290 & 132.474 & 251.2 \\
-electricity\_load & chain & 57.5292 & 84.595 & 268.3 \\
-owid\_co2 & old\_l1 & 3.9265 & 31.104 & 328.1 \\
-owid\_co2 & operator & 3.9265 & 9.450 & 253.3 \\
-owid\_co2 & chain & 3.9763 & 9.136 & 260.5 \\
-rdatasets\_crime4 & old\_l1 & 0.0062 & 13.208 & 257.7 \\
-rdatasets\_crime4 & operator & 0.0062 & 6.516 & 253.7 \\
-rdatasets\_crime4 & chain & 0.0064 & 2.772 & 254.2 \\
-world\_bank\_wdi & old\_l1 & 3478.8571 & 83.561 & 454.4 \\
-world\_bank\_wdi & operator & 3478.8571 & 10.930 & 252.8 \\
-world\_bank\_wdi & chain & 3478.8571 & 15.758 & 266.3 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \begin{figure}[t]
   \centering
   \includegraphics[width=.48\textwidth]{figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png}
@@ -1024,9 +1018,9 @@ viewed as an approximation for exploratory or large-scale settings where a
 small loss in predictive accuracy is acceptable.
 
 The solver representation aligns the computational graph with the modeling
-graph. Edge-explicit L1 fusion updates, blocked edge processing, practical
-working-set expansion, DFS/MST chain approximation, and active-edge L2 matrix
-construction are instances of that representation. Propositions
+graph. Edge-explicit L1 fusion updates, blocked edge processing, DFS/MST chain
+approximation, and active-edge L2 matrix construction are instances of that
+representation. Propositions
 \ref{prop:l1-equivalence} and \ref{prop:l2-equivalence} identify the exact
 cases where the new representations preserve the legacy objective. The
 chain-specialized method is separated from those exact methods because
@@ -1034,12 +1028,11 @@ replacing a graph by a chain changes the fusion geometry and should be
 interpreted as an approximation.
 
 The empirical evidence is strongest for the exact L1 operator and active-edge
-L2 construction. The working-set and chain variants are included because they
-are useful solver modes in the package, but they involve additional choices
-about screening, edge expansion, or graph approximation. For that reason, the
-recommended default for sparse L1 fusion is the exact active-edge operator,
-with chain-specialized fitting reserved for exploratory or memory-constrained
-settings.
+L2 construction. The chain variant is included because it is a useful solver
+mode in the package, but it involves an additional graph-approximation choice.
+For that reason, the recommended default for sparse L1 fusion is the exact
+active-edge operator, with chain-specialized fitting reserved for exploratory
+or memory-constrained settings.
 
 There are three important limitations. First, the paper analyzes
 representation equivalence and graph-construction complexity, but it does not

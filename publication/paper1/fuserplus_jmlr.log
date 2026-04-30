@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  30 APR 2026 01:37
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  30 APR 2026 01:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -449,45 +449,46 @@ Underfull \hbox (badness 2310) in paragraph at lines 211--211
 plus\OT1/cmr/m/n/10.95 . The main dis-tinc-tion is that
  []
 
-<figures/concept1.png, id=212, 723.70375pt x 199.74625pt>
+
+
+[4]
+<figures/concept1.png, id=236, 723.70375pt x 199.74625pt>
 File: figures/concept1.png Graphic file (type png)
 <use figures/concept1.png>
-Package pdftex.def Info: figures/concept1.png  used on input line 269.
+Package pdftex.def Info: figures/concept1.png  used on input line 303.
 (pdftex.def)             Requested size: 411.93767pt x 113.69804pt.
-<figures/concept2.png, id=218, 716.42656pt x 203.76125pt>
+<figures/concept2.png, id=242, 716.42656pt x 203.76125pt>
 File: figures/concept2.png Graphic file (type png)
 <use figures/concept2.png>
-Package pdftex.def Info: figures/concept2.png  used on input line 284.
+Package pdftex.def Info: figures/concept2.png  used on input line 318.
 (pdftex.def)             Requested size: 411.93767pt x 117.1618pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[4]
+[5 <./figures/concept1.png>]
 
-[5 <./figures/concept1.png> <./figures/concept2.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 345--355
+[6 <./figures/concept2.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 379--389
 
  []
 
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 357.
-
-Underfull \hbox (badness 10000) in paragraph at lines 407--417
-
- []
-
-
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 428--439
-
- []
-
+put line 391.
 
 
 [7]
+Underfull \hbox (badness 10000) in paragraph at lines 441--451
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 462--473
+
+ []
+
+
 
 [8]
 
@@ -496,47 +497,47 @@ Underfull \hbox (badness 10000) in paragraph at lines 428--439
 [10]
 
 [11]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [12]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3895) has occurred while \output is active []
 
 
 
 [13]
-<figures/changepoint_fused_vs_glmnet.png, id=358, 505.89pt x 346.896pt>
+<figures/changepoint_fused_vs_glmnet.png, id=359, 505.89pt x 346.896pt>
 File: figures/changepoint_fused_vs_glmnet.png Graphic file (type png)
 <use figures/changepoint_fused_vs_glmnet.png>
 Package pdftex.def Info: figures/changepoint_fused_vs_glmnet.png  used on input
- line 819.
+ line 839.
 (pdftex.def)             Requested size: 390.25534pt x 267.60829pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-
-[14 <./figures/changepoint_fused_vs_glmnet.png>]
+[14]
 <figures/spatial_hotspot_fused_vs_glmnet.png, id=364, 505.89pt x 195.129pt>
 File: figures/spatial_hotspot_fused_vs_glmnet.png Graphic file (type png)
 <use figures/spatial_hotspot_fused_vs_glmnet.png>
 Package pdftex.def Info: figures/spatial_hotspot_fused_vs_glmnet.png  used on i
-nput line 850.
+nput line 870.
 (pdftex.def)             Requested size: 411.93767pt x 158.89325pt.
-<figures/hpc_figure5_combined_k_regimes.png, id=366, 722.7pt x 317.988pt>
+
+
+[15 <./figures/changepoint_fused_vs_glmnet.png>]
+<figures/hpc_figure5_combined_k_regimes.png, id=372, 722.7pt x 317.988pt>
 File: figures/hpc_figure5_combined_k_regimes.png Graphic file (type png)
 <use figures/hpc_figure5_combined_k_regimes.png>
 Package pdftex.def Info: figures/hpc_figure5_combined_k_regimes.png  used on in
-put line 901.
+put line 921.
 (pdftex.def)             Requested size: 433.62pt x 190.79427pt.
-
-
-[15 <./figures/spatial_hotspot_fused_vs_glmnet.png>]
 <figures/hpc_l1_timing_boxplot_combined_k_regimes.png, id=374, 722.7pt x 317.98
 8pt>
 File: figures/hpc_l1_timing_boxplot_combined_k_regimes.png Graphic file (type p
 ng)
 <use figures/hpc_l1_timing_boxplot_combined_k_regimes.png>
 Package pdftex.def Info: figures/hpc_l1_timing_boxplot_combined_k_regimes.png  
-used on input line 922.
+used on input line 942.
 (pdftex.def)             Requested size: 433.62pt x 190.79427pt.
 <figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png, id=375, 361.35pt x 310.
 761pt>
@@ -544,7 +545,7 @@ File: figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png Graphic file (type
 png)
 <use figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png>
 Package pdftex.def Info: figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png 
- used on input line 956.
+ used on input line 950.
 (pdftex.def)             Requested size: 208.13574pt x 178.99915pt.
 <figures/hpc_l1_efficiency_diff_vs_old_l1_chain_specialized_full_plus4.png, id=
 376, 361.35pt x 310.761pt>
@@ -553,39 +554,42 @@ File: figures/hpc_l1_efficiency_diff_vs_old_l1_chain_specialized_full_plus4.png
 <use figures/hpc_l1_efficiency_diff_vs_old_l1_chain_specialized_full_plus4.png>
 
 Package pdftex.def Info: figures/hpc_l1_efficiency_diff_vs_old_l1_chain_special
-ized_full_plus4.png  used on input line 957.
+ized_full_plus4.png  used on input line 951.
 (pdftex.def)             Requested size: 208.13574pt x 178.99915pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-
-[16 <./figures/hpc_figure5_combined_k_regimes.png>]
+[16 <./figures/spatial_hotspot_fused_vs_glmnet.png>]
 <figures/hpc_l2_figure5_combined_k_regimes.png, id=384, 722.7pt x 317.988pt>
 File: figures/hpc_l2_figure5_combined_k_regimes.png Graphic file (type png)
 <use figures/hpc_l2_figure5_combined_k_regimes.png>
 Package pdftex.def Info: figures/hpc_l2_figure5_combined_k_regimes.png  used on
- input line 976.
+ input line 970.
 (pdftex.def)             Requested size: 433.62pt x 190.79427pt.
-
-
-[17 <./figures/hpc_l1_timing_boxplot_combined_k_regimes.png (PNG copy)>]
-<figures/hpc_l2_timing_boxplot_combined_k_regimes.png, id=390, 722.7pt x 317.98
+<figures/hpc_l2_timing_boxplot_combined_k_regimes.png, id=385, 722.7pt x 317.98
 8pt>
 File: figures/hpc_l2_timing_boxplot_combined_k_regimes.png Graphic file (type p
 ng)
 <use figures/hpc_l2_timing_boxplot_combined_k_regimes.png>
 Package pdftex.def Info: figures/hpc_l2_timing_boxplot_combined_k_regimes.png  
-used on input line 984.
+used on input line 978.
 (pdftex.def)             Requested size: 433.62pt x 190.79427pt.
-<figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png, id=391, 361.35pt x 310.76
+<figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png, id=386, 361.35pt x 310.76
 1pt>
 File: figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png Graphic file (type pn
 g)
 <use figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png>
 Package pdftex.def Info: figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png  u
-sed on input line 992.
+sed on input line 986.
 (pdftex.def)             Requested size: 251.50038pt x 216.28885pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[17 <./figures/hpc_figure5_combined_k_regimes.png> <./figures/hpc_l1_timing_box
+plot_combined_k_regimes.png (PNG copy)>]
+Underfull \vbox (badness 7468) has occurred while \output is active []
+
 
 
 [18 <./figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png (PNG copy)> <./fig
@@ -619,16 +623,16 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `fuserplus_jmlr.out' has not changed.
-(rerunfilecheck)             Checksum: E46A5188FBB1709A1FB71B5063A50D75;3750.
+(rerunfilecheck)             Checksum: 2A90FC5E719D9BF0DDE1A9C1C23D8735;3531.
  ) 
 Here is how much of TeX's memory you used:
- 11497 strings out of 473190
- 178717 string characters out of 5715801
- 593293 words of memory out of 5000000
- 34471 multiletter control sequences out of 15000+600000
+ 11494 strings out of 473190
+ 178676 string characters out of 5715801
+ 593142 words of memory out of 5000000
+ 34470 multiletter control sequences out of 15000+600000
  569501 words of font info for 76 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,11n,93p,761b,622s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,11n,93p,761b,626s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -649,10 +653,10 @@ e/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/
 /texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/
 2025/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/20
 25/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on fuserplus_jmlr.pdf (25 pages, 2640551 bytes).
+Output written on fuserplus_jmlr.pdf (25 pages, 2639298 bytes).
 PDF statistics:
- 566 PDF objects out of 1000 (max. 8388607)
- 475 compressed objects within 5 object streams
- 121 named destinations out of 1000 (max. 500000)
- 232 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 565 PDF objects out of 1000 (max. 8388607)
+ 474 compressed objects within 5 object streams
+ 119 named destinations out of 1000 (max. 500000)
+ 224 words of extra memory for PDF output out of 10000 (max. 10000000)
 
