@@ -106,20 +106,19 @@ the modeling assumption is sparse, but the legacy representation is still
 quadratic.
 
 The contribution of this paper is to make the sparse graph a first-class
-object in the optimizer. The work is computational rather than statistical:
-it does not propose a new penalty or estimator. Instead, it shows that the
-same estimator can be represented in a way that respects the graph on which
-the penalty is defined. First, it gives an exact active-edge L1 operator form
-that evaluates the smoothed proximal-gradient fusion term only over active
-edges. Second, it gives an exact active-edge L2 augmented-design construction
-that emits sparse triplets only for nonzero graph edges before delegating the
-regularized regression path to \texttt{glmnet} \citep{glmnet}. Third, it
-separates these exact reformulations from approximation-oriented solver modes,
-including a chain-specialized L1 approximation that collapses a graph to $k-1$
-chain edges using a depth-first traversal, motivated by chain-structured fused
-lasso solvers. The
-result is a reusable design pattern for multi-task fused regression and other
-graph-penalized models whose penalties decompose over graph edges.
+object in the optimizer. The key idea is to represent the fused-regression
+objective in a way that respects the graph on which the penalty is defined.
+First, the paper gives an exact active-edge L1 operator form that evaluates
+the smoothed proximal-gradient fusion term only over active edges. Second, it
+gives an exact active-edge L2 augmented-design construction that emits sparse
+triplets only for nonzero graph edges before delegating the regularized
+regression path to \texttt{glmnet} \citep{glmnet}. Third, it separates these
+exact reformulations from approximation-oriented solver modes, including a
+chain-specialized L1 approximation that collapses a graph to $k-1$ chain edges
+using a depth-first traversal, motivated by chain-structured fused lasso
+solvers. The result is a reusable design pattern for multi-task fused
+regression and other graph-penalized models whose penalties decompose over
+graph edges.
 
 The main contributions are:
 \begin{itemize}
@@ -172,14 +171,13 @@ emphasize that the graph itself is part of the modeling problem: it may come
 from prior knowledge, distances between groups, or other data-driven
 structure.
 
-The present work differs from these papers in emphasis. It does not introduce
-a new statistical penalty. Instead, it asks how existing grouped fused
-regression objectives should be represented and solved when the graph is
-sparse. This is more than an implementation detail: the graph is part of the
-modeling assumption, and a dense all-pairs representation discards that
-assumption at the computational layer. The active-edge constructions developed
-below restore the intended edge-level representation while preserving the
-legacy objective in the exact L1 and L2 cases.
+The present work focuses on how grouped fused regression objectives should be
+represented and solved when the graph is sparse. This is more than an
+implementation detail: the graph is part of the modeling assumption, and a
+dense all-pairs representation discards that assumption at the computational
+layer. The active-edge constructions developed below restore the intended
+edge-level representation while preserving the legacy objective in the exact
+L1 and L2 cases.
 
 Table~\ref{tab:software-comparison} summarizes the closest available software
 ecosystem. The closest package overall is the R package \texttt{fuser}, because
@@ -1025,10 +1023,7 @@ benchmark summary. The chain-specialized solver is more aggressive. It is best
 viewed as an approximation for exploratory or large-scale settings where a
 small loss in predictive accuracy is acceptable.
 
-The scope of the contribution is computational rather than statistical, but it
-is not merely a local code optimization. The objectives come from the
-fused-lasso and graph-guided regression literature; the contribution is a
-solver representation that aligns the computational graph with the modeling
+The solver representation aligns the computational graph with the modeling
 graph. Edge-explicit L1 fusion updates, blocked edge processing, practical
 working-set expansion, DFS/MST chain approximation, and active-edge L2 matrix
 construction are instances of that representation. Propositions
