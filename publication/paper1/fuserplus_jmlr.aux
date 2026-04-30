@@ -6,17 +6,17 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \citation{nesterov2005smooth}
 \citation{glmnet}
+\newlabel{eq:model}{{1}{2}{}{equation.1}{}}
 \citation{tibshirani1996lasso,tibshirani2005fused}
 \citation{zou2005elastic,yuan2006group,tibshirani2011genlasso,wang2016graphtf}
 \citation{hoefling2010path}
 \citation{ye2011split,boyd2011admm}
-\newlabel{eq:model}{{1}{2}{}{equation.1}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
 \citation{chen2010graph,chen2012smoothing}
 \citation{chen2012twograph,petersen2016flam,omranian2016gene}
 \citation{hallac2015network}
 \citation{tansey2018dfs}
 \citation{padilla2020adaptive}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
 \citation{lassojl}
 \citation{mmtmanual}
 \citation{cvxpy}
@@ -31,32 +31,30 @@
 \citation{dondelinger2020joint}
 \citation{dondelinger2020joint}
 \citation{dondelinger2020joint}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Model and Legacy Computation}{3}{section.3}\protected@file@percent }
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Closest software relatives to \texttt  {fuserplus}. The main distinction is that \texttt  {fuserplus}targets subgroup regression with inputs $(X,y,\mathrm  {groups},G)$, both L1 and L2 fusion, and sparse-graph solver variants for scaling.}}{4}{table.1}\protected@file@percent }
 \newlabel{tab:software-comparison}{{1}{4}{Closest software relatives to \fuserplus . The main distinction is that \fuserplus targets subgroup regression with inputs $(X,y,\mathrm {groups},G)$, both L1 and L2 fusion, and sparse-graph solver variants for scaling}{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Model and Legacy Computation}{4}{section.3}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Conceptual overview of L1 sparse-graph fusion. A: fusion graph construction. The legacy full-edge construction associated with \citet  {dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge operator works directly on the sparse graph. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm  {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, the active-edge representation changes the dominant fusion cost from $O(pk^3)$ to $O(pm)$.}}{5}{figure.1}\protected@file@percent }
 \newlabel{fig:concept-l1}{{1}{5}{Conceptual overview of L1 sparse-graph fusion. A: fusion graph construction. The legacy full-edge construction associated with \citet {dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge operator works directly on the sparse graph. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, the active-edge representation changes the dominant fusion cost from $O(pk^3)$ to $O(pm)$}{figure.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Conceptual overview of L2 sparse-graph fusion. A: augmented matrix construction. The legacy full-edge construction associated with \citet  {dondelinger2020joint} forms augmented rows for all group pairs, while the active-edge builder emits only sparse triplets for graph edges with nonzero weight. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm  {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, active-edge construction changes the dominant fusion-block cost from $O(pk^2)$ to $O(pm)$.}}{5}{figure.2}\protected@file@percent }
 \newlabel{fig:concept-l2}{{2}{5}{Conceptual overview of L2 sparse-graph fusion. A: augmented matrix construction. The legacy full-edge construction associated with \citet {dondelinger2020joint} forms augmented rows for all group pairs, while the active-edge builder emits only sparse triplets for graph edges with nonzero weight. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, active-edge construction changes the dominant fusion-block cost from $O(pk^2)$ to $O(pm)$}{figure.2}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Legacy Full-Edge Smoothed APG (\texttt  {old\_l1})}}{6}{algorithm.1}\protected@file@percent }
-\newlabel{alg:old_l1}{{1}{6}{}{algorithm.1}{}}
 \newlabel{prop:l1-equivalence}{{1}{6}{Equivalence of dense and active-edge L1 gradients}{theorem.1}{}}
-\newlabel{prop:l2-equivalence}{{2}{7}{Equivalence of active-edge L2 augmented rows}{theorem.2}{}}
+\newlabel{prop:l2-equivalence}{{2}{6}{Equivalence of active-edge L2 augmented rows}{theorem.2}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Legacy Full-Edge Smoothed APG (\texttt  {old\_l1})}}{7}{algorithm.1}\protected@file@percent }
+\newlabel{alg:old_l1}{{1}{7}{}{algorithm.1}{}}
 \newlabel{prop:complexity}{{3}{7}{Representation-dependent graph cost}{theorem.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Sparse-Graph Solvers}{7}{section.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Exact L1 Operator Solver}{7}{subsection.4.1}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Active-Edge Operator APG (\texttt  {operator})}}{8}{algorithm.2}\protected@file@percent }
-\newlabel{alg:active_edge_operator}{{2}{8}{}{algorithm.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Sparse-Graph Solvers}{8}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Exact L1 Operator Solver}{8}{subsection.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Active-edge gradient assembly.}{8}{subsection.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{8}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Working-Set Active-Edge Variant}{9}{subsection.4.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Chain-Specialized L1 Approximation}{9}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Working-Set Active-Edge Variant}{8}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Chain-Specialized L1 Approximation}{8}{subsection.4.3}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Active-Edge Operator APG (\texttt  {operator})}}{9}{algorithm.2}\protected@file@percent }
+\newlabel{alg:active_edge_operator}{{2}{9}{}{algorithm.2}{}}
 \@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{9}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Active-Edge L2 Augmented Design}{9}{subsection.4.4}\protected@file@percent }
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Chain-Specialized APG (\texttt  {chain\_specialized})}}{10}{algorithm.3}\protected@file@percent }
 \newlabel{alg:chain_specialized}{{3}{10}{}{algorithm.3}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces L2 via Augmented Design and \texttt  {glmnet}}}{10}{algorithm.4}\protected@file@percent }
-\newlabel{alg:l2_augmented_design}{{4}{10}{}{algorithm.4}{}}
 \@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{10}{subsection.4.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Design}{10}{section.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Datasets}{10}{subsection.5.1}\protected@file@percent }
@@ -75,45 +73,54 @@
 \citation{openmlsarcos}
 \citation{pinheiro2000mixed}
 \citation{worldbankwdi}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces L2 via Augmented Design and \texttt  {glmnet}}}{11}{algorithm.4}\protected@file@percent }
+\newlabel{alg:l2_augmented_design}{{4}{11}{}{algorithm.4}{}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces \textsc  {BuildFusionRows}$(G)$ for Active-Edge L2}}{11}{algorithm.5}\protected@file@percent }
 \newlabel{alg:l2_fusion_rows}{{5}{11}{}{algorithm.5}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Dominant representation costs of the solver variants. Here $n$ is total sample size, $p$ is feature count, $k$ is group count, $m=|E|$ is the number of active fusion edges, $q=\binom  {k}{2}$, $T$ is the L1 iteration count, and $I$ is the number of \texttt  {glmnet} sweeps. The table isolates graph-representation costs and omits lower-order constants from R bookkeeping and solver overhead.}}{11}{table.2}\protected@file@percent }
-\newlabel{tab:complexity}{{2}{11}{Dominant representation costs of the solver variants. Here $n$ is total sample size, $p$ is feature count, $k$ is group count, $m=|E|$ is the number of active fusion edges, $q=\binom {k}{2}$, $T$ is the L1 iteration count, and $I$ is the number of \texttt {glmnet} sweeps. The table isolates graph-representation costs and omits lower-order constants from R bookkeeping and solver overhead}{table.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Evaluation Protocol}{11}{subsection.5.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Public grouped-regression datasets used in the reported real-data benchmark panels. The columns report total observations $n$, feature count $p$, group count $k$, and semantic subgroup type after preprocessing in this repository.}}{12}{table.3}\protected@file@percent }
-\newlabel{tab:datasets}{{3}{12}{Public grouped-regression datasets used in the reported real-data benchmark panels. The columns report total observations $n$, feature count $p$, group count $k$, and semantic subgroup type after preprocessing in this repository}{table.3}{}}
 \citation{hallac2015network,padilla2020adaptive}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Graph Construction and Hyperparameters}{13}{subsection.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Compared Methods}{13}{subsection.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{13}{section.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}L1 Prediction Accuracy}{13}{subsection.6.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces L1 prediction accuracy relative to the legacy L1 solver on the main benchmark panel. The exact operator solver preserves the legacy RMSE, while the chain-specialized approximation trades graph fidelity for speed.}}{14}{figure.3}\protected@file@percent }
-\newlabel{fig:l1-accuracy}{{3}{14}{L1 prediction accuracy relative to the legacy L1 solver on the main benchmark panel. The exact operator solver preserves the legacy RMSE, while the chain-specialized approximation trades graph fidelity for speed}{figure.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}L1 Runtime and Memory}{14}{subsection.6.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}L2 Accuracy and Efficiency}{14}{subsection.6.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Synthetic Scaling Experiments}{14}{subsection.6.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces L1 fit time by solver and group-count regime. Active-edge methods reduce the cost of graph fusion when the graph is sparse.}}{15}{figure.4}\protected@file@percent }
-\newlabel{fig:l1-timing}{{4}{15}{L1 fit time by solver and group-count regime. Active-edge methods reduce the cost of graph fusion when the graph is sparse}{figure.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Selected L1 benchmark rows from the completed HPC summary. RMSE and fit time are means across five outer folds; memory is mean fit-worker peak RSS in MB.}}{15}{table.4}\protected@file@percent }
-\newlabel{tab:l1-selected}{{4}{15}{Selected L1 benchmark rows from the completed HPC summary. RMSE and fit time are means across five outer folds; memory is mean fit-worker peak RSS in MB}{table.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{15}{section.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L1 efficiency relative to the legacy solver. Left: exact operator. Right: chain-specialized approximation.}}{16}{figure.5}\protected@file@percent }
-\newlabel{fig:l1-efficiency}{{5}{16}{L1 efficiency relative to the legacy solver. Left: exact operator. Right: chain-specialized approximation}{figure.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L2 prediction accuracy relative to the legacy L2 augmented-design solver across the benchmark panel.}}{16}{figure.6}\protected@file@percent }
-\newlabel{fig:l2-accuracy}{{6}{16}{L2 prediction accuracy relative to the legacy L2 augmented-design solver across the benchmark panel}{figure.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L2 fit time by solver and group-count regime. The active-edge builder reduces augmented-design construction when the graph is sparse.}}{17}{figure.7}\protected@file@percent }
-\newlabel{fig:l2-timing}{{7}{17}{L2 fit time by solver and group-count regime. The active-edge builder reduces augmented-design construction when the graph is sparse}{figure.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L2 efficiency of active-edge construction relative to the legacy L2 construction.}}{17}{figure.8}\protected@file@percent }
-\newlabel{fig:l2-efficiency}{{8}{17}{L2 efficiency of active-edge construction relative to the legacy L2 construction}{figure.8}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Reproducibility}{18}{section.8}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Dominant representation costs of the solver variants. Here $n$ is total sample size, $p$ is feature count, $k$ is group count, $m=|E|$ is the number of active fusion edges, $q=\binom  {k}{2}$, $T$ is the L1 iteration count, and $I$ is the number of \texttt  {glmnet} sweeps. The table isolates graph-representation costs and omits lower-order constants from R bookkeeping and solver overhead.}}{12}{table.2}\protected@file@percent }
+\newlabel{tab:complexity}{{2}{12}{Dominant representation costs of the solver variants. Here $n$ is total sample size, $p$ is feature count, $k$ is group count, $m=|E|$ is the number of active fusion edges, $q=\binom {k}{2}$, $T$ is the L1 iteration count, and $I$ is the number of \texttt {glmnet} sweeps. The table isolates graph-representation costs and omits lower-order constants from R bookkeeping and solver overhead}{table.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Graph Construction and Hyperparameters}{12}{subsection.5.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Compared Methods}{12}{subsection.5.4}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Public grouped-regression datasets used in the reported real-data benchmark panels. The columns report total observations $n$, feature count $p$, group count $k$, and semantic subgroup type after preprocessing in this repository.}}{13}{table.3}\protected@file@percent }
+\newlabel{tab:datasets}{{3}{13}{Public grouped-regression datasets used in the reported real-data benchmark panels. The columns report total observations $n$, feature count $p$, group count $k$, and semantic subgroup type after preprocessing in this repository}{table.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Controlled changepoint example comparing fused regression with \texttt  {glmnet} baselines. Dashed vertical lines mark the true changepoints. Pooled \texttt  {glmnet} underfits group heterogeneity, group-specific \texttt  {glmnet} overfits noisy group-level paths, and the fused L1 model recovers the piecewise-constant coefficient structure.}}{14}{figure.3}\protected@file@percent }
+\newlabel{fig:changepoint-glmnet}{{3}{14}{Controlled changepoint example comparing fused regression with \texttt {glmnet} baselines. Dashed vertical lines mark the true changepoints. Pooled \texttt {glmnet} underfits group heterogeneity, group-specific \texttt {glmnet} overfits noisy group-level paths, and the fused L1 model recovers the piecewise-constant coefficient structure}{figure.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Results}{14}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Changepoint Structure Relative to Glmnet}{14}{subsection.6.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Controlled spatial-hotspot example comparing fused regression with \texttt  {glmnet} baselines on an $8\times 8$ group grid. The panels show the first coefficient over the spatial graph. Pooled \texttt  {glmnet} smooths away the hotspots, group-specific \texttt  {glmnet} gives noisy fragmented regions, and fused L1 recovers the contiguous hotspot structure.}}{15}{figure.4}\protected@file@percent }
+\newlabel{fig:spatial-hotspot-glmnet}{{4}{15}{Controlled spatial-hotspot example comparing fused regression with \texttt {glmnet} baselines on an $8\times 8$ group grid. The panels show the first coefficient over the spatial graph. Pooled \texttt {glmnet} smooths away the hotspots, group-specific \texttt {glmnet} gives noisy fragmented regions, and fused L1 recovers the contiguous hotspot structure}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Spatial Hotspot Structure Relative to Glmnet}{15}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}L1 Accuracy and Efficiency}{15}{subsection.6.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Synthetic structured-heterogeneity comparisons against \texttt  {glmnet} baselines. The relative coefficient error is Frobenius error divided by the true coefficient Frobenius norm. CP distance is mean distance from true changepoints to the nearest estimated large jump. Boundary F1 is computed on graph edges by thresholding adjacent coefficient-vector differences.}}{16}{table.4}\protected@file@percent }
+\newlabel{tab:structured-glmnet}{{4}{16}{Synthetic structured-heterogeneity comparisons against \texttt {glmnet} baselines. The relative coefficient error is Frobenius error divided by the true coefficient Frobenius norm. CP distance is mean distance from true changepoints to the nearest estimated large jump. Boundary F1 is computed on graph edges by thresholding adjacent coefficient-vector differences}{table.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces L1 prediction accuracy relative to the legacy L1 solver on the main benchmark panel. The exact operator solver preserves the legacy RMSE, while the chain-specialized approximation trades graph fidelity for speed.}}{16}{figure.5}\protected@file@percent }
+\newlabel{fig:l1-accuracy}{{5}{16}{L1 prediction accuracy relative to the legacy L1 solver on the main benchmark panel. The exact operator solver preserves the legacy RMSE, while the chain-specialized approximation trades graph fidelity for speed}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces L1 fit time by solver and group-count regime. Active-edge methods reduce the cost of graph fusion when the graph is sparse.}}{17}{figure.6}\protected@file@percent }
+\newlabel{fig:l1-timing}{{6}{17}{L1 fit time by solver and group-count regime. Active-edge methods reduce the cost of graph fusion when the graph is sparse}{figure.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Selected L1 benchmark rows from the completed HPC summary. RMSE and fit time are means across five outer folds; memory is mean fit-worker peak RSS in MB.}}{17}{table.5}\protected@file@percent }
+\newlabel{tab:l1-selected}{{5}{17}{Selected L1 benchmark rows from the completed HPC summary. RMSE and fit time are means across five outer folds; memory is mean fit-worker peak RSS in MB}{table.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}L2 Accuracy and Efficiency}{17}{subsection.6.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces L1 efficiency relative to the legacy solver. Left: exact operator. Right: chain-specialized approximation.}}{18}{figure.7}\protected@file@percent }
+\newlabel{fig:l1-efficiency}{{7}{18}{L1 efficiency relative to the legacy solver. Left: exact operator. Right: chain-specialized approximation}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces L2 prediction accuracy relative to the legacy L2 augmented-design solver across the benchmark panel.}}{18}{figure.8}\protected@file@percent }
+\newlabel{fig:l2-accuracy}{{8}{18}{L2 prediction accuracy relative to the legacy L2 augmented-design solver across the benchmark panel}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}Synthetic Scaling Experiments}{18}{subsection.6.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces L2 fit time by solver and group-count regime. The active-edge builder reduces augmented-design construction when the graph is sparse.}}{19}{figure.9}\protected@file@percent }
+\newlabel{fig:l2-timing}{{9}{19}{L2 fit time by solver and group-count regime. The active-edge builder reduces augmented-design construction when the graph is sparse}{figure.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces L2 efficiency of active-edge construction relative to the legacy L2 construction.}}{19}{figure.10}\protected@file@percent }
+\newlabel{fig:l2-efficiency}{{10}{19}{L2 efficiency of active-edge construction relative to the legacy L2 construction}{figure.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{19}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Reproducibility}{20}{section.8}\protected@file@percent }
 \bibdata{fuserplus_refs}
 \bibcite{rdatasets}{{1}{2026}{{Arel-Bundock}}{{}}}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{19}{section.9}\protected@file@percent }
 \bibcite{arellano1991panel}{{2}{1991}{{Arellano and Bond}}{{}}}
 \bibcite{genlassopkg}{{3}{2025}{{Arnold and Tibshirani}}{{}}}
 \bibcite{boyd2011admm}{{4}{2011}{{Boyd et~al.}}{{Boyd, Parikh, Chu, Peleato, and Eckstein}}}
 \bibcite{uci_beijing}{{5}{2017}{{Chen}}{{}}}
 \bibcite{chen2010graph}{{6}{2010}{{Chen et~al.}}{{Chen, Lin, Kim, Carbonell, and Xing}}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{22}{section.9}\protected@file@percent }
 \bibcite{chen2012smoothing}{{7}{2012{a}}{{Chen et~al.}}{{Chen, Lin, Kim, Carbonell, and Xing}}}
 \bibcite{mmtmanual}{{8}{2012}{{Chen}}{{}}}
 \bibcite{chen2012twograph}{{9}{2012{b}}{{Chen et~al.}}{{Chen, Shi, Xu, Wang, Mills, Lee, and Xu}}}
@@ -153,7 +160,7 @@
 \bibcite{ye2011split}{{43}{2011}{{Ye and Xie}}{{}}}
 \bibcite{yuan2006group}{{44}{2006}{{Yuan and Lin}}{{}}}
 \bibcite{zou2005elastic}{{45}{2005}{{Zou and Hastie}}{{}}}
-\newlabel{LastPage}{{9}{23}{}{page.23}{}}
-\gdef\lastpage@lastpage{23}
-\gdef\lastpage@lastpageHy{23}
-\gdef \@abspage@last{23}
+\newlabel{LastPage}{{9}{25}{}{page.25}{}}
+\gdef\lastpage@lastpage{25}
+\gdef\lastpage@lastpageHy{25}
+\gdef \@abspage@last{25}

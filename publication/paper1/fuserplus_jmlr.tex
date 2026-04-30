@@ -121,6 +121,21 @@ lasso solvers. The
 result is a reusable design pattern for multi-task fused regression and other
 graph-penalized models whose penalties decompose over graph edges.
 
+The main contributions are:
+\begin{itemize}
+\item a sparse-graph representation principle for grouped fused regression
+solvers;
+\item exact active-edge L1 and L2 reformulations that preserve the legacy
+objective while avoiding zero-weight all-pair construction;
+\item a clear separation between exact sparse-graph solvers and approximate
+high-efficiency chain variants;
+\item empirical comparisons showing when fused regression improves over
+unfused \texttt{glmnet} baselines and when active-edge construction improves
+over legacy fused solvers; and
+\item an open R implementation with benchmark scripts, manifests, and
+figure-generation artifacts.
+\end{itemize}
+
 The implementation is provided in the R package \fuserplus. The current
 benchmark suite uses public grouped regression datasets and synthetic scaling
 experiments to compare prediction error, wall time, and peak resident memory.
@@ -253,7 +268,7 @@ benchmarked L1/L2 sparse-graph solvers. \\
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/concept1.png}
+  \includegraphics[width=.95\textwidth]{figures/concept1.png}
   \caption{Conceptual overview of L1 sparse-graph fusion. A: fusion graph
   construction. The legacy full-edge construction associated with
   \citet{dondelinger2020joint} forms a combined constraint matrix over all
@@ -268,7 +283,7 @@ benchmarked L1/L2 sparse-graph solvers. \\
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/concept2.png}
+  \includegraphics[width=.95\textwidth]{figures/concept2.png}
   \caption{Conceptual overview of L2 sparse-graph fusion. A: augmented matrix
   construction. The legacy full-edge construction associated with
   \citet{dondelinger2020joint} forms augmented rows for all group pairs, while
@@ -781,7 +796,95 @@ approximation rather than an exact replacement.
 
 \section{Results}
 
-\subsection{L1 Prediction Accuracy}
+\subsection{Changepoint Structure Relative to Glmnet}
+
+Before comparing solver representations, it is useful to show a setting where
+fusion is statistically useful relative to unfused \texttt{glmnet} baselines.
+We generated an ordered-group regression problem with $k=60$ groups,
+$p=20$ predictors, and piecewise-constant coefficient paths with changepoints
+after groups 20 and 40. Each group has 25 training observations for fitting,
+10 validation observations for tuning, and 80 test observations. The graph is
+the chain over ordered groups. We compare a pooled \texttt{glmnet} model, a
+group-specific interaction \texttt{glmnet} model with no fusion, and the L1
+fused model on the same chain graph.
+
+The pooled \texttt{glmnet} baseline cannot represent group-specific
+changepoints. The group-specific \texttt{glmnet} baseline can represent
+heterogeneity but has no mechanism to share strength across adjacent groups,
+so its fitted paths are noisy and contain many spurious jumps. The fused L1
+model uses the graph penalty to recover the piecewise-constant structure. In
+this controlled example it has the lowest test RMSE and coefficient error, and
+it produces exactly two large jumps, both at the true changepoints.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.9\textwidth]{figures/changepoint_fused_vs_glmnet.png}
+  \caption{Controlled changepoint example comparing fused regression with
+  \texttt{glmnet} baselines. Dashed vertical lines mark the true changepoints.
+  Pooled \texttt{glmnet} underfits group heterogeneity, group-specific
+  \texttt{glmnet} overfits noisy group-level paths, and the fused L1 model
+  recovers the piecewise-constant coefficient structure.}
+  \label{fig:changepoint-glmnet}
+\end{figure}
+
+\subsection{Spatial Hotspot Structure Relative to Glmnet}
+
+A second use case replaces the one-dimensional chain by a two-dimensional
+spatial graph. We generated an $8\times 8$ grid of groups with 4-neighbor
+adjacency, $p=16$ predictors, and two contiguous hotspot regions whose
+coefficient vectors differ from the background. Each group has 25 training
+observations for fitting, 10 validation observations for tuning, and 70 test
+observations. This setting mimics county-, sensor-, image-, or station-level
+regression problems where local regions share regression structure and
+boundaries are sparse.
+
+The pooled \texttt{glmnet} baseline again cannot represent local
+heterogeneity. The group-specific \texttt{glmnet} baseline can represent
+heterogeneity, but without a spatial fusion penalty it produces fragmented
+coefficient maps and many spurious graph boundaries. The fused L1 model uses
+the grid graph to borrow strength across neighboring groups while preserving
+sharp region boundaries. In this controlled example it has the lowest test
+RMSE, the lowest coefficient error, and recovers the true hotspot boundaries
+without extra large graph-edge jumps.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.95\textwidth]{figures/spatial_hotspot_fused_vs_glmnet.png}
+  \caption{Controlled spatial-hotspot example comparing fused regression with
+  \texttt{glmnet} baselines on an $8\times 8$ group grid. The panels show the
+  first coefficient over the spatial graph. Pooled \texttt{glmnet} smooths
+  away the hotspots, group-specific \texttt{glmnet} gives noisy fragmented
+  regions, and fused L1 recovers the contiguous hotspot structure.}
+  \label{fig:spatial-hotspot-glmnet}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\scriptsize
+\caption{Synthetic structured-heterogeneity comparisons against
+\texttt{glmnet} baselines. The relative coefficient error is Frobenius error
+divided by the true coefficient Frobenius norm. CP distance is mean distance
+from true changepoints to the nearest estimated large jump. Boundary F1 is
+computed on graph edges by thresholding adjacent coefficient-vector
+differences.}
+\label{tab:structured-glmnet}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}
+>{\raggedright\arraybackslash}p{0.19\textwidth}rr
+>{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
+\toprule
+Example & Method & Test RMSE & Coef. rel. error & Structure metric \\
+\midrule
+Changepoint & pooled \texttt{glmnet} & 1.957 & 0.848 & CP dist. 28; 0 jumps \\
+Changepoint & group \texttt{glmnet} & 0.915 & 0.279 & CP dist. 0; 59 jumps \\
+Changepoint & fused L1 & 0.708 & 0.079 & CP dist. 0; 2 jumps \\
+Spatial hotspot & pooled \texttt{glmnet} & 1.417 & 0.845 & boundary F1 0.000; 0 jumps \\
+Spatial hotspot & group \texttt{glmnet} & 0.986 & 0.443 & boundary F1 0.325; 103 jumps \\
+Spatial hotspot & fused L1 & 0.813 & 0.196 & boundary F1 1.000; 20 jumps \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{L1 Accuracy and Efficiency}
 
 Figure~\ref{fig:l1-accuracy} compares L1 test RMSE against the legacy L1
 baseline. The exact operator method matches the legacy prediction error to
@@ -797,14 +900,12 @@ method's design: replacing a graph by a chain changes the fusion prior.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/hpc_figure5_main_accuracy_comparison_4panel.png}
+  \includegraphics[width=\textwidth]{figures/hpc_figure5_combined_k_regimes.png}
   \caption{L1 prediction accuracy relative to the legacy L1 solver on the
   main benchmark panel. The exact operator solver preserves the legacy RMSE,
   while the chain-specialized approximation trades graph fidelity for speed.}
   \label{fig:l1-accuracy}
 \end{figure}
-
-\subsection{L1 Runtime and Memory}
 
 Figure~\ref{fig:l1-timing} summarizes L1 fit time across group-count regimes.
 In the completed L1 summary, the exact operator method has a median speedup of
@@ -989,6 +1090,10 @@ The exact CSV files used for the results in this paper are:
 panel.
 \item \path{build/hpc/l2_knn/final_test_summary_k_ge_50.csv} for the
 large-group L2 subset.
+\item \path{build/changepoint/fused_vs_glmnet_summary.csv} for the synthetic
+changepoint comparison.
+\item \path{build/spatial_hotspot/fused_vs_glmnet_summary.csv} for the
+synthetic spatial-hotspot comparison.
 \end{itemize}
 
 The manifest-driven benchmark pipeline can be rerun with commands of the
@@ -1011,10 +1116,14 @@ Rscript scripts/hpc/aggregate_test_results.R \
 \end{verbatim}
 The L2 panel uses the same pipeline with \texttt{--objective l2},
 \texttt{--methods old\_l2,new\_l2}, and output paths under
-\path{build/hpc/l2_knn}. The synthetic scaling figures are generated by the
-\texttt{benchmark\_atime\_*} scripts under \path{scripts}. The paper source
-can be rebuilt from \path{paper/fuserplus_jmlr.tex} with the JMLR style file
-in the same directory.
+\path{build/hpc/l2_knn}. The synthetic changepoint comparison is generated by
+\path{scripts/benchmark_changepoint_fused_vs_glmnet.R}, and the spatial-hotspot
+comparison is generated by
+\path{scripts/benchmark_spatial_hotspot_fused_vs_glmnet.R}. The synthetic
+scaling experiments are generated by the \texttt{benchmark\_atime\_*} scripts
+under \path{scripts}. The paper source can be rebuilt from
+\path{publication/paper1/fuserplus_jmlr.tex} with the JMLR style file in the
+same directory.
 
 \section{Conclusion}
 
