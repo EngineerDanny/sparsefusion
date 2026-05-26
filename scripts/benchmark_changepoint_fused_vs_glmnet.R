@@ -179,7 +179,7 @@ plot_paths <- function(d, fits, out_png) {
     for (method in methods) {
       beta <- if (method == "truth") d$beta else fits[[method]]$beta
       plot(seq_len(ncol(beta)), beta[1, ],
-           pch = 16, col = "black", cex = 0.55,
+           pch = 16, col = "black", cex = 0.8,
            xlab = "Ordered group", ylab = "Coefficient",
            main = method)
       abline(v = d$breakpoints, lty = 2, col = "grey70")
@@ -197,12 +197,12 @@ plot_paths <- function(d, fits, out_png) {
 
   p <- ggplot2::ggplot(df, ggplot2::aes(group, beta)) +
     ggplot2::geom_vline(xintercept = d$breakpoints, linetype = "dashed", color = "grey70") +
-    ggplot2::geom_point(shape = 16, color = "black", size = 0.75) +
+    ggplot2::geom_point(shape = 16, color = "black", size = 1.15) +
     ggplot2::facet_wrap(~ method, ncol = 4) +
     ggplot2::labs(x = "Ordered group", y = "Coefficient for predictor x1") +
     ggplot2::theme_bw(base_size = 11) +
     ggplot2::theme(legend.position = "none")
-  ggplot2::ggsave(out_png, p, width = 7.6, height = 2.0, dpi = 300)
+  ggplot2::ggsave(out_png, p, width = 9.2, height = 2.6, dpi = 300)
 }
 
 main <- function() {

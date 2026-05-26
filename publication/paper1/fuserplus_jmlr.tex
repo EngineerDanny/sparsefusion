@@ -71,7 +71,7 @@ provided for reproducibility.
 Many regression problems contain a natural grouping variable: patients may
 belong to disease subtypes, schools to districts, countries to regions, or
 time series to meters. Fitting a separate model in each group ignores shared
-signal, whereas fitting one global model ignores heterogeneity. Grouped fused
+signal, whereas fitting one global model ignores differences across groups. Grouped fused
 regression addresses this middle ground by estimating one coefficient vector
 for each group and penalizing differences between coefficient vectors along a graph
 of group relationships.
@@ -1004,13 +1004,19 @@ penalizes differences only between neighboring groups.
 
 We compare three estimators. 
 The lasso(all) baseline fits one shared coefficient vector using all groups
-together, so it is stable but cannot represent group-level changepoints. 
+together, so it is stable but cannot represent changepoints across groups. 
 The lasso(same) baseline expands the design with group-feature interactions and
 fits separate group coefficients without any fusion penalty; it can represent
-heterogeneity, but it does not borrow strength across neighboring groups. 
-The fused lasso model also estimates group-level coefficient vectors, but adds
-an L1 fusion penalty on adjacent groups in the chain. 
-Both lasso baselines are fit with \texttt{glmnet}.
+differences across groups, but it does not borrow strength across neighboring
+groups. 
+The fused lasso model also estimates coefficient vectors for each group, but
+adds an L1 fusion penalty on adjacent groups in the chain so that it optimizes
+the trade-off between sharing and allowing coefficients to differ across
+groups. 
+Both lasso baselines are fit with \texttt{glmnet}. 
+Their lasso penalties are selected by five-fold \texttt{cv.glmnet} on the
+training data, while the fused lasso selects $(\lambda,\gamma)$ by validation
+RMSE over a fixed grid.
 
 Figure~\ref{fig:changepoint-glmnet} shows the fitted path for the first
 predictor across the 60 ordered groups. 
@@ -1020,9 +1026,12 @@ The lasso(same) path varies by group, but without fusion it produces a noisy
 path with many spurious jumps. 
 The fused lasso path is piecewise constant and changes at the two true
 changepoints. 
-Table~\ref{tab:structured-glmnet} reports the same conclusion numerically:
-the fused lasso has the lowest test RMSE, the lowest coefficient error, and
-exactly two large estimated jumps, both at the true changepoints.
+Numerically, the fused lasso obtains the lowest test RMSE (0.708), the lowest
+relative coefficient error (0.079), and exactly two large estimated jumps,
+both at the true changepoints. 
+By comparison, lasso(all) has test RMSE 1.957 and relative coefficient error
+0.848, while lasso(same) improves prediction error but produces 59 large
+jumps.
 
 \begin{figure}[t]
   \centering
@@ -1030,33 +1039,12 @@ exactly two large estimated jumps, both at the true changepoints.
   \caption{Controlled changepoint example comparing fused regression with
   unfused lasso baselines. Points show the coefficient for the first
   predictor across all 60 ordered groups, and dashed vertical lines mark the
-  true changepoints. lasso(all) underfits group heterogeneity, lasso(same)
-  overfits noisy group-level paths, and the fused lasso model recovers the
-  piecewise-constant coefficient structure. The lasso baselines are fit with
-  \texttt{glmnet}.}
+  true changepoints. lasso(all) fits only one shared coefficient path,
+  lasso(same) produces noisy separate paths, and the fused lasso model
+  recovers the piecewise-constant coefficient structure. The lasso baselines
+  are fit with \texttt{glmnet}.}
   \label{fig:changepoint-glmnet}
 \end{figure}
-
-\begin{table}[t]
-\centering
-\scriptsize
-\caption{Synthetic structured-heterogeneity comparisons against unfused lasso
-baselines fit with \texttt{glmnet}. The relative coefficient error is Frobenius error
-divided by the true coefficient Frobenius norm. CP distance is mean distance
-from true changepoints to the nearest estimated large jump.}
-\label{tab:structured-glmnet}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.16\textwidth}
->{\raggedright\arraybackslash}p{0.19\textwidth}rr
->{\raggedright\arraybackslash}p{0.28\textwidth}@{}}
-\toprule
-Example & Method & Test RMSE & Coef. rel. error & Structure metric \\
-\midrule
-Changepoint & lasso(all) & 1.957 & 0.848 & CP dist. 28; 0 jumps \\
-Changepoint & lasso(same) & 0.915 & 0.279 & CP dist. 0; 59 jumps \\
-Changepoint & fused lasso & 0.708 & 0.079 & CP dist. 0; 2 jumps \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \subsection{L1 Accuracy and Efficiency}
 
