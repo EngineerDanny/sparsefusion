@@ -122,6 +122,8 @@ INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/lastpage/lastpage2e.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/lastpage/lastpage2e.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/lastpage/lastpagemodern.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/lastpage/lastpagemodern.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/tools/xspace.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/tools/xspace.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 INPUT ./fuserplus_jmlr.aux
@@ -197,19 +199,11 @@ INPUT ./figures/concept2.png
 INPUT ./figures/concept2.png
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmti10.tfm
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmcsc10.tfm
 INPUT ./figures/changepoint_fused_vs_glmnet.png
 INPUT ./figures/changepoint_fused_vs_glmnet.png
 INPUT ./figures/changepoint_fused_vs_glmnet.png
 INPUT ./figures/changepoint_fused_vs_glmnet.png
 INPUT ./figures/changepoint_fused_vs_glmnet.png
-INPUT ./figures/spatial_hotspot_fused_vs_glmnet.png
-INPUT ./figures/spatial_hotspot_fused_vs_glmnet.png
-INPUT ./figures/spatial_hotspot_fused_vs_glmnet.png
-INPUT ./figures/spatial_hotspot_fused_vs_glmnet.png
-INPUT ./figures/spatial_hotspot_fused_vs_glmnet.png
 INPUT ./figures/hpc_figure5_combined_k_regimes.png
 INPUT ./figures/hpc_figure5_combined_k_regimes.png
 INPUT ./figures/hpc_figure5_combined_k_regimes.png
@@ -248,7 +242,6 @@ INPUT ./figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png
 INPUT ./fuserplus_jmlr.bbl
 INPUT ./fuserplus_jmlr.bbl
 INPUT fuserplus_jmlr.bbl
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmitt10.tfm
 INPUT fuserplus_jmlr.aux
 INPUT ./fuserplus_jmlr.out
 INPUT ./fuserplus_jmlr.out
@@ -256,7 +249,6 @@ INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.p
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
-INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmitt10.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
@@ -265,6 +257,7 @@ INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb
 INPUT /usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb

@@ -173,46 +173,44 @@ summarize_fit <- function(name, fit, d) {
 
 plot_paths <- function(d, fits, out_png) {
   if (!requireNamespace("ggplot2", quietly = TRUE)) {
-    png(out_png, width = 1800, height = 900, res = 180)
-    matplot(t(d$beta[1:3, ]), type = "l", lty = 1, lwd = 2,
-            main = "True coefficient paths", xlab = "Group", ylab = "Coefficient")
-    abline(v = d$breakpoints, lty = 2)
+    png(out_png, width = 1900, height = 520, res = 180)
+    methods <- c("truth", names(fits))
+    par(mfrow = c(1, 4), mar = c(4, 3.5, 2, 1))
+    for (method in methods) {
+      beta <- if (method == "truth") d$beta else fits[[method]]$beta
+      plot(seq_len(ncol(beta)), beta[1, ],
+           pch = 16, col = "black", cex = 0.55,
+           xlab = "Ordered group", ylab = "Coefficient",
+           main = method)
+      abline(v = d$breakpoints, lty = 2, col = "grey70")
+    }
     dev.off()
     return(invisible(NULL))
   }
   df <- do.call(rbind, lapply(names(fits), function(method) {
     beta <- fits[[method]]$beta
-    do.call(rbind, lapply(seq_len(3), function(feature) {
-      data.frame(method = method, group = seq_len(ncol(beta)),
-                 feature = paste0("x", feature), beta = beta[feature, ])
-    }))
+    data.frame(method = method, group = seq_len(ncol(beta)), beta = beta[1, ])
   }))
-  true_df <- do.call(rbind, lapply(seq_len(3), function(feature) {
-    data.frame(method = "truth", group = seq_len(ncol(d$beta)),
-               feature = paste0("x", feature), beta = d$beta[feature, ])
-  }))
+  true_df <- data.frame(method = "truth", group = seq_len(ncol(d$beta)), beta = d$beta[1, ])
   df <- rbind(true_df, df)
-  df$method <- factor(df$method, levels = c("truth", "pooled glmnet", "group glmnet", "fused L1"))
+  df$method <- factor(df$method, levels = c("truth", "lasso(all)", "lasso(same)", "fused lasso"))
 
-  p <- ggplot2::ggplot(df, ggplot2::aes(group, beta, color = method, linewidth = method)) +
-    ggplot2::geom_line() +
-    ggplot2::geom_vline(xintercept = d$breakpoints, linetype = "dashed", color = "grey45") +
-    ggplot2::facet_wrap(~ feature, ncol = 1, scales = "free_y") +
-    ggplot2::scale_linewidth_manual(values = c("truth" = 1.2, "pooled glmnet" = 0.7,
-                                               "group glmnet" = 0.7, "fused L1" = 0.9)) +
-    ggplot2::labs(x = "Ordered group", y = "Coefficient",
-                  color = NULL, linewidth = NULL) +
+  p <- ggplot2::ggplot(df, ggplot2::aes(group, beta)) +
+    ggplot2::geom_vline(xintercept = d$breakpoints, linetype = "dashed", color = "grey70") +
+    ggplot2::geom_point(shape = 16, color = "black", size = 0.75) +
+    ggplot2::facet_wrap(~ method, ncol = 4) +
+    ggplot2::labs(x = "Ordered group", y = "Coefficient for predictor x1") +
     ggplot2::theme_bw(base_size = 11) +
-    ggplot2::theme(legend.position = "bottom")
-  ggplot2::ggsave(out_png, p, width = 7.0, height = 4.8, dpi = 300)
+    ggplot2::theme(legend.position = "none")
+  ggplot2::ggsave(out_png, p, width = 7.6, height = 2.0, dpi = 300)
 }
 
 main <- function() {
   d <- generate_piecewise_data()
   fits <- list(
-    "pooled glmnet" = fit_pooled_glmnet(d),
-    "group glmnet" = fit_group_glmnet(d),
-    "fused L1" = fit_fused_l1(d)
+    "lasso(all)" = fit_pooled_glmnet(d),
+    "lasso(same)" = fit_group_glmnet(d),
+    "fused lasso" = fit_fused_l1(d)
   )
   summary <- do.call(rbind, Map(summarize_fit, names(fits), fits, MoreArgs = list(d = d)))
 

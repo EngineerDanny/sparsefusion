@@ -1,4 +1,4 @@
-\begin{thebibliography}{45}
+\begin{thebibliography}{38}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -19,12 +19,12 @@ Manuel Arellano and Stephen Bond.
   277--297, 1991.
 \newblock \doi{10.2307/2297968}.
 
-\bibitem[Arnold and Tibshirani(2025)]{genlassopkg}
-Taylor~B. Arnold and Ryan~J. Tibshirani.
-\newblock \emph{\texttt{genlasso}: Path Algorithm for Generalized Lasso
-  Problems}, 2025.
-\newblock URL \url{https://cran.r-project.org/package=genlasso}.
-\newblock R package reference manual.
+\bibitem[Beck and Teboulle(2009)]{beck2009fast}
+Amir Beck and Marc Teboulle.
+\newblock A fast iterative shrinkage-thresholding algorithm for linear inverse
+  problems.
+\newblock \emph{SIAM Journal on Imaging Sciences}, 2\penalty0 (1):\penalty0
+  183--202, 2009.
 
 \bibitem[Boyd et~al.(2011)Boyd, Parikh, Chu, Peleato, and
   Eckstein]{boyd2011admm}
@@ -56,13 +56,6 @@ Xi~Chen, Qihang Lin, Seyoung Kim, Jaime~G. Carbonell, and Eric~P. Xing.
 \newblock \emph{The Annals of Applied Statistics}, 6\penalty0 (2):\penalty0
   719--752, 2012{\natexlab{a}}.
 
-\bibitem[Chen(2012)]{mmtmanual}
-Xiaohui Chen.
-\newblock \emph{{MMT}: A Matlab Library for Multi-task Learning}, 2012.
-\newblock URL
-  \url{https://people.ece.ubc.ca/xiaohuic/code/multi-task_lasso/mmt_user_manual.pdf}.
-\newblock User manual.
-
 \bibitem[Chen et~al.(2012{\natexlab{b}})Chen, Shi, Xu, Wang, Mills, Lee, and
   Xu]{chen2012twograph}
 Xiaohui Chen, Xinghua Shi, Xing Xu, Zhiyong Wang, Ryan Mills, Charles Lee, and
@@ -77,21 +70,6 @@ Christopher Cornwell and William~N. Trumbull.
 \newblock Estimating the economic model of crime with panel data.
 \newblock \emph{The Review of Economics and Statistics}, 76\penalty0
   (2):\penalty0 360--366, 1994.
-
-\bibitem[Diamond and Boyd(2016)]{cvxpy}
-Steven Diamond and Stephen Boyd.
-\newblock {CVXPY}: A {Python}-embedded modeling language for convex
-  optimization.
-\newblock \emph{Journal of Machine Learning Research}, 17\penalty0
-  (83):\penalty0 1--5, 2016.
-\newblock URL \url{https://www.cvxpy.org/}.
-
-\bibitem[Dondelinger and Mukherjee(2017)]{fuserpkg}
-Frank Dondelinger and Sach Mukherjee.
-\newblock \emph{\texttt{fuser}: Fused Lasso for High-Dimensional Regression
-  over Groups}, 2017.
-\newblock URL \url{https://cran.r-project.org/package=fuser}.
-\newblock R package and vignette.
 
 \bibitem[Dondelinger et~al.(2020)Dondelinger, Mukherjee, and {The Alzheimer's
   Disease Neuroimaging Initiative}]{dondelinger2020joint}
@@ -108,19 +86,6 @@ Jerome Friedman, Trevor Hastie, and Robert Tibshirani.
   descent.
 \newblock \emph{Journal of Statistical Software}, 33\penalty0 (1):\penalty0
   1--22, 2010.
-
-\bibitem[Ghosh and Chatterjee(2026)]{extlassopkg}
-Suman Ghosh and Nilanjan Chatterjee.
-\newblock \emph{\texttt{extlasso}: Extended Lasso Penalized Regression}, 2026.
-\newblock URL \url{https://cran.r-project.org/package=extlasso}.
-\newblock R package reference manual.
-
-\bibitem[Goeman(2026)]{penalizedpkg}
-Jelle~J. Goeman.
-\newblock \emph{\texttt{penalized}: L1 and L2 Penalized Estimation in GLMs and
-  in the Cox Model}, 2026.
-\newblock URL \url{https://cran.r-project.org/package=penalized}.
-\newblock R package reference manual.
 
 \bibitem[Goldstein et~al.(1993)Goldstein, Rasbash, Yang, Woodhouse, Pan,
   Nuttall, and Thomas]{goldstein1993exam}
@@ -143,25 +108,12 @@ Holger Hoefling.
 \newblock \emph{Journal of Computational and Graphical Statistics}, 19\penalty0
   (4):\penalty0 984--1006, 2010.
 
-\bibitem[Hoefling(2024)]{flsapkg}
-Holger Hoefling.
-\newblock \emph{\texttt{flsa}: Path Algorithm for the General Fused Lasso
-  Signal Approximator}, 2024.
-\newblock URL \url{https://cran.r-project.org/package=flsa}.
-\newblock R package reference manual.
-
-\bibitem[Janizek and Lee(2021)]{yaglm}
-Joseph~D. Janizek and Su-In Lee.
-\newblock \texttt{yaglm}: A python package for fitting and tuning generalized
-  linear models that supports structured, adaptive and non-convex penalties,
-  2021.
-\newblock URL \url{https://github.com/yaglm/yaglm}.
-
-\bibitem[{JuliaStats}(2026)]{lassojl}
-{JuliaStats}.
-\newblock \emph{\texttt{Lasso.jl}: Lasso, Fused Lasso, and Trend Filtering
-  Documentation}, 2026.
-\newblock URL \url{https://juliastats.org/Lasso.jl/stable/smoothing/}.
+\bibitem[Kohavi(1995)]{kohavi1995cross}
+Ron Kohavi.
+\newblock A study of cross-validation and bootstrap for accuracy estimation and
+  model selection.
+\newblock In \emph{Proceedings of the Fourteenth International Joint Conference
+  on Artificial Intelligence}, pages 1137--1143. Morgan Kaufmann, 1995.
 
 \bibitem[Lauridsen et~al.(1999)Lauridsen, H{\o}jsgaard, and
   S{\o}rensen]{lauridsen1999dietox}
@@ -236,13 +188,6 @@ Michael Redmond.
 \newblock UCI Machine Learning Repository, 2002.
 \newblock DOI: 10.24432/C53W3X.
 
-\bibitem[Reid and Tibshirani(2021)]{smoothedlassopkg}
-Stephen Reid and Robert Tibshirani.
-\newblock \emph{\texttt{smoothedLasso}: A Framework to Smooth L1 Penalized
-  Regression Operators Using Nesterov Smoothing}, 2021.
-\newblock URL \url{https://cran.r-project.org/package=smoothedLasso}.
-\newblock R package reference manual.
-
 \bibitem[Ritchie et~al.(2023)Ritchie, Rosado, and Roser]{owidco2}
 Hannah Ritchie, Pablo Rosado, and Max Roser.
 \newblock {CO2} and greenhouse gas emissions.
@@ -278,6 +223,13 @@ Artur Trindade.
 \newblock Electricityloaddiagrams20112014.
 \newblock UCI Machine Learning Repository, 2015.
 \newblock DOI: 10.24432/C58C86.
+
+\bibitem[Varma and Simon(2006)]{varma2006bias}
+Sudhir Varma and Richard Simon.
+\newblock Bias in error estimation when using cross-validation for model
+  selection.
+\newblock \emph{BMC Bioinformatics}, 7:\penalty0 91, 2006.
+\newblock \doi{10.1186/1471-2105-7-91}.
 
 \bibitem[Wang et~al.(2016)Wang, Sharpnack, Smola, and
   Tibshirani]{wang2016graphtf}
