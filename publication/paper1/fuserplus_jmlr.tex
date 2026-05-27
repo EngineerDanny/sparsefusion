@@ -1046,91 +1046,64 @@ jumps.
   \label{fig:changepoint-glmnet}
 \end{figure}
 
-\subsection{L1 Accuracy and Efficiency}
+\subsection{Accuracy Preservation on Representative Datasets}
 
-Figure~\ref{fig:l1-accuracy} compares L1 test RMSE against the legacy L1
-baseline. The exact operator method matches the legacy prediction error to
-numerical precision across the completed benchmark summary: the maximum
-absolute percent difference in mean RMSE is below $10^{-5}$ percent. This is
-expected because the operator form is an exact representation of the same
-active-edge objective.
+Figure~\ref{fig:l1-l2-accuracy-three-datasets} compares prediction accuracy
+for L1 and L2 fusion on three representative datasets. These datasets span a
+high-feature setting with fewer groups (\texttt{communities\_crime}) and two
+many-group settings with moderate feature counts (\texttt{hsb82} and
+\texttt{owid\_co2}). The figure is intended to isolate the accuracy question:
+does replacing all-pair construction with active-edge construction change the
+test error?
 
-The chain-specialized method is faster but approximate. Its median RMSE
-increase relative to the legacy method is 2.02\% in the completed L1 summary,
-with larger losses on some datasets. This behavior is consistent with the
-method's design: replacing a graph by a chain changes the fusion prior.
+For the exact sparse-graph solvers, the answer is no to numerical precision.
+The L1 active-edge operator overlaps the full-edge L1 reference on all three
+datasets, and the L2 active-edge augmented design similarly overlaps the
+full-pairwise L2 reference. This matches the equivalence results in
+Section~\ref{sec:solvers}: the active-edge representation changes
+the data structure used by the solver, not the fitted objective. The
+chain-specialized L1 method is shown separately in the L1 row because it is an
+approximation; its accuracy can differ because replacing the graph by a chain
+changes the fusion penalty.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/hpc_figure5_combined_k_regimes.png}
-  \caption{L1 prediction accuracy relative to the legacy L1 solver on the
-  main benchmark panel. The exact operator solver preserves the legacy RMSE,
-  while the chain-specialized approximation trades graph fidelity for speed.}
-  \label{fig:l1-accuracy}
+  \includegraphics[width=\textwidth]{figures/hpc_l1_l2_three_datasets.png}
+  \caption{Prediction accuracy for L1 and L2 fusion on representative
+  datasets. Points show test RMSE means over five cross-validation folds, with
+  horizontal bars showing one standard deviation. The label
+  \texttt{legacy\_full\_edge} denotes the full-construction reference. Exact
+  active-edge solvers preserve the full-construction RMSE, while the
+  chain-specialized L1 method is an approximate variant.}
+  \label{fig:l1-l2-accuracy-three-datasets}
 \end{figure}
 
-Figure~\ref{fig:l1-timing} summarizes L1 fit time across group-count ranges.
-In the completed L1 summary, the exact operator method has a median speedup of
-2.26x over the legacy implementation, with speedups ranging from 0.68x to
-7.65x. The one slowdown occurs on a small benchmark where overhead dominates
-the savings from active-edge representation. Median peak memory decreases by
-10.7\%.
+\subsection{Timing Gains on Representative Datasets}
 
-The chain-specialized approximation has a median runtime speedup of 3.26x.
-Its runtime gains are larger because it always uses only $k-1$ fusion edges.
-Its median peak-memory reduction is 4.6\%, but memory gains vary by dataset
-because the implementation still carries fixed R and matrix overheads.
+Figure~\ref{fig:l1-l2-timing-three-datasets} reports the corresponding fit
+times for the same three datasets and solver families. The timing figure
+addresses the second part of the empirical claim: once accuracy is preserved,
+the benefit of the active-edge representation is computational. The L1
+operator avoids applying fusion updates to inactive graph pairs, while the L2
+builder avoids materializing zero-weight augmented rows before calling
+\texttt{glmnet}.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/hpc_l1_timing_boxplot_combined_k_regimes.png}
-  \caption{L1 fit time by solver and group-count range. Active-edge methods
-  reduce the cost of graph fusion when the graph is sparse.}
-  \label{fig:l1-timing}
-\end{figure}
+The L2 timing gains are especially large because all-pair augmented-design
+construction is expensive when $k$ is large and the graph is sparse. The L1
+operator also improves timing, although the gain is smaller because the
+smoothed proximal-gradient iterations retain fixed overhead beyond graph
+updates. The chain-specialized L1 method is fastest among the L1 variants in
+these examples, but it should be interpreted as an accuracy-efficiency tradeoff
+rather than an exact replacement for the sparse graph.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=.48\textwidth]{figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png}
-  \includegraphics[width=.48\textwidth]{figures/hpc_l1_efficiency_diff_vs_old_l1_chain_specialized_full_plus4.png}
-  \caption{L1 efficiency relative to the legacy solver. Left: exact operator.
-  Right: chain-specialized approximation.}
-  \label{fig:l1-efficiency}
-\end{figure}
-
-\subsection{L2 Accuracy and Efficiency}
-
-The L2 active-edge builder is designed to preserve the legacy augmented
-objective while avoiding all-pair construction. Across the 19-dataset L2
-summary, \texttt{new\_l2} has median percent RMSE difference of -0.025\%
-relative to \texttt{old\_l2}. The largest observed RMSE increase is 0.134\%,
-while several datasets show small decreases in RMSE from the active-edge
-construction and numerical path. The median fit-time speedup is 14.9x across
-all 19 datasets and 105.3x on the 11 datasets with at least 50 groups. Median
-peak fit-worker memory decreases by 19.9\% across the full L2 panel.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/hpc_l2_figure5_combined_k_regimes.png}
-  \caption{L2 prediction accuracy relative to the legacy L2 augmented-design
-  solver across the benchmark panel.}
-  \label{fig:l2-accuracy}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/hpc_l2_timing_boxplot_combined_k_regimes.png}
-  \caption{L2 fit time by solver and group-count range. The active-edge
-  builder reduces augmented-design construction when the graph is sparse.}
-  \label{fig:l2-timing}
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=.58\textwidth]{figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png}
-  \caption{L2 efficiency of active-edge construction relative to the legacy
-  L2 construction.}
-  \label{fig:l2-efficiency}
+  \includegraphics[width=\textwidth]{figures/hpc_l1_l2_three_datasets_timing.png}
+  \caption{Fit time for the same datasets and solver families shown in
+  Figure~\ref{fig:l1-l2-accuracy-three-datasets}. Bars show mean log$_{10}$
+  elapsed time in milliseconds over five cross-validation folds, with error
+  bars showing one standard deviation. Lower values are better.}
+  \label{fig:l1-l2-timing-three-datasets}
 \end{figure}
 
 \subsection{Synthetic Scaling Experiments}
