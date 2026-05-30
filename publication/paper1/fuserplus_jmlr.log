@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  27 MAY 2026 11:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  30 MAY 2026 13:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -424,20 +424,22 @@ Package hyperref Info: Link coloring OFF on input line 23.
 \@outlinefile=\write3
 \openout3 = `fuserplus_jmlr.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 79.
 
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 83.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 79.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 83.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-
-[1{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+) [1{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 {/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
 
@@ -445,41 +447,40 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 [2]
 
 [3]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+<figures/concept1.png, id=225, 2894.815pt x 798.985pt>
+File: figures/concept1.png Graphic file (type png)
+<use figures/concept1.png>
+Package pdftex.def Info: figures/concept1.png  used on input line 298.
+(pdftex.def)             Requested size: 372.91345pt x 102.92075pt.
+<figures/concept2.png, id=230, 2865.70625pt x 815.045pt>
+File: figures/concept2.png Graphic file (type png)
+<use figures/concept2.png>
+Package pdftex.def Info: figures/concept2.png  used on input line 315.
+(pdftex.def)             Requested size: 372.91345pt x 106.05905pt.
+
+Underfull \vbox (badness 5050) has occurred while \output is active []
 
 
 
 [4]
-<figures/concept1.png, id=245, 723.70375pt x 199.74625pt>
-File: figures/concept1.png Graphic file (type png)
-<use figures/concept1.png>
-Package pdftex.def Info: figures/concept1.png  used on input line 298.
-(pdftex.def)             Requested size: 411.93767pt x 113.69804pt.
-<figures/concept2.png, id=251, 716.42656pt x 203.76125pt>
-File: figures/concept2.png Graphic file (type png)
-<use figures/concept2.png>
-Package pdftex.def Info: figures/concept2.png  used on input line 315.
-(pdftex.def)             Requested size: 411.93767pt x 117.1618pt.
-
-Underfull \vbox (badness 1142) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[5 <./figures/concept1.png>]
+[5]
 
-[6 <./figures/concept2.png>]
+[6 <./figures/concept1.png (PNG copy)> <./figures/concept2.png (PNG copy)>]
 Underfull \hbox (badness 10000) in paragraph at lines 404--418
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 455--462
 
  []
 
 
 
 [7]
+Underfull \hbox (badness 10000) in paragraph at lines 455--462
+
+ []
+
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
 put line 464.
 
@@ -490,14 +491,11 @@ Underfull \hbox (badness 10000) in paragraph at lines 534--540
  []
 
 
+
+[9]
 Underfull \hbox (badness 10000) in paragraph at lines 580--584
 
  []
-
-
-
-[9]
-Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
@@ -513,74 +511,94 @@ Underfull \hbox (badness 10000) in paragraph at lines 706--714
 [12]
 
 [13]
-Underfull \vbox (badness 2600) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
 [14]
-Underfull \vbox (badness 3078) has occurred while \output is active []
-
-
 
 [15]
 
 [16]
-<figures/changepoint_fused_vs_glmnet.png, id=385, 664.884pt x 187.902pt>
+<figures/changepoint_fused_vs_glmnet.png, id=375, 664.884pt x 187.902pt>
 File: figures/changepoint_fused_vs_glmnet.png Graphic file (type png)
 <use figures/changepoint_fused_vs_glmnet.png>
 Package pdftex.def Info: figures/changepoint_fused_vs_glmnet.png  used on input
- line 1038.
+ line 1022.
 (pdftex.def)             Requested size: 338.22305pt x 95.58504pt.
-<figures/hpc_l1_l2_three_datasets.png, id=388, 867.24pt x 289.08pt>
+
+Underfull \vbox (badness 1939) has occurred while \output is active []
+
+
+
+[17]
+<figures/hpc_l1_l2_three_datasets.png, id=384, 867.24pt x 289.08pt>
 File: figures/hpc_l1_l2_three_datasets.png Graphic file (type png)
 <use figures/hpc_l1_l2_three_datasets.png>
 Package pdftex.def Info: figures/hpc_l1_l2_three_datasets.png  used on input li
-ne 1071.
+ne 1055.
 (pdftex.def)             Requested size: 433.62pt x 144.53964pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+
+[18 <./figures/changepoint_fused_vs_glmnet.png> <./figures/hpc_l1_l2_three_data
+sets.png (PNG copy)>]
+<figures/hpc_l1_l2_three_datasets_timing.png, id=390, 867.24pt x 289.08pt>
+File: figures/hpc_l1_l2_three_datasets_timing.png Graphic file (type png)
+<use figures/hpc_l1_l2_three_datasets_timing.png>
+Package pdftex.def Info: figures/hpc_l1_l2_three_datasets_timing.png  used on i
+nput line 1096.
+(pdftex.def)             Requested size: 433.62pt x 144.53964pt.
+
+
+[19 <./figures/hpc_l1_l2_three_datasets_timing.png>]
+<figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png, id=404, 505.89pt x 310.
+761pt>
+File: figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png Graphic file (type 
+png)
+<use figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png>
+Package pdftex.def Info: figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png 
+ used on input line 1151.
+(pdftex.def)             Requested size: 338.22305pt x 207.76779pt.
 
 Underfull \vbox (badness 7631) has occurred while \output is active []
 
 
 
-[17]
-<figures/hpc_l1_l2_three_datasets_timing.png, id=396, 867.24pt x 289.08pt>
-File: figures/hpc_l1_l2_three_datasets_timing.png Graphic file (type png)
-<use figures/hpc_l1_l2_three_datasets_timing.png>
-Package pdftex.def Info: figures/hpc_l1_l2_three_datasets_timing.png  used on i
-nput line 1101.
-(pdftex.def)             Requested size: 433.62pt x 144.53964pt.
+[20]
+<figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png, id=413, 505.89pt x 310.76
+1pt>
+File: figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png Graphic file (type pn
+g)
+<use figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png>
+Package pdftex.def Info: figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png  u
+sed on input line 1190.
+(pdftex.def)             Requested size: 338.22305pt x 207.76779pt.
 
 
-[18 <./figures/changepoint_fused_vs_glmnet.png> <./figures/hpc_l1_l2_three_data
-sets.png (PNG copy)>]
+[21 <./figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png (PNG copy)>]
 
-[19 <./figures/hpc_l1_l2_three_datasets_timing.png>]
+[22 <./figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png (PNG copy)>]
 Underfull \vbox (badness 3078) has occurred while \output is active []
 
 
 
-[20]
+[23]
 
-[21]
+[24] (./fuserplus_jmlr.bbl
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[22] (./fuserplus_jmlr.bbl
+[25]
 
-[23]
+[26]
 
-[24]
-Underfull \hbox (badness 2261) in paragraph at lines 134--139
-[]\OT1/cmr/m/n/10.95 New York City Taxi and Limou-sine Com-mis-sion.  2022 yel-
-low taxi trip data.
- []
+[27])
 
-
-
-[25])
-
-[26] 
+[28] 
 enddocument/afterlastpage (AED): lastpage setting LastPage.
 (./fuserplus_jmlr.aux)
  ***********
@@ -588,16 +606,16 @@ LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `fuserplus_jmlr.out' has not changed.
-(rerunfilecheck)             Checksum: 67C535D3C3DCE3F807B700932C159344;4604.
+(rerunfilecheck)             Checksum: FEC02D4B8621E5CE12D0F69B3CA9126D;4913.
  ) 
 Here is how much of TeX's memory you used:
- 11456 strings out of 473190
- 176421 string characters out of 5715801
- 591045 words of memory out of 5000000
- 34437 multiletter control sequences out of 15000+600000
+ 11454 strings out of 473190
+ 176899 string characters out of 5715801
+ 588349 words of memory out of 5000000
+ 34436 multiletter control sequences out of 15000+600000
  568430 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,93p,923b,607s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,12n,93p,923b,613s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -618,10 +636,10 @@ e/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/
 exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/20
 25/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2025
 /texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on fuserplus_jmlr.pdf (26 pages, 1202692 bytes).
+Output written on fuserplus_jmlr.pdf (28 pages, 1897597 bytes).
 PDF statistics:
- 614 PDF objects out of 1000 (max. 8388607)
- 527 compressed objects within 6 object streams
- 113 named destinations out of 1000 (max. 500000)
- 226 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 573 PDF objects out of 1000 (max. 8388607)
+ 485 compressed objects within 5 object streams
+ 112 named destinations out of 1000 (max. 500000)
+ 244 words of extra memory for PDF output out of 10000 (max. 10000000)
 

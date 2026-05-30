@@ -3,44 +3,44 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: fuserplus_jmlr.aux
 The style file: plainnat.bst
 Database file #1: fuserplus_refs.bib
-You've used 38 entries,
+You've used 33 entries,
             2773 wiz_defined-function locations,
-            822 strings with 11262 characters,
-and the built_in function-call counts, 17825 in all, are:
-= -- 1623
-> -- 990
-< -- 27
-+ -- 339
-- -- 300
-* -- 1449
-:= -- 2714
-add.period$ -- 129
-call.type$ -- 38
-change.case$ -- 213
-chr.to.int$ -- 37
-cite$ -- 76
-duplicate$ -- 778
-empty$ -- 1484
-format.name$ -- 358
-if$ -- 3742
+            794 strings with 10431 characters,
+and the built_in function-call counts, 15563 in all, are:
+= -- 1411
+> -- 862
+< -- 23
++ -- 295
+- -- 261
+* -- 1269
+:= -- 2371
+add.period$ -- 112
+call.type$ -- 33
+change.case$ -- 184
+chr.to.int$ -- 32
+cite$ -- 66
+duplicate$ -- 692
+empty$ -- 1297
+format.name$ -- 310
+if$ -- 3269
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 31
-newline$ -- 212
-num.names$ -- 152
-pop$ -- 423
+missing$ -- 30
+newline$ -- 185
+num.names$ -- 132
+pop$ -- 366
 preamble$ -- 1
-purify$ -- 176
+purify$ -- 153
 quote$ -- 0
-skip$ -- 620
+skip$ -- 541
 stack$ -- 0
-substring$ -- 724
-swap$ -- 80
+substring$ -- 632
+swap$ -- 75
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 408
+type$ -- 348
 warning$ -- 0
-while$ -- 170
+while$ -- 148
 width$ -- 0
-write$ -- 523
+write$ -- 457

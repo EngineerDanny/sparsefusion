@@ -16,17 +16,32 @@
 \newcommand{\fuserplus}{\texttt{fuserplus}\xspace}
 \DeclareMathOperator{\clip}{clip}
 
-\jmlrheading{1}{2026}{1-\pageref{LastPage}}{4/26}{--}{26-0000}{Agyapong}
-\ShortHeadings{Sparse-Graph Representations for Grouped Fused Regression}{Agyapong}
+\jmlrheading{1}{2026}{1-\pageref{LastPage}}{4/26}{--}{26-0000}{Agyapong, Gowanlock, Marks, and Hocking}
+\ShortHeadings{Sparse-Graph Representations for Grouped Fused Regression}{Agyapong, Gowanlock, Marks, and Hocking}
 \firstpageno{1}
 
 \begin{document}
 
 \title{Sparse-Graph Representations for Scalable Grouped Fused Regression}
 
-\author{\name Daniel Agyapong \email agyapongdaniel7777@gmail.com \\
+\author{\name Daniel Agyapong \email da2343@nau.edu \\
        \addr Northern Arizona University\\
-       Flagstaff, AZ, USA}
+       Flagstaff, AZ, USA
+       \AND
+       \name Mike Gowanlock \\
+       \addr School of Informatics, Computing, and Cyber Systems\\
+       Northern Arizona University\\
+       Flagstaff, AZ, USA
+       \AND
+       \name Jane Marks \\
+       \addr Department of Biological Sciences\\
+       Northern Arizona University\\
+       Flagstaff, AZ, USA
+       \AND
+       \name Toby Dylan Hocking \\
+       \addr D\'epartement d'informatique\\
+       Universit\'e de Sherbrooke\\
+       Sherbrooke, QC, Canada}
 
 \editor{}
 
@@ -205,56 +220,41 @@ edge representations for L1 and L2 fusion.
 \begin{table}[t]
 \centering
 \scriptsize
-\caption{Literature positioning for sparse-graph grouped fused regression.}
+\caption{Existing methodological literature and distinctions from the present work.
+The paper builds on graph-fused regression and smoothed first-order optimization, but focuses on preserving sparse edge sets in the solver representation while holding the objective and optimizer family fixed.}
 \label{tab:literature-comparison}
+{\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{0.92}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
->{\raggedright\arraybackslash}p{0.68\textwidth}@{}}
+>{\raggedright\arraybackslash}p{0.33\textwidth}
+>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
 \toprule
-Literature line & Connection to this paper \\
+Literature & Main idea & Distinction from this paper \\
 \midrule
-Lasso and fused lasso
-\citep{tibshirani1996lasso,tibshirani2005fused} &
-Introduce the core sparsity and fusion penalties used in graph-fused
-regression. This paper studies how sparse fusion graphs can be represented
-efficiently in grouped regression. \\
-Generalized lasso and graph trend filtering
-\citep{tibshirani2011genlasso,wang2016graphtf} &
-Provide broad operator and graph-difference frameworks for structured
-variation. The focus here is the active-edge construction needed by paired
-L1/L2 grouped fused-regression solvers. \\
-Chain and DFS fused-lasso algorithms
-\citep{hoefling2010path,tansey2018dfs} &
-Use special graph structure to obtain fast one-dimensional or tree/DFS-based
-fused estimates. This paper treats chain reduction as an approximation, while
-the active-edge solver keeps the original sparse graph. \\
-Split-Bregman and ADMM approaches
-\citep{ye2011split,boyd2011admm} &
-Use auxiliary variables for nonsmooth penalties and solve alternating
-subproblems. The comparisons in this paper keep the smoothed first-order
-optimization framework fixed to isolate the effect of graph representation. \\
-Graph-guided multitask regression
-\citep{chen2010graph,chen2012smoothing,chen2012twograph} &
-Uses task graphs and smoothed proximal-gradient methods for fused multitask
-penalties. This paper applies the same broad optimization setting to grouped
-regression with active-edge representations for L1 and L2 fusion. \\
-Network lasso and graph-based fusion
-\citep{hallac2015network} &
-Penalizes graph-edge differences to cluster or share information over
-networks. This supports the same edge-based modeling principle, but the
-objective and optimizer architecture differ from the controlled comparison
-used here. \\
-K-nearest-neighbor fused lasso
-\citep{padilla2020adaptive} &
-Builds data-driven nearest-neighbor graphs for adaptive nonparametric fused
-regression. This motivates sparse graph construction; the paper studies how
-such graphs are represented inside grouped fused-regression solvers. \\
-Joint lasso for subgroup regression
-\citep{dondelinger2020joint} &
-Estimates grouped regressions with sparsity and fusion across groups. This
-paper preserves that objective while replacing all-pair graph construction
-with active-edge construction. \\
+Lasso and fused lasso \citep{tibshirani1996lasso,tibshirani2005fused} &
+Combines sparsity with penalties on adjacent coefficient differences. &
+Introduces the core sparsity and fusion penalties, while this paper studies how to represent sparse fusion graphs efficiently in grouped fused-regression. \\
+Graph-guided multitask regression \citep{chen2010graph,chen2012smoothing,chen2012twograph} &
+Uses task graphs and smoothed proximal-gradient methods for general fused multitask penalties. &
+This paper uses related graph-fusion ideas in grouped regression, where graph edges couple coefficient vectors across groups, and focuses on efficient sparse-edge representations for L1 and L2 fusion. \\
+Generalized lasso and graph trend filtering \citep{tibshirani2011genlasso,wang2016graphtf} &
+Uses linear operators or graph differences to encode structured variation. &
+Provides a broad operator framework, but does not isolate active-edge construction for paired L1/L2 grouped fused-regression solvers. \\
+Split-Bregman and ADMM approaches \citep{ye2011split,boyd2011admm} &
+Introduce auxiliary variables for nonsmooth penalties and solve alternating subproblems. &
+The comparisons in this paper keep the smoothed first-order optimization framework fixed to isolate the effect of graph representation. \\
+Network lasso and graph-based fusion \citep{hallac2015network} &
+Penalizes graph-edge differences to cluster or share information over networks. &
+Uses graph-edge penalties to share information over networks, but studies a different objective and optimization framework from the grouped fused-regression in this paper. \\
+Joint lasso for subgroup regression \citep{dondelinger2020joint} &
+Estimates grouped regressions with sparsity and fusion across groups. &
+Closest statistical predecessor and reference used in this paper. This paper preserves its objective while replacing all-pair graph construction with active-edge construction. \\
+Graph decomposition for graph-fused lasso \citep{yu2025graphdecomp} &
+Uses graph decomposition to build a faster ADMM algorithm for graph-fused lasso on general graphs. &
+Changes the ADMM decomposition and optimizer architecture; this paper keeps the smoothed L1 and augmented-design L2 solver families fixed to measure representation effects. \\
 \bottomrule
 \end{tabular}
+}
 \end{table}
 
 Figures~\ref{fig:concept-l1} and~\ref{fig:concept-l2} summarize the main
@@ -295,7 +295,7 @@ runtime and memory cost.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=.95\textwidth]{figures/concept1.png}
+  \includegraphics[width=.86\textwidth]{figures/concept1.png}
   \caption{Conceptual overview of L1 sparse-graph fusion. A: fusion graph
   construction. The legacy full-edge construction associated with
   \citet{dondelinger2020joint} forms a combined constraint matrix over all
@@ -312,7 +312,7 @@ runtime and memory cost.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=.95\textwidth]{figures/concept2.png}
+  \includegraphics[width=.86\textwidth]{figures/concept2.png}
   \caption{Conceptual overview of L2 sparse-graph fusion. A: augmented matrix
   construction. The legacy full-edge construction associated with
   \citet{dondelinger2020joint} forms augmented rows for all group pairs, while
@@ -461,7 +461,7 @@ same L1 update when the remaining APG quantities are held fixed.
 \end{proof}
 
 \begin{algorithm}[t]
-\caption{Legacy Full-Edge Smoothed APG (\texttt{old\_l1})}
+\caption{Full-Pairwise Smoothed APG Reference (\texttt{old\_l1})}
 \label{alg:old_l1}
 \begin{algorithmic}[1]
 \Require grouped data, $G$, $\lambda,\gamma,\mu,T,\varepsilon$
@@ -776,7 +776,11 @@ occur when $m \ll k(k-1)/2$.
 The L2 path uses \texttt{glmnet} after building an augmented sparse regression
 problem. The fitted vector $\theta$ stacks the groupwise coefficients and is
 reshaped into the coefficient matrix $B$ after fitting. Let $p_B$ denote the
-number of coefficient rows in $B$ after applying the intercept convention:
+number of coefficient rows in $B$ after applying the intercept convention.
+The full-pairwise L2 reference is obtained from
+Algorithm~\ref{alg:l2_augmented_design} by replacing the active-edge loop over
+$E$ with a loop over all $\binom{k}{2}$ group pairs, using zero weights for
+pairs absent from the graph.
 \begin{algorithm}[t]
 \caption{L2 Augmented-Design Solver with \texttt{glmnet}}
 \label{alg:l2_augmented_design}
@@ -840,27 +844,34 @@ L2 active-edge & $O(np+p_{\mathrm{eff}}m)$ & $O(np+p_{\mathrm{eff}}m)$ \\
 
 \section{Experimental Design}
 
-\subsection{Datasets}
+\subsection{Empirical Test Problems}
 
-The empirical evaluation uses public grouped-regression datasets spanning
-different sample sizes, feature dimensions, and numbers of groups. Across the
-processed collection,
-the number of observations ranges from 200 to 220,908, the number of features
-from 3 to 100, and the number of groups from 10 to 3,058. The sources include
-UCI datasets \citep{uci_beijing,uci_communities,uci_electricity}, Rdatasets
-mirrors \citep{rdatasets}, Our World in Data CO2 data \citep{owidco2}, World
-Bank indicators \citep{worldbankwdi}, NYC TLC trip records
-\citep{nyctlc2022}, OpenML \citep{openmlsarcos}, and additional public
-examples and package datasets \citep{pymcexamples,pinheiro2000mixed,
-raudenbush2002hlm}.
+The real-data experiments use public grouped-regression problems as
+optimization test cases. They provide different values of $n$, $p$, $k$, and
+graph sparsity while keeping the statistical objective fixed across solver
+representations. This makes them useful for testing the representation
+question studied in the paper, since the relative cost of full pairwise
+construction and active-edge construction changes as the number of groups and
+graph edges change. The reported figures use ten datasets with five outer
+folds for each dataset. Across these datasets, the number of observations
+ranges from 630 to 200,000, the number of features from 3 to 100, and the
+number of groups from 43 to 229. Most of the real-data test problems are drawn
+from Rdatasets mirrors \citep{rdatasets}. The remaining sources are UCI
+datasets \citep{uci_communities,uci_electricity}, Our World in Data CO2 data
+\citep{owidco2}, World Bank indicators \citep{worldbankwdi}, and package
+datasets \citep{pinheiro2000mixed,raudenbush2002hlm}. The exact dataset list,
+preprocessing scripts, and fold assignments are provided with the replication
+materials.
 
-The final L1 benchmark includes 12 datasets with five outer folds for each
-dataset. The final L2 benchmark includes 19 datasets with five outer folds for
-each dataset, including 11 datasets with at least 50 groups. The L1 and L2
-panels differ because the two solver families have different computational
-budgets and failure modes on the largest grouped problems. The complete union
-of datasets used in the reported L1 and L2 summaries is listed in
-Supplementary Section~\ref{sec:supp-datasets}.
+For the side-by-side L1 and L2 accuracy and timing figures, we highlight
+three representative datasets rather than plotting every dataset in the main
+panel. \texttt{communities\_crime} gives a higher-feature problem with a
+moderate number of groups. \texttt{hsb82} and \texttt{owid\_co2} give
+many-group problems with smaller feature counts, where the cost difference
+between all-pair construction and active-edge construction is easier to see.
+These three datasets are used for the detailed accuracy and timing panels,
+while the runtime-memory Pareto plots summarize the broader ten-dataset
+real-data set.
 
 \subsection{Evaluation Protocol}
 
@@ -889,6 +900,10 @@ the selected $\lambda$ and $\gamma$ and evaluated on the held-out outer fold.
 The featureless baseline predicts the training-fold mean for the corresponding
 response. Runtime refers to model fitting only, and memory is reported as the
 peak resident set size of the fitting process.
+The computational experiments were run on Northern Arizona University's
+Monsoon computing cluster \citep{nau_monsoon}, with solver variants in each
+comparison evaluated under the same software environment and job
+configuration.
 
 \subsection{Graph Construction and Hyperparameters}
 
@@ -941,43 +956,12 @@ replacement.
 
 \section{Results}
 
-Table~\ref{tab:headline-results} collects the main empirical results before
-the detailed panels. The structured synthetic example tests when graph fusion
-is statistically useful relative to unfused \texttt{glmnet} baselines, while
-the L1 and L2 benchmark panels test whether sparse-graph representations
-preserve predictive accuracy while reducing runtime and memory.
-
-\begin{table}[H]
-\centering
-\scriptsize
-\caption{Headline empirical findings. The changepoint experiment compares
-fused regression with unfused \texttt{glmnet} baselines. Solver comparisons
-report accuracy differences relative to the corresponding full-construction
-baseline, with runtime and memory summarized by medians across the completed
-benchmark panels.}
-\label{tab:headline-results}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.20\textwidth}
->{\raggedright\arraybackslash}p{0.24\textwidth}
->{\raggedright\arraybackslash}p{0.24\textwidth}
->{\raggedright\arraybackslash}p{0.21\textwidth}@{}}
-\toprule
-Experiment & Comparison & Accuracy result & Efficiency or structure result \\
-\midrule
-Changepoint structure & fused lasso vs. lasso(all) and lasso(same) & lowest
-RMSE and coefficient error & recovers exactly two
-large jumps at the true changepoints \\
-Exact L1 representation & active-edge operator vs. full-edge L1 & maximum
-mean-RMSE difference below $10^{-5}$ percent & 2.26x median speedup and 10.7\%
-median peak-memory reduction \\
-Approximate L1 chain & chain-specialized solver vs. full-edge L1 & 2.02\%
-median RMSE increase & 3.26x median speedup and 4.6\% median peak-memory
-reduction \\
-Exact L2 representation & active-edge augmented design vs. full-pairwise L2 &
--0.025\% median RMSE difference & 14.9x median speedup and 19.9\% median
-peak-memory reduction \\
-\bottomrule
-\end{tabular}
-\end{table}
+The results are organized around two questions. The first experiment
+illustrates when graph fusion is statistically useful relative to unfused
+\texttt{glmnet} baselines. The remaining results evaluate the main
+optimization question of the paper, namely whether sparse-graph
+representations preserve predictive accuracy while reducing runtime and memory
+for L1 and L2 grouped fused regression.
 
 \subsection{Changepoint Structure Relative to Lasso}
 
@@ -1088,6 +1072,17 @@ operator avoids applying fusion updates to inactive graph pairs, while the L2
 builder avoids materializing zero-weight augmented rows before calling
 \texttt{glmnet}.
 
+The number of groups is the main driver of this efficiency gap. A full
+pairwise construction has $q=\binom{k}{2}$ candidate group pairs, so increasing
+$k$ increases the graph side of the computation quadratically even when the
+intended graph is sparse. In contrast, the active-edge representation scales
+with the number of nonzero graph edges $m$. For sparse graphs such as
+nearest-neighbor or chain-like graphs, $m$ grows much more slowly than
+$\binom{k}{2}$; for a chain, $m=k-1$. This is why the high-$k$ datasets
+\texttt{hsb82} and \texttt{owid\_co2} show the clearest timing separation:
+the full construction still pays for many absent group pairs, whereas the
+active-edge solvers only process the edges present in the graph.
+
 The L2 timing gains are especially large because all-pair augmented-design
 construction is expensive when $k$ is large and the graph is sparse. The L1
 operator also improves timing, although the gain is smaller because the
@@ -1106,6 +1101,122 @@ rather than an exact replacement for the sparse graph.
   \label{fig:l1-l2-timing-three-datasets}
 \end{figure}
 
+\subsection{L1 Runtime-Memory Pareto Gains}
+
+Figure~\ref{fig:l1-pareto-gains} summarizes the exact L1 operator gains across
+the real-data benchmark panel. Each point compares the active-edge L1 operator
+with the full-edge L1 reference on the same dataset. The horizontal coordinate
+is the log ratio of fit time, and the vertical coordinate is the log ratio of
+peak memory. Thus points to the left of zero are faster than the full-edge
+reference, points below zero use less memory, and points in the lower-left
+quadrant improve both. Labels report the dataset, the number of groups, and
+the percent RMSE change relative to the full-edge reference.
+
+We use the plot in the standard multiobjective sense of a Pareto comparison:
+a method is preferable only if it improves one resource without worsening the
+other, or if the tradeoff is explicit \citep{miettinen1999nonlinear}. This is
+more informative than reporting runtime alone because sparse-graph solvers are
+intended to reduce both arithmetic work and the amount of state used to
+represent the graph
+that must be kept in memory. In the L1 solver, the dense full-edge
+representation stores and applies candidate pair constraints that are inactive
+for a sparse graph, whereas the active-edge operator stores endpoint and weight
+vectors only for nonzero graph edges. This directly reduces the working set for
+fusion differences and scatter updates; in the implementation used here,
+fixed R objects, model matrices, and proximal-gradient state remain, so memory
+gains are real but smaller than the asymptotic edge-count reduction.
+
+The plot therefore separates three empirical claims. First, the RMSE labels
+stay near zero, confirming that the operator representation preserves the
+fitted L1 objective. Second, most datasets move left, showing faster fitting.
+Third, many points also move downward, showing lower peak resident memory.
+Points in the upper-left quadrant are still faster but use slightly more
+memory, which indicates that runtime and memory should be reported as separate
+resources rather than collapsed into a single efficiency number.
+
+The memory gains are also expected to be smaller and less uniform than the
+runtime gains because peak resident memory measures the whole fitting process,
+not only the graph representation. The active-edge solvers reduce the
+working set associated with graph construction, but the process still stores the design matrix,
+response, group indices, coefficient iterates, validation objects, and R
+runtime allocations. In addition, peak memory can be determined by temporary
+sparse-matrix triplets, edge buffers, or copies created during construction.
+Thus the expected memory improvement is strongest when objects used to
+represent the graph
+dominate the working set, and weaker when fixed data and runtime overheads
+dominate.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.78\textwidth]{figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png}
+  \caption{Runtime-memory Pareto plot for the exact L1 active-edge operator.
+  Each point compares the operator solver with the full-edge L1 reference on
+  the same dataset. Left is faster, down is lower peak memory, and the
+  lower-left quadrant indicates improvement on both efficiency axes.}
+  \label{fig:l1-pareto-gains}
+\end{figure}
+
+\subsection{L2 Runtime-Memory Pareto Gains}
+
+Figure~\ref{fig:l2-pareto-gains} gives the corresponding Pareto plot for L2
+fusion. The active-edge L2 builder gives larger timing gains than the L1
+operator because the full-pairwise L2 baseline must build many augmented rows
+before fitting the \texttt{glmnet} path. When $k$ is large and the graph is
+sparse, deleting zero-weight pair rows changes the augmented design from an
+all-pairs construction to an active-edge construction with the same objective.
+
+The memory axis is especially important for L2 because the solver works by
+forming an augmented sparse regression problem. Under full-pairwise
+construction, the fusion block contains $p_{\mathrm{eff}}\binom{k}{2}$ rows
+before zero-weight pairs are removed. Under active-edge construction, the
+fusion block contains only $p_{\mathrm{eff}}m$ rows. This changes not only the
+time required to build the augmented design, but also the number of sparse
+matrix entries, row indices, and intermediate triplets that must be held by
+the worker process. The Pareto plot makes this visible: most datasets lie
+below zero on the memory axis, so active-edge L2 is not merely faster; it also
+reduces peak RAM demand.
+
+The L2 points are concentrated further to the left than the L1 points, which
+matches the construction-cost analysis in Section~\ref{sec:solvers}. As in
+the L1 plot, the RMSE labels remain close to zero, so the figure should be read
+primarily as an efficiency comparison, not as an accuracy comparison. The
+larger downward and leftward shifts for high-$k$ datasets are the empirical
+signature of the sparse representation: the full-pairwise builder pays for
+absent group pairs, while the active-edge builder allocates memory only for
+edges present in the graph.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=.78\textwidth]{figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png}
+  \caption{Runtime-memory Pareto plot for the L2 active-edge augmented-design
+  builder. Each point compares active-edge construction with the full-pairwise
+  L2 reference on the same dataset. Left is faster, down is lower peak memory,
+  and labels report dataset, number of groups, and percent RMSE change.}
+  \label{fig:l2-pareto-gains}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Summary of exact sparse-graph efficiency gains. Speedup is computed
+relative to the corresponding full-construction reference; memory reduction is
+the decrease in peak resident memory.}
+\label{tab:pareto-summary}
+\scriptsize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}
+>{\raggedright\arraybackslash}p{0.27\textwidth}
+>{\centering\arraybackslash}p{0.12\textwidth}
+>{\centering\arraybackslash}p{0.14\textwidth}@{}}
+\toprule
+Solver comparison & Accuracy change & Median speedup & Median memory reduction \\
+\midrule
+L1 active-edge operator vs. full-edge L1 &
+maximum mean-RMSE difference $<10^{-5}$\% & 2.26x & 10.7\% \\
+L2 active-edge augmented design vs. full-pairwise L2 &
+-0.025\% median RMSE difference & 14.9x & 19.9\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Synthetic Scaling Experiments}
 
 The repository also includes synthetic scaling experiments generated by the
@@ -1117,15 +1228,15 @@ sparse.
 
 \section{Discussion}
 
-The main lesson is representational: graph-aware statistical models should
-carry graph sparsity into the optimizer. When the graph has $m$ edges, an
-implementation that constructs $O(k^2)$ pairwise constraints can lose the
-computational advantage of modeling with a sparse graph. This is a general
-issue for edge-penalized regression, not only for \fuserplus. Any method whose
-penalty decomposes over graph edges can pay an unnecessary quadratic cost if
-the graph is represented by a complete set of candidate pairs. The L1 operator
-and L2 active-edge builders recover the intended $O(pm)$ fusion
-representation while preserving the original objective in the exact cases.
+The experiments show that sparse fusion graphs need corresponding sparse
+computational representations. When the graph has $m$ edges, an implementation
+that constructs $O(k^2)$ pairwise constraints can lose the computational
+advantage of using a sparse graph. This is a general issue for edge-penalized
+regression, not only for \fuserplus. Any method whose penalty decomposes over
+graph edges can pay an unnecessary quadratic cost if the graph is represented
+by a complete set of candidate pairs. The L1 operator and L2 active-edge
+builders recover the intended $O(pm)$ fusion representation while preserving
+the original objective in the exact cases.
 
 The exact L1 operator is the safest default among the L1 variants.
 It preserves the same fitted objective as the legacy active-edge formulation
@@ -1246,6 +1357,9 @@ in this paper were evaluated from repository commit prefix
 \texttt{99c69ae}. The benchmark environment used R version 4.5.2
 (2025-10-31). The package includes documentation, a vignette, and
 \texttt{testthat} coverage for the solver routines used in the experiments.
+The large-scale empirical experiments were run on Northern Arizona
+University's Monsoon computing cluster \citep{nau_monsoon} using fixed job
+settings within each solver comparison.
 
 The real-data benchmark summaries used in the figures are
 \path{build/hpc/final_test_summary.csv} for the L1 panel and
@@ -1257,84 +1371,46 @@ benchmark scripts are stored under \path{scripts/hpc}, and the paper source is
 
 \section{Conclusion}
 
-Sparse-graph construction can materially improve grouped fused regression
-solvers without changing the statistical model. The exact L1 operator and
-active-edge L2 augmented-design builder preserve the legacy objectives while
-reducing avoidable all-pairs graph costs. The chain-specialized L1
-approximation provides an additional high-efficiency mode when the user is
-willing to trade graph fidelity for speed. These results support a broader
-principle for graph-penalized regression: when the penalty is defined on a
-sparse graph, the optimizer should preserve the edge-level representation
-rather than encoding sparsity inside a dense all-pairs construction.
+This paper studied the computational representation of sparse fusion graphs in
+grouped fused regression. The main finding is that a sparse statistical graph
+should remain sparse inside the optimizer. For L1 fusion, the active-edge
+operator evaluates the same smoothed fusion gradient as the full-edge
+construction after zero-weight pairs are removed. For L2 fusion, the
+active-edge augmented design gives the same quadratic fusion objective while
+constructing rows only for nonzero graph edges. These exact representations
+change the dominant fusion cost from all-pairs construction to construction
+that scales with the represented edge set.
 
-\appendix
-\section{Supplementary Dataset Inventory}
-\label{sec:supp-datasets}
+The empirical results support the same conclusion. The exact L1 and L2
+active-edge solvers preserve predictive accuracy relative to the corresponding
+full-construction references while reducing fit time and, in many cases, peak
+memory. The chain-specialized L1 solver gives an additional approximate option
+when reducing the edge budget is more important than preserving the original
+graph exactly. More broadly, graph-penalized regression methods should carry
+the edge structure of the penalty into the numerical representation rather
+than encode a sparse graph through dense all-pairs objects.
 
-Table~\ref{tab:datasets} lists the complete union of datasets that appear in
-the final L1 and L2 result summaries used by this paper. The
-\texttt{SubsetType} column reports the semantic unit defining the subgroups in
-the regression problem after preprocessing in this repository.
+Several extensions are natural. First, the same active-edge representation
+principle could be incorporated into other optimizer families, including ADMM
+and split-Bregman methods, where auxiliary variables and dual updates should
+also scale with the represented edge set. Second, adaptive graph construction
+and hyperparameter selection could be studied jointly with the sparse solver
+representation, since the statistical value and computational cost of fusion
+both depend on the chosen graph. Third, lower-level sparse matrix and compiled
+implementations could further separate the algorithmic savings from fixed
+runtime overheads in R. These directions would test how far the representation
+principle extends beyond the grouped fused-regression solvers considered here.
 
-\begin{table}[H]
-\centering
-\scriptsize
-\caption{Public grouped-regression datasets used in the reported real-data
-benchmark panels. The columns report total observations $n$, feature count
-$p$, group count $k$, and semantic subgroup type after preprocessing in this
-repository.}
-\label{tab:datasets}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}rrr
->{\raggedright\arraybackslash}p{0.14\textwidth}
->{\raggedright\arraybackslash}p{0.21\textwidth}@{}}
-\toprule
-Dataset & $n$ & $p$ & $k$ & \texttt{SubsetType} & Source \\
-\midrule
-\path{beijing_air_quality} & 180,000 & 14 & 12 & stations &
-UCI Beijing air quality \citep{uci_beijing} \\
-\path{communities_crime} & 1,991 & 100 & 43 & states &
-UCI Communities and Crime \citep{uci_communities} \\
-\path{electricity_load} & 200,000 & 3 & 120 & meters &
-UCI Electricity Load \citep{uci_electricity} \\
-\path{nyc_tlc_yellow_2022} & 200,000 & 9 & 82 & pickup zones &
-NYC TLC yellow taxi records \citep{nyctlc2022} \\
-\path{owid_co2} & 7,763 & 4 & 164 & countries &
-Our World in Data CO2 \citep{owidco2} \\
-\path{radon_minnesota} & 916 & 5 & 82 & counties &
-PyMC Minnesota radon example \citep{pymcexamples} \\
-\path{rdatasets_cigar} & 1,380 & 7 & 46 & states &
-Rdatasets, \texttt{plm::Cigar} \citep{rdatasets} \\
-\path{rdatasets_crime4} & 630 & 57 & 90 & counties &
-Panel crime data \citep{cornwell1994crime} \\
-\path{rdatasets_dietox} & 861 & 6 & 72 &
-pigs & Dietox pig-growth data \citep{lauridsen1999dietox} \\
-\path{rdatasets_empluk} & 1,031 & 5 & 140 & firms &
-Employment panel data \citep{arellano1991panel} \\
-\path{rdatasets_exam_inner_london} & 4,057 & 7 & 64 &
-schools & Inner London exam data \citep{goldstein1993exam} \\
-\path{rdatasets_fatalities} & 336 & 32 & 48 & states &
-Rdatasets, \texttt{AER::Fatalities} \citep{rdatasets} \\
-\path{rdatasets_grunfeld} & 200 & 3 & 10 & firms &
-Rdatasets, \texttt{plm::Grunfeld} \citep{rdatasets} \\
-\path{rdatasets_guns} & 1,173 & 11 & 51 & states &
-Rdatasets, \texttt{AER::Guns} \citep{rdatasets} \\
-\path{rdatasets_hsb82} & 7,185 & 6 & 160 & schools &
-High-school multilevel data \citep{raudenbush2002hlm} \\
-\path{rdatasets_ratpupweight} & 322 & 3 & 27 & litters &
-Rdatasets, \texttt{nlme::RatPupWeight} \citep{rdatasets} \\
-\path{sarcos_openml} & 44,484 & 21 & 10 & response bins &
-OpenML SARCOS 43873 \citep{openmlsarcos} \\
-\path{school_ilea} & 7,185 & 10 & 160 & schools &
-\texttt{nlme} school data \citep{pinheiro2000mixed} \\
-\path{world_bank_wdi} & 10,830 & 4 & 229 & economies &
-World Development Indicators \citep{worldbankwdi} \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\acks{Daniel Agyapong is affiliated with Northern Arizona University. The
-author thanks the maintainers of the public datasets and R packages used in
-the benchmark suite.}
+\acks{
+The authors thank the maintainers of the public datasets and R packages used in
+the empirical evaluation. Some of the computational analyses were run on
+Northern Arizona University's Monsoon computing cluster, funded by Arizona's
+Technology and Research Initiative Fund. This work was supported by National
+Science Foundation award 2125088 through the Rules of Life program. Any
+opinions, findings, and conclusions or recommendations expressed in this
+material are those of the authors and do not necessarily reflect the views of
+the National Science Foundation.
+}
 
 \bibliography{fuserplus_refs}
 

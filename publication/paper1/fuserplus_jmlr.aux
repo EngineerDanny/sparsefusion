@@ -3,9 +3,9 @@
 \providecommand\HyField@AuxAddToFields[1]{}
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \bibstyle{plainnat}
-\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
 \citation{nesterov2005smooth}
 \citation{glmnet}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
 \newlabel{eq:model}{{1}{2}{}{equation.1}{}}
 \citation{tibshirani1996lasso,tibshirani2005fused}
 \citation{zou2005elastic,yuan2006group,tibshirani2011genlasso,wang2016graphtf}
@@ -18,147 +18,125 @@
 \citation{padilla2020adaptive}
 \@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{3}{section.2}\protected@file@percent }
 \citation{tibshirani1996lasso,tibshirani2005fused}
-\citation{tibshirani2011genlasso,wang2016graphtf}
-\citation{hoefling2010path,tansey2018dfs}
-\citation{ye2011split,boyd2011admm}
 \citation{chen2010graph,chen2012smoothing,chen2012twograph}
+\citation{tibshirani2011genlasso,wang2016graphtf}
+\citation{ye2011split,boyd2011admm}
 \citation{hallac2015network}
-\citation{padilla2020adaptive}
 \citation{dondelinger2020joint}
-\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Literature positioning for sparse-graph grouped fused regression.}}{4}{table.1}\protected@file@percent }
-\newlabel{tab:literature-comparison}{{1}{4}{Literature positioning for sparse-graph grouped fused regression}{table.1}{}}
+\citation{yu2025graphdecomp}
 \citation{dondelinger2020joint}
 \citation{dondelinger2020joint}
 \citation{dondelinger2020joint}
 \citation{dondelinger2020joint}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Conceptual overview of L1 sparse-graph fusion. A: fusion graph construction. The legacy full-edge construction associated with \citet  {dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge operator works directly on the sparse graph. The chain approximation replaces the modeled edge set with a chain before fitting. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm  {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, the active-edge representation changes the dominant fusion cost from $O(pk^3)$ to $O(pm)$; the chain approximation is plotted alongside the exact operator as the chain-based L1 variant.}}{5}{figure.1}\protected@file@percent }
-\newlabel{fig:concept-l1}{{1}{5}{Conceptual overview of L1 sparse-graph fusion. A: fusion graph construction. The legacy full-edge construction associated with \citet {dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge operator works directly on the sparse graph. The chain approximation replaces the modeled edge set with a chain before fitting. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, the active-edge representation changes the dominant fusion cost from $O(pk^3)$ to $O(pm)$; the chain approximation is plotted alongside the exact operator as the chain-based L1 variant}{figure.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Existing methodological literature and distinctions from the present work. The paper builds on graph-fused regression and smoothed first-order optimization, but focuses on preserving sparse edge sets in the solver representation while holding the objective and optimizer family fixed.}}{5}{table.1}\protected@file@percent }
+\newlabel{tab:literature-comparison}{{1}{5}{Existing methodological literature and distinctions from the present work. The paper builds on graph-fused regression and smoothed first-order optimization, but focuses on preserving sparse edge sets in the solver representation while holding the objective and optimizer family fixed}{table.1}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Model and Legacy Computation}{5}{section.3}\protected@file@percent }
-\citation{nesterov2005smooth,beck2009fast}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Conceptual overview of L1 sparse-graph fusion. A: fusion graph construction. The legacy full-edge construction associated with \citet  {dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge operator works directly on the sparse graph. The chain approximation replaces the modeled edge set with a chain before fitting. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm  {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, the active-edge representation changes the dominant fusion cost from $O(pk^3)$ to $O(pm)$; the chain approximation is plotted alongside the exact operator as the chain-based L1 variant.}}{6}{figure.1}\protected@file@percent }
+\newlabel{fig:concept-l1}{{1}{6}{Conceptual overview of L1 sparse-graph fusion. A: fusion graph construction. The legacy full-edge construction associated with \citet {dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge operator works directly on the sparse graph. The chain approximation replaces the modeled edge set with a chain before fitting. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, the active-edge representation changes the dominant fusion cost from $O(pk^3)$ to $O(pm)$; the chain approximation is plotted alongside the exact operator as the chain-based L1 variant}{figure.1}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Conceptual overview of L2 sparse-graph fusion. A: augmented matrix construction. The legacy full-edge construction associated with \citet  {dondelinger2020joint} forms augmented rows for all group pairs, while the active-edge builder emits only sparse triplets for graph edges with nonzero weight. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm  {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, active-edge construction changes the dominant fusion-block cost from $O(pk^2)$ to $O(pm)$.}}{6}{figure.2}\protected@file@percent }
 \newlabel{fig:concept-l2}{{2}{6}{Conceptual overview of L2 sparse-graph fusion. A: augmented matrix construction. The legacy full-edge construction associated with \citet {dondelinger2020joint} forms augmented rows for all group pairs, while the active-edge builder emits only sparse triplets for graph edges with nonzero weight. B: asymptotic complexity. The synthetic example fixes $p=120$ and $n_{\mathrm {group,train}}=35$, so at $k=100$ the total training sample size is $n=3500$. With a sparse chain graph and fixed remaining hyperparameters, active-edge construction changes the dominant fusion-block cost from $O(pk^2)$ to $O(pm)$}{figure.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Optimization Guarantee for Smoothed L1}{6}{subsection.3.1}\protected@file@percent }
+\citation{nesterov2005smooth,beck2009fast}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Optimization Guarantee for Smoothed L1}{7}{subsection.3.1}\protected@file@percent }
 \newlabel{prop:l1-convergence}{{1}{7}{Lipschitz and convergence guarantee for smoothed L1}{theorem.1}{}}
-\newlabel{prop:l1-equivalence}{{2}{7}{Equivalence of full-edge and active-edge L1 updates}{theorem.2}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Legacy Full-Edge Smoothed APG (\texttt  {old\_l1})}}{8}{algorithm.1}\protected@file@percent }
-\newlabel{alg:old_l1}{{1}{8}{}{algorithm.1}{}}
+\newlabel{prop:l1-equivalence}{{2}{8}{Equivalence of full-edge and active-edge L1 updates}{theorem.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Full-Edge L2 Augmented Design}{8}{subsection.3.2}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Full-Pairwise Smoothed APG Reference (\texttt  {old\_l1})}}{9}{algorithm.1}\protected@file@percent }
+\newlabel{alg:old_l1}{{1}{9}{}{algorithm.1}{}}
 \newlabel{prop:l2-equivalence}{{3}{9}{Equivalence of active-edge L2 augmented rows}{theorem.3}{}}
 \newlabel{prop:complexity}{{4}{9}{Sparse-graph construction cost}{theorem.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4}Sparse-Graph Solvers}{10}{section.4}\protected@file@percent }
 \newlabel{sec:solvers}{{4}{10}{}{section.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Exact L1 Operator Solver}{10}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Active-edge gradient assembly.}{10}{subsection.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{10}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Active-edge gradient assembly.}{11}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{11}{subsection.4.1}\protected@file@percent }
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Active-Edge Operator APG (\texttt  {operator})}}{11}{algorithm.2}\protected@file@percent }
 \newlabel{alg:active_edge_operator}{{2}{11}{}{algorithm.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Chain-Specialized L1 Approximation}{11}{subsection.4.2}\protected@file@percent }
-\newlabel{prop:chain-target}{{5}{11}{Chain approximation target}{theorem.5}{}}
 \citation{glmnet}
+\newlabel{prop:chain-target}{{5}{12}{Chain approximation target}{theorem.5}{}}
 \@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{12}{theorem.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Active-Edge L2 Augmented Design}{12}{subsection.4.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{12}{subsection.4.3}\protected@file@percent }
-\citation{uci_beijing,uci_communities,uci_electricity}
-\citation{rdatasets}
-\citation{owidco2}
-\citation{worldbankwdi}
-\citation{nyctlc2022}
-\citation{openmlsarcos}
-\citation{pymcexamples,pinheiro2000mixed,raudenbush2002hlm}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Chain-Specialized APG (\texttt  {chain\_specialized})}}{13}{algorithm.3}\protected@file@percent }
 \newlabel{alg:chain_specialized}{{3}{13}{}{algorithm.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Design}{13}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Datasets}{13}{subsection.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{13}{subsection.4.3}\protected@file@percent }
+\citation{rdatasets}
+\citation{uci_communities,uci_electricity}
+\citation{owidco2}
+\citation{worldbankwdi}
+\citation{pinheiro2000mixed,raudenbush2002hlm}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces L2 Augmented-Design Solver with \texttt  {glmnet}}}{14}{algorithm.4}\protected@file@percent }
 \newlabel{alg:l2_augmented_design}{{4}{14}{}{algorithm.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Dominant representation costs of the solver variants. Here $n$ is total sample size, $p$ is feature count, $p_{\mathrm  {eff}}$ is the number of coordinates included in the L2 fusion block, $k$ is group count, $m=|E|$ is the number of active fusion edges, and $q=\binom  {k}{2}$. The table isolates graph-representation costs and omits lower-order constants from R bookkeeping and solver overhead.}}{14}{table.2}\protected@file@percent }
 \newlabel{tab:complexity}{{2}{14}{Dominant representation costs of the solver variants. Here $n$ is total sample size, $p$ is feature count, $p_{\mathrm {eff}}$ is the number of coordinates included in the L2 fusion block, $k$ is group count, $m=|E|$ is the number of active fusion edges, and $q=\binom {k}{2}$. The table isolates graph-representation costs and omits lower-order constants from R bookkeeping and solver overhead}{table.2}{}}
 \citation{kohavi1995cross,varma2006bias}
-\citation{hallac2015network,padilla2020adaptive}
+\citation{nau_monsoon}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Experimental Design}{15}{section.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Empirical Test Problems}{15}{subsection.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Evaluation Protocol}{15}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Graph Construction and Hyperparameters}{15}{subsection.5.3}\protected@file@percent }
+\citation{hallac2015network,padilla2020adaptive}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Graph Construction and Hyperparameters}{16}{subsection.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Compared Methods}{16}{subsection.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {6}Results}{16}{section.6}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Headline empirical findings. The changepoint experiment compares fused regression with unfused \texttt  {glmnet} baselines. Solver comparisons report accuracy differences relative to the corresponding full-construction baseline, with runtime and memory summarized by medians across the completed benchmark panels.}}{16}{table.3}\protected@file@percent }
-\newlabel{tab:headline-results}{{3}{16}{Headline empirical findings. The changepoint experiment compares fused regression with unfused \texttt {glmnet} baselines. Solver comparisons report accuracy differences relative to the corresponding full-construction baseline, with runtime and memory summarized by medians across the completed benchmark panels}{table.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Changepoint Structure Relative to Lasso}{16}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Changepoint Structure Relative to Lasso}{17}{subsection.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Accuracy Preservation on Representative Datasets}{17}{subsection.6.2}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Controlled changepoint example comparing fused regression with unfused lasso baselines. Points show the coefficient for the first predictor across all 60 ordered groups, and dashed vertical lines mark the true changepoints. lasso(all) fits only one shared coefficient path, lasso(same) produces noisy separate paths, and the fused lasso model recovers the piecewise-constant coefficient structure. The lasso baselines are fit with \texttt  {glmnet}.}}{18}{figure.3}\protected@file@percent }
 \newlabel{fig:changepoint-glmnet}{{3}{18}{Controlled changepoint example comparing fused regression with unfused lasso baselines. Points show the coefficient for the first predictor across all 60 ordered groups, and dashed vertical lines mark the true changepoints. lasso(all) fits only one shared coefficient path, lasso(same) produces noisy separate paths, and the fused lasso model recovers the piecewise-constant coefficient structure. The lasso baselines are fit with \texttt {glmnet}}{figure.3}{}}
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Prediction accuracy for L1 and L2 fusion on representative datasets. Points show test RMSE means over five cross-validation folds, with horizontal bars showing one standard deviation. The label \texttt  {legacy\_full\_edge} denotes the full-construction reference. Exact active-edge solvers preserve the full-construction RMSE, while the chain-specialized L1 method is an approximate variant.}}{18}{figure.4}\protected@file@percent }
 \newlabel{fig:l1-l2-accuracy-three-datasets}{{4}{18}{Prediction accuracy for L1 and L2 fusion on representative datasets. Points show test RMSE means over five cross-validation folds, with horizontal bars showing one standard deviation. The label \texttt {legacy\_full\_edge} denotes the full-construction reference. Exact active-edge solvers preserve the full-construction RMSE, while the chain-specialized L1 method is an approximate variant}{figure.4}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Timing Gains on Representative Datasets}{18}{subsection.6.3}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Fit time for the same datasets and solver families shown in Figure~\ref {fig:l1-l2-accuracy-three-datasets}. Bars show mean log$_{10}$ elapsed time in milliseconds over five cross-validation folds, with error bars showing one standard deviation. Lower values are better.}}{19}{figure.5}\protected@file@percent }
 \newlabel{fig:l1-l2-timing-three-datasets}{{5}{19}{Fit time for the same datasets and solver families shown in Figure~\ref {fig:l1-l2-accuracy-three-datasets}. Bars show mean log$_{10}$ elapsed time in milliseconds over five cross-validation folds, with error bars showing one standard deviation. Lower values are better}{figure.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Synthetic Scaling Experiments}{19}{subsection.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{19}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}When Sparse-Graph Representations Help}{20}{subsection.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Scope of the Optimization Comparisons}{20}{subsection.7.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {8}Reproducibility}{21}{section.8}\protected@file@percent }
-\citation{uci_beijing}
-\citation{uci_communities}
-\citation{uci_electricity}
-\citation{nyctlc2022}
-\citation{owidco2}
-\citation{pymcexamples}
-\citation{rdatasets}
-\citation{cornwell1994crime}
-\citation{lauridsen1999dietox}
-\citation{arellano1991panel}
-\citation{goldstein1993exam}
-\citation{rdatasets}
-\citation{rdatasets}
-\citation{rdatasets}
-\citation{raudenbush2002hlm}
-\citation{rdatasets}
-\citation{openmlsarcos}
-\citation{pinheiro2000mixed}
-\citation{worldbankwdi}
-\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{22}{section.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {A}Supplementary Dataset Inventory}{22}{appendix.A}\protected@file@percent }
-\newlabel{sec:supp-datasets}{{A}{22}{}{appendix.A}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Timing Gains on Representative Datasets}{19}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}L1 Runtime-Memory Pareto Gains}{19}{subsection.6.4}\protected@file@percent }
+\citation{miettinen1999nonlinear}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.5}L2 Runtime-Memory Pareto Gains}{20}{subsection.6.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Runtime-memory Pareto plot for the exact L1 active-edge operator. Each point compares the operator solver with the full-edge L1 reference on the same dataset. Left is faster, down is lower peak memory, and the lower-left quadrant indicates improvement on both efficiency axes.}}{21}{figure.6}\protected@file@percent }
+\newlabel{fig:l1-pareto-gains}{{6}{21}{Runtime-memory Pareto plot for the exact L1 active-edge operator. Each point compares the operator solver with the full-edge L1 reference on the same dataset. Left is faster, down is lower peak memory, and the lower-left quadrant indicates improvement on both efficiency axes}{figure.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Summary of exact sparse-graph efficiency gains. Speedup is computed relative to the corresponding full-construction reference; memory reduction is the decrease in peak resident memory.}}{21}{table.3}\protected@file@percent }
+\newlabel{tab:pareto-summary}{{3}{21}{Summary of exact sparse-graph efficiency gains. Speedup is computed relative to the corresponding full-construction reference; memory reduction is the decrease in peak resident memory}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6}Synthetic Scaling Experiments}{21}{subsection.6.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Runtime-memory Pareto plot for the L2 active-edge augmented-design builder. Each point compares active-edge construction with the full-pairwise L2 reference on the same dataset. Left is faster, down is lower peak memory, and labels report dataset, number of groups, and percent RMSE change.}}{22}{figure.7}\protected@file@percent }
+\newlabel{fig:l2-pareto-gains}{{7}{22}{Runtime-memory Pareto plot for the L2 active-edge augmented-design builder. Each point compares active-edge construction with the full-pairwise L2 reference on the same dataset. Left is faster, down is lower peak memory, and labels report dataset, number of groups, and percent RMSE change}{figure.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Discussion}{22}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}When Sparse-Graph Representations Help}{23}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2}Scope of the Optimization Comparisons}{23}{subsection.7.2}\protected@file@percent }
+\citation{nau_monsoon}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Reproducibility}{24}{section.8}\protected@file@percent }
 \bibdata{fuserplus_refs}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Public grouped-regression datasets used in the reported real-data benchmark panels. The columns report total observations $n$, feature count $p$, group count $k$, and semantic subgroup type after preprocessing in this repository.}}{23}{table.4}\protected@file@percent }
-\newlabel{tab:datasets}{{4}{23}{Public grouped-regression datasets used in the reported real-data benchmark panels. The columns report total observations $n$, feature count $p$, group count $k$, and semantic subgroup type after preprocessing in this repository}{table.4}{}}
 \bibcite{rdatasets}{{1}{2026}{{Arel-Bundock}}{{}}}
-\bibcite{arellano1991panel}{{2}{1991}{{Arellano and Bond}}{{}}}
-\bibcite{beck2009fast}{{3}{2009}{{Beck and Teboulle}}{{}}}
-\bibcite{boyd2011admm}{{4}{2011}{{Boyd et~al.}}{{Boyd, Parikh, Chu, Peleato, and Eckstein}}}
-\bibcite{uci_beijing}{{5}{2017}{{Chen}}{{}}}
-\bibcite{chen2010graph}{{6}{2010}{{Chen et~al.}}{{Chen, Lin, Kim, Carbonell, and Xing}}}
-\bibcite{chen2012smoothing}{{7}{2012{a}}{{Chen et~al.}}{{Chen, Lin, Kim, Carbonell, and Xing}}}
-\bibcite{chen2012twograph}{{8}{2012{b}}{{Chen et~al.}}{{Chen, Shi, Xu, Wang, Mills, Lee, and Xu}}}
-\bibcite{cornwell1994crime}{{9}{1994}{{Cornwell and Trumbull}}{{}}}
-\bibcite{dondelinger2020joint}{{10}{2020}{{Dondelinger et~al.}}{{Dondelinger, Mukherjee, and {The Alzheimer's Disease Neuroimaging Initiative}}}}
-\bibcite{glmnet}{{11}{2010}{{Friedman et~al.}}{{Friedman, Hastie, and Tibshirani}}}
-\bibcite{goldstein1993exam}{{12}{1993}{{Goldstein et~al.}}{{Goldstein, Rasbash, Yang, Woodhouse, Pan, Nuttall, and Thomas}}}
-\bibcite{hallac2015network}{{13}{2015}{{Hallac et~al.}}{{Hallac, Leskovec, and Boyd}}}
-\bibcite{hoefling2010path}{{14}{2010}{{Hoefling}}{{}}}
-\bibcite{kohavi1995cross}{{15}{1995}{{Kohavi}}{{}}}
-\bibcite{lauridsen1999dietox}{{16}{1999}{{Lauridsen et~al.}}{{Lauridsen, H{\o }jsgaard, and S{\o }rensen}}}
-\bibcite{nesterov2005smooth}{{17}{2005}{{Nesterov}}{{}}}
-\bibcite{nyctlc2022}{{18}{2022}{{New York City Taxi and Limousine Commission}}{{}}}
-\bibcite{omranian2016gene}{{19}{2016}{{Omranian et~al.}}{{Omranian, Eloundou-Mbebi, Mueller-Roeber, and Nikoloski}}}
-\bibcite{openmlsarcos}{{20}{2026}{{OpenML}}{{}}}
-\bibcite{padilla2020adaptive}{{21}{2020}{{Padilla et~al.}}{{Padilla, Sharpnack, Scott, and Tibshirani}}}
-\bibcite{petersen2016flam}{{22}{2016}{{Petersen et~al.}}{{Petersen, Witten, and Simon}}}
-\bibcite{pinheiro2000mixed}{{23}{2000}{{Pinheiro and Bates}}{{}}}
-\bibcite{pymcexamples}{{24}{2026}{{PyMC Development Team}}{{}}}
-\bibcite{raudenbush2002hlm}{{25}{2002}{{Raudenbush and Bryk}}{{}}}
-\bibcite{uci_communities}{{26}{2002}{{Redmond}}{{}}}
-\bibcite{owidco2}{{27}{2023}{{Ritchie et~al.}}{{Ritchie, Rosado, and Roser}}}
-\bibcite{tansey2018dfs}{{28}{2018}{{Tansey et~al.}}{{Tansey, Wang, Blei, and Rabadan}}}
-\bibcite{tibshirani1996lasso}{{29}{1996}{{Tibshirani}}{{}}}
-\bibcite{tibshirani2005fused}{{30}{2005}{{Tibshirani et~al.}}{{Tibshirani, Saunders, Rosset, Zhu, and Knight}}}
-\bibcite{tibshirani2011genlasso}{{31}{2011}{{Tibshirani and Taylor}}{{}}}
-\bibcite{uci_electricity}{{32}{2015}{{Trindade}}{{}}}
-\bibcite{varma2006bias}{{33}{2006}{{Varma and Simon}}{{}}}
-\bibcite{wang2016graphtf}{{34}{2016}{{Wang et~al.}}{{Wang, Sharpnack, Smola, and Tibshirani}}}
-\bibcite{worldbankwdi}{{35}{2026}{{World Bank}}{{}}}
-\bibcite{ye2011split}{{36}{2011}{{Ye and Xie}}{{}}}
-\bibcite{yuan2006group}{{37}{2006}{{Yuan and Lin}}{{}}}
-\bibcite{zou2005elastic}{{38}{2005}{{Zou and Hastie}}{{}}}
-\newlabel{LastPage}{{A}{26}{}{page.26}{}}
-\gdef\lastpage@lastpage{26}
-\gdef\lastpage@lastpageHy{26}
-\gdef \@abspage@last{26}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Conclusion}{25}{section.9}\protected@file@percent }
+\bibcite{beck2009fast}{{2}{2009}{{Beck and Teboulle}}{{}}}
+\bibcite{boyd2011admm}{{3}{2011}{{Boyd et~al.}}{{Boyd, Parikh, Chu, Peleato, and Eckstein}}}
+\bibcite{chen2010graph}{{4}{2010}{{Chen et~al.}}{{Chen, Lin, Kim, Carbonell, and Xing}}}
+\bibcite{chen2012smoothing}{{5}{2012{a}}{{Chen et~al.}}{{Chen, Lin, Kim, Carbonell, and Xing}}}
+\bibcite{chen2012twograph}{{6}{2012{b}}{{Chen et~al.}}{{Chen, Shi, Xu, Wang, Mills, Lee, and Xu}}}
+\bibcite{dondelinger2020joint}{{7}{2020}{{Dondelinger et~al.}}{{Dondelinger, Mukherjee, and {The Alzheimer's Disease Neuroimaging Initiative}}}}
+\bibcite{glmnet}{{8}{2010}{{Friedman et~al.}}{{Friedman, Hastie, and Tibshirani}}}
+\bibcite{hallac2015network}{{9}{2015}{{Hallac et~al.}}{{Hallac, Leskovec, and Boyd}}}
+\bibcite{hoefling2010path}{{10}{2010}{{Hoefling}}{{}}}
+\bibcite{kohavi1995cross}{{11}{1995}{{Kohavi}}{{}}}
+\bibcite{miettinen1999nonlinear}{{12}{1999}{{Miettinen}}{{}}}
+\bibcite{nesterov2005smooth}{{13}{2005}{{Nesterov}}{{}}}
+\bibcite{nau_monsoon}{{14}{2026}{{Northern Arizona University Advanced Research Computing}}{{}}}
+\bibcite{omranian2016gene}{{15}{2016}{{Omranian et~al.}}{{Omranian, Eloundou-Mbebi, Mueller-Roeber, and Nikoloski}}}
+\bibcite{padilla2020adaptive}{{16}{2020}{{Padilla et~al.}}{{Padilla, Sharpnack, Scott, and Tibshirani}}}
+\bibcite{petersen2016flam}{{17}{2016}{{Petersen et~al.}}{{Petersen, Witten, and Simon}}}
+\bibcite{pinheiro2000mixed}{{18}{2000}{{Pinheiro and Bates}}{{}}}
+\bibcite{raudenbush2002hlm}{{19}{2002}{{Raudenbush and Bryk}}{{}}}
+\bibcite{uci_communities}{{20}{2002}{{Redmond}}{{}}}
+\bibcite{owidco2}{{21}{2023}{{Ritchie et~al.}}{{Ritchie, Rosado, and Roser}}}
+\bibcite{tansey2018dfs}{{22}{2018}{{Tansey et~al.}}{{Tansey, Wang, Blei, and Rabadan}}}
+\bibcite{tibshirani1996lasso}{{23}{1996}{{Tibshirani}}{{}}}
+\bibcite{tibshirani2005fused}{{24}{2005}{{Tibshirani et~al.}}{{Tibshirani, Saunders, Rosset, Zhu, and Knight}}}
+\bibcite{tibshirani2011genlasso}{{25}{2011}{{Tibshirani and Taylor}}{{}}}
+\bibcite{uci_electricity}{{26}{2015}{{Trindade}}{{}}}
+\bibcite{varma2006bias}{{27}{2006}{{Varma and Simon}}{{}}}
+\bibcite{wang2016graphtf}{{28}{2016}{{Wang et~al.}}{{Wang, Sharpnack, Smola, and Tibshirani}}}
+\bibcite{worldbankwdi}{{29}{2026}{{World Bank}}{{}}}
+\bibcite{ye2011split}{{30}{2011}{{Ye and Xie}}{{}}}
+\bibcite{yu2025graphdecomp}{{31}{2025}{{Yu et~al.}}{{Yu, Yang, and Zhang}}}
+\bibcite{yuan2006group}{{32}{2006}{{Yuan and Lin}}{{}}}
+\bibcite{zou2005elastic}{{33}{2005}{{Zou and Hastie}}{{}}}
+\newlabel{LastPage}{{9}{28}{}{page.28}{}}
+\gdef\lastpage@lastpage{28}
+\gdef\lastpage@lastpageHy{28}
+\gdef \@abspage@last{28}

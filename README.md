@@ -1,130 +1,203 @@
 # fuserplus
 
-Fused lasso for high-dimensional regression over groups.
+`fuserplus` fits grouped fused-regression models with L1 and L2 fusion
+penalties. The package extends the original grouped fused-regression workflow
+with sparse graph solver variants that avoid building all-pair fusion objects
+when the fusion graph is sparse.
 
-`fuserplus` includes:
-- L1 fusion regression (`fusedLassoProximal`)
-- L2 fusion regression (`fusedL2DescentGLMNet`)
-- development solver variants for L1 benchmarking: `operator`, `operator_ws`, `dense_sort`, `dfs_chain`, `chain_specialized`
-- benchmark tuner work under `build/`, centered on a unified nonmonotone axis-only pattern-search family
+The paper focuses on one computational question:
 
-## Installation
+> If the statistical penalty is defined on a sparse graph, can the solver keep
+> that sparse edge representation instead of expanding to all group pairs?
+
+## Install
+
+From a checkout of this repository:
+
+```bash
+R CMD INSTALL .
+```
+
+Or from GitHub:
 
 ```r
 install.packages("remotes")
 remotes::install_github("EngineerDanny/fuserplus")
 ```
 
-## Quick Start (Package API)
+Optional packages used by the timing scripts:
+
+```r
+install.packages(c("atime", "ggplot2"))
+```
+
+## Minimal Reviewer Example
+
+This example creates a small grouped regression problem with a sparse chain
+fusion graph. It fits the public L1 and L2 solvers and then runs the internal
+active-edge variants used in the paper's solver comparisons.
 
 ```r
 library(fuserplus)
-set.seed(123)
 
-k <- 4
-p <- 100
-n.group <- 15
-sigma <- 0.05
-groups <- rep(1:k, each = n.group)
+set.seed(1)
 
-beta <- matrix(0, p, k)
-beta[1:5, ] <- 1
+k <- 4L
+p <- 8L
+n_group <- 8L
+groups <- rep(seq_len(k), each = n_group)
 
 X <- matrix(rnorm(length(groups) * p), nrow = length(groups), ncol = p)
-y <- numeric(length(groups))
-for (g in 1:k) {
-  idx <- which(groups == g)
-  y[idx] <- X[idx, ] %*% beta[, g] + rnorm(length(idx), 0, sigma)
+
+beta <- matrix(0, nrow = p, ncol = k)
+beta[1:2, 1:2] <- 1
+beta[1:2, 3:4] <- -1
+
+y <- rowSums(X * t(beta[, groups, drop = FALSE])) +
+  rnorm(length(groups), sd = 0.1)
+
+G <- matrix(0, k, k)
+for (i in seq_len(k - 1L)) {
+  G[i, i + 1L] <- 1
+  G[i + 1L, i] <- 1
 }
 
-G <- matrix(1, k, k)
-
-beta.l1 <- fusedLassoProximal(
+fit_l1_ref <- fusedLassoProximal(
   X, y, groups,
-  lambda = 1e-3, gamma = 1e-3, G = G,
-  tol = 1e-5, num.it = 2000, intercept = FALSE
+  lambda = 1e-3, gamma = 1e-2, G = G,
+  mu = 1e-4, tol = 1e-3, num.it = 800,
+  intercept = FALSE, scaling = FALSE
 )
 
-beta.l2 <- fusedL2DescentGLMNet(
+fit_l1_active <- fuserplus:::fusedLassoProximalNewOperator(
   X, y, groups,
-  lambda = 1e-3, gamma = 1e-3, G = G
+  lambda = 1e-3, gamma = 1e-2, G = G,
+  mu = 1e-4, tol = 1e-3, num.it = 800,
+  intercept = FALSE, scaling = FALSE
 )
+
+fit_l2_ref <- fusedL2DescentGLMNet(
+  X, y, groups,
+  lambda = 1e-3, gamma = 1e-2, G = G,
+  scaling = FALSE
+)
+
+fit_l2_active <- fuserplus:::fusedL2DescentGLMNetNew(
+  X, y, groups,
+  lambda = 1e-3, gamma = 1e-2, G = G,
+  scaling = FALSE
+)
+
+dim(fit_l1_ref)
+dim(fit_l1_active)
+dim(fit_l2_ref)
+dim(fit_l2_active)
 ```
 
-## How To Test Solver Variants
+Expected dimensions are `p` by `k`, here `8` by `4`. The active-edge functions
+are currently internal because the public package API remains compatible with
+the original grouped fused-regression interface. They are used directly in the
+paper experiments to isolate representation effects.
 
-The solver variants are currently benchmark-oriented development entry points.
-Use the benchmark scripts below to compare speed/accuracy across methods.
+## Conceptual Timing Panels
 
-### 1) Compare core L1 methods
+The conceptual figures in the paper use timing panels that compare full-pairwise
+reference construction with active-edge construction. The labels and colors are
+defined in the scripts:
+
+- `Full-Pairwise Ref.` uses `#FA786E`
+- `Active-Edge (Ours)` uses `#64A0FF`
+- `Chain Approx. (Ours)` uses `#8E63D9`
+
+Run the L1 timing panel from the repository root:
 
 ```bash
-Rscript scripts/benchmark_l1_dense_sort_vs_operator.R \
-  --mode sweep \
-  --methods old_l1,operator,dense_sort_scaffold,dfs_chain,chain_specialized \
-  --k_values 40,80,120,160 \
-  --reps 2 \
-  --p 300 \
-  --n_group_train 20 \
-  --n_group_test 10 \
-  --lambda 1e-3 \
-  --gamma 2.0 \
-  --num_it 700 \
-  --graph_mode dense_uniform
+Rscript scripts/benchmark_atime_l1_variants.R \
+  --data_mode synthetic \
+  --k_values 10,20,30,40,50,80,100 \
+  --p 120 \
+  --n_group_train 35 \
+  --g_structure sparse_chain \
+  --times 3 \
+  --out_prefix atime_l1_variants
 ```
 
-Graph modes:
-- `dense_uniform`
-- `dense_nonuniform`
-- `sparse`
+This writes:
 
-### 2) Compare operator vs working-set (`operator_ws`)
+```text
+build/atime_l1_variants_summary.csv
+build/atime_l1_variants_atime_obj.rds
+inst/figures/atime_l1_variants_atime.png
+```
+
+Run the L2 timing panel:
 
 ```bash
-Rscript scripts/benchmark_l1_operator_ws.R \
-  --mode baseline \
-  --k 120 \
-  --p 100 \
-  --n_group_train 10 \
-  --n_group_test 5 \
-  --lambda 1e-3 \
-  --gamma 1e-3 \
-  --num_it 1200 \
-  --g_structure dense
+Rscript scripts/benchmark_atime_l2_variants.R \
+  --data_mode synthetic \
+  --k_values 10,20,30,40,50,80,100 \
+  --p 120 \
+  --n_group_train 35 \
+  --g_structure sparse_chain \
+  --times 3 \
+  --out_prefix atime_l2
 ```
 
-## Run Package Tests
+This writes:
+
+```text
+build/atime_l2_l2_summary.csv
+build/atime_l2_l2_atime_obj.rds
+inst/figures/atime_l2_l2_atime.png
+```
+
+The L1 run can be slow because the full-pairwise reference is intentionally
+included at larger numbers of groups. For a quick smoke test of the plotting
+pipeline, reduce the grid and repeats:
+
+```bash
+Rscript scripts/benchmark_atime_l1_variants.R \
+  --data_mode synthetic \
+  --k_values 10,20,30 \
+  --p 120 \
+  --n_group_train 35 \
+  --g_structure sparse_chain \
+  --times 1 \
+  --out_prefix atime_l1_smoke
+```
+
+## Paper Source
+
+The JMLR paper source is in:
+
+```text
+publication/paper1/fuserplus_jmlr.tex
+```
+
+Build the PDF from the paper directory:
+
+```bash
+cd publication/paper1
+latexmk -pdf -interaction=nonstopmode fuserplus_jmlr.tex
+```
+
+## Tests
+
+Run the package tests from the repository root:
 
 ```bash
 R -q -e "testthat::test_dir('tests/testthat')"
 ```
 
-## Notes On Solver Assumptions
+## Notes On Solver Variants
 
-- `dense_sort` is intended for dense complete graphs with near-uniform off-diagonal weights.
-- `dfs_chain` and `chain_specialized` are chain-based approximations for general graphs.
-- `operator` / `operator_ws` are edge-explicit methods and are the general reference paths.
+- `fusedLassoProximal` is the public L1 full-pairwise smoothed APG reference.
+- `fusedLassoProximalNewOperator` is the exact L1 active-edge operator used in
+  the paper experiments.
+- `fusedLassoProximalChainSpecialized` is an approximate chain solver for L1
+  fusion.
+- `fusedL2DescentGLMNet` is the public L2 augmented-design reference.
+- `fusedL2DescentGLMNetNew` is the active-edge L2 augmented-design builder used
+  in the paper experiments.
 
-For detailed modeling examples, see `vignettes/subgroup_fusion.Rmd`.
-
-## Tuner Benchmarks
-
-The active benchmark comparison set for hyper-parameter tuning is:
-
-- `grid`
-- `random`
-- `hooke_jeeves`
-- `lbfgsb_multistart`
-- `glmnet_seeded`
-- `fusetune`
-
-`fusetune` is the primary tuning method — a derivative-free coordinate search with nonmonotone acceptance, designed for efficient 2D (lambda, gamma) hyperparameter tuning of fused regression models. It uses solver-aware internal defaults:
-
-- `L1` defaults to a balanced profile
-- `L2` defaults to a conservative tuned profile
-
-Explicit modes still override the internal default:
-
-- `v2_mode=fast`
-- `v2_mode=balanced`
-- `v2_mode=accurate`
+For a longer modeling walkthrough, see `vignettes/subgroup_fusion.Rmd`.
