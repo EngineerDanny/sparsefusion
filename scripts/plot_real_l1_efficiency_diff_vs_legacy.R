@@ -87,6 +87,10 @@ extract_dataset_slug <- function(path, known_slugs) {
   x
 }
 
+clean_dataset_name <- function(x) {
+  sub("^rdatasets_", "", x)
+}
+
 is_new_settings_file <- function(path) {
   bn <- basename(path)
   # Keep the current naming style and exclude known legacy/experimental tags.
@@ -270,6 +274,7 @@ if (length(skipped) > 0L) {
 plot_df$method_label <- factor(plot_df$method_label, levels = compare_methods)
 plot_df$rmse_dir <- factor(plot_df$rmse_dir, levels = c("better_or_equal_rmse", "worse_rmse"))
 plot_df$dataset <- factor(plot_df$dataset, levels = sort(unique(plot_df$dataset)))
+plot_df$dataset_label <- clean_dataset_name(as.character(plot_df$dataset))
 fold_df <- if (length(fold_points) > 0L) do.call(rbind, fold_points) else NULL
 if (!is.null(fold_df) && nrow(fold_df) > 0L) {
   fold_df$method_label <- factor(fold_df$method_label, levels = compare_methods)
@@ -323,7 +328,7 @@ p <- ggplot(plot_df, aes(x = delta_log10_time, y = delta_log10_memory)) +
     alpha = 0.9
   ) +
   ggrepel::geom_label_repel(
-    aes(label = dataset, color = dataset),
+    aes(label = dataset_label, color = dataset),
     size = 2.7,
     label.size = 0.15,
     alpha = 0.85,
