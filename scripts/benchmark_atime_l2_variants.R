@@ -159,7 +159,15 @@ summarize_atime <- function(obj) {
     stringsAsFactors = FALSE,
     check.names = FALSE
   )
-  out[order(out$k, out$Method), ]
+  method_levels <- c(
+    "Full-Pairwise Ref.",
+    "Active-Edge (Ours)"
+  )
+  out$Method <- factor(out$Method, levels = method_levels)
+  out <- out[order(out$k, out$Method), , drop = FALSE]
+  out$Method <- as.character(out$Method)
+  rownames(out) <- NULL
+  out
 }
 
 print_wide_tables <- function(df, header) {
@@ -180,6 +188,11 @@ print_wide_tables <- function(df, header) {
   cat("\nMemory (MB):\n")
   print(memory, row.names = FALSE)
 }
+
+method_colors <- c(
+  "Full-Pairwise Ref." = "#FA786E",
+  "Active-Edge (Ours)" = "#64A0FF"
+)
 
 argv <- parse_args(commandArgs(trailingOnly = TRUE))
 get_opt <- function(key) if (key %in% names(argv)) argv[[key]] else DEFAULTS[[key]]
@@ -219,7 +232,7 @@ if (data_mode == "real") {
 }
 
 # -----------------------------
-# L2 atime benchmark (Legacy Full-Edge vs Active-Edge)
+# L2 atime benchmark (Full-Pairwise Ref. vs Active-Edge)
 # -----------------------------
 l2_obj <- atime::atime(
   N = k_values,
@@ -263,7 +276,7 @@ l2_obj <- atime::atime(
         )
       )
     ),
-    c("Legacy Full-Edge", "Active-Edge (Ours)")
+    c("Full-Pairwise Ref.", "Active-Edge (Ours)")
   )
 )
 
@@ -274,11 +287,13 @@ l2_rds_file <- sprintf("build/%s_l2_atime_obj.rds", out_prefix)
 saveRDS(l2_obj, l2_rds_file)
 
 l2_plot <- plot(l2_obj) +
-  ggplot2::labs(x = "k (number of subsets)")
+  ggplot2::labs(x = "k (number of groups)") +
+  ggplot2::scale_color_manual(values = method_colors) +
+  ggplot2::scale_fill_manual(values = method_colors)
 l2_file <- sprintf("inst/figures/%s_l2_atime.png", out_prefix)
 ggplot2::ggsave(l2_file, l2_plot, width = 5.0, height = 3.4, dpi = 500)
 
-print_wide_tables(l2_df, "L2-fusion solver: atime (Legacy Full-Edge vs Active-Edge)")
+print_wide_tables(l2_df, "L2-fusion solver: atime (Full-Pairwise Ref. vs Active-Edge)")
 
 cat("\nSaved files:\n")
 cat(sprintf("- %s\n", l2_summary_file))

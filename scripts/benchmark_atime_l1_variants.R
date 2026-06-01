@@ -172,8 +172,8 @@ summarize_atime <- function(obj) {
   )
 
   method_levels <- c(
-    "Legacy Full-Edge",
-    "Operator (Ours)",
+    "Full-Pairwise Ref.",
+    "Active-Edge (Ours)",
     "Chain Approx. (Ours)"
   )
   out$Method <- factor(out$Method, levels = method_levels)
@@ -201,6 +201,12 @@ print_wide_tables <- function(df, header) {
   cat("\nMemory (MB):\n")
   print(memory, row.names = FALSE)
 }
+
+method_colors <- c(
+  "Full-Pairwise Ref." = "#FA786E",
+  "Active-Edge (Ours)" = "#64A0FF",
+  "Chain Approx. (Ours)" = "#8E63D9"
+)
 
 argv <- parse_args(commandArgs(trailingOnly = TRUE))
 get_opt <- function(key) if (key %in% names(argv)) argv[[key]] else DEFAULTS[[key]]
@@ -247,7 +253,7 @@ if (data_mode == "real") {
 }
 
 # -----------------------------
-# L1 atime benchmark (old_l1 vs operator vs chain_specialized)
+# L1 atime benchmark (Full-Pairwise Ref. vs Active-Edge vs Chain Approx.)
 # -----------------------------
 l1_obj <- atime::atime(
   N = k_values,
@@ -325,8 +331,8 @@ l1_obj <- atime::atime(
       )
     ),
     c(
-      "Legacy Full-Edge",
-      "Operator (Ours)",
+      "Full-Pairwise Ref.",
+      "Active-Edge (Ours)",
       "Chain Approx. (Ours)"
     )
   )
@@ -339,11 +345,13 @@ l1_rds_file <- sprintf("build/%s_atime_obj.rds", out_prefix)
 saveRDS(l1_obj, l1_rds_file)
 
 l1_plot <- plot(l1_obj) +
-  ggplot2::labs(x = "k (number of subsets)")
+  ggplot2::labs(x = "k (number of groups)") +
+  ggplot2::scale_color_manual(values = method_colors) +
+  ggplot2::scale_fill_manual(values = method_colors)
 l1_file <- sprintf("inst/figures/%s_atime.png", out_prefix)
 ggplot2::ggsave(l1_file, l1_plot, width = 5.0, height = 3.4, dpi = 500)
 
-print_wide_tables(l1_df, "L1-fusion solver: atime (Legacy Full-Edge vs Operator vs Chain Approx.)")
+print_wide_tables(l1_df, "L1-fusion solver: atime (Full-Pairwise Ref. vs Active-Edge vs Chain Approx.)")
 
 cat("\nSaved files:\n")
 cat(sprintf("- %s\n", l1_summary_file))

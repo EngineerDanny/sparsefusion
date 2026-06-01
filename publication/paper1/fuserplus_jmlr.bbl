@@ -1,4 +1,4 @@
-\begin{thebibliography}{45}
+\begin{thebibliography}{33}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -11,20 +11,12 @@ Vincent Arel-Bundock.
   packages, 2026.
 \newblock URL \url{https://vincentarelbundock.github.io/Rdatasets/}.
 
-\bibitem[Arellano and Bond(1991)]{arellano1991panel}
-Manuel Arellano and Stephen Bond.
-\newblock Some tests of specification for panel data: Monte carlo evidence and
-  an application to employment equations.
-\newblock \emph{The Review of Economic Studies}, 58\penalty0 (2):\penalty0
-  277--297, 1991.
-\newblock \doi{10.2307/2297968}.
-
-\bibitem[Arnold and Tibshirani(2025)]{genlassopkg}
-Taylor~B. Arnold and Ryan~J. Tibshirani.
-\newblock \emph{\texttt{genlasso}: Path Algorithm for Generalized Lasso
-  Problems}, 2025.
-\newblock URL \url{https://cran.r-project.org/package=genlasso}.
-\newblock R package reference manual.
+\bibitem[Beck and Teboulle(2009)]{beck2009fast}
+Amir Beck and Marc Teboulle.
+\newblock A fast iterative shrinkage-thresholding algorithm for linear inverse
+  problems.
+\newblock \emph{SIAM Journal on Imaging Sciences}, 2\penalty0 (1):\penalty0
+  183--202, 2009.
 
 \bibitem[Boyd et~al.(2011)Boyd, Parikh, Chu, Peleato, and
   Eckstein]{boyd2011admm}
@@ -34,12 +26,6 @@ Stephen Boyd, Neal Parikh, Eric Chu, Borja Peleato, and Jonathan Eckstein.
 \newblock \emph{Foundations and Trends in Machine Learning}, 3\penalty0
   (1):\penalty0 1--122, 2011.
 \newblock \doi{10.1561/2200000016}.
-
-\bibitem[Chen(2017)]{uci_beijing}
-Song Chen.
-\newblock Beijing multi-site air-quality data.
-\newblock UCI Machine Learning Repository, 2017.
-\newblock DOI: 10.24432/C5RK5G.
 
 \bibitem[Chen et~al.(2010)Chen, Lin, Kim, Carbonell, and Xing]{chen2010graph}
 Xi~Chen, Qihang Lin, Seyoung Kim, Jaime~G. Carbonell, and Eric~P. Xing.
@@ -56,13 +42,6 @@ Xi~Chen, Qihang Lin, Seyoung Kim, Jaime~G. Carbonell, and Eric~P. Xing.
 \newblock \emph{The Annals of Applied Statistics}, 6\penalty0 (2):\penalty0
   719--752, 2012{\natexlab{a}}.
 
-\bibitem[Chen(2012)]{mmtmanual}
-Xiaohui Chen.
-\newblock \emph{{MMT}: A Matlab Library for Multi-task Learning}, 2012.
-\newblock URL
-  \url{https://people.ece.ubc.ca/xiaohuic/code/multi-task_lasso/mmt_user_manual.pdf}.
-\newblock User manual.
-
 \bibitem[Chen et~al.(2012{\natexlab{b}})Chen, Shi, Xu, Wang, Mills, Lee, and
   Xu]{chen2012twograph}
 Xiaohui Chen, Xinghua Shi, Xing Xu, Zhiyong Wang, Ryan Mills, Charles Lee, and
@@ -71,27 +50,6 @@ Xiaohui Chen, Xinghua Shi, Xing Xu, Zhiyong Wang, Ryan Mills, Charles Lee, and
 \newblock In \emph{Proceedings of the Fifteenth International Conference on
   Artificial Intelligence and Statistics}, volume~22 of \emph{Proceedings of
   Machine Learning Research}, pages 208--217, 2012{\natexlab{b}}.
-
-\bibitem[Cornwell and Trumbull(1994)]{cornwell1994crime}
-Christopher Cornwell and William~N. Trumbull.
-\newblock Estimating the economic model of crime with panel data.
-\newblock \emph{The Review of Economics and Statistics}, 76\penalty0
-  (2):\penalty0 360--366, 1994.
-
-\bibitem[Diamond and Boyd(2016)]{cvxpy}
-Steven Diamond and Stephen Boyd.
-\newblock {CVXPY}: A {Python}-embedded modeling language for convex
-  optimization.
-\newblock \emph{Journal of Machine Learning Research}, 17\penalty0
-  (83):\penalty0 1--5, 2016.
-\newblock URL \url{https://www.cvxpy.org/}.
-
-\bibitem[Dondelinger and Mukherjee(2017)]{fuserpkg}
-Frank Dondelinger and Sach Mukherjee.
-\newblock \emph{\texttt{fuser}: Fused Lasso for High-Dimensional Regression
-  over Groups}, 2017.
-\newblock URL \url{https://cran.r-project.org/package=fuser}.
-\newblock R package and vignette.
 
 \bibitem[Dondelinger et~al.(2020)Dondelinger, Mukherjee, and {The Alzheimer's
   Disease Neuroimaging Initiative}]{dondelinger2020joint}
@@ -109,28 +67,6 @@ Jerome Friedman, Trevor Hastie, and Robert Tibshirani.
 \newblock \emph{Journal of Statistical Software}, 33\penalty0 (1):\penalty0
   1--22, 2010.
 
-\bibitem[Ghosh and Chatterjee(2026)]{extlassopkg}
-Suman Ghosh and Nilanjan Chatterjee.
-\newblock \emph{\texttt{extlasso}: Extended Lasso Penalized Regression}, 2026.
-\newblock URL \url{https://cran.r-project.org/package=extlasso}.
-\newblock R package reference manual.
-
-\bibitem[Goeman(2026)]{penalizedpkg}
-Jelle~J. Goeman.
-\newblock \emph{\texttt{penalized}: L1 and L2 Penalized Estimation in GLMs and
-  in the Cox Model}, 2026.
-\newblock URL \url{https://cran.r-project.org/package=penalized}.
-\newblock R package reference manual.
-
-\bibitem[Goldstein et~al.(1993)Goldstein, Rasbash, Yang, Woodhouse, Pan,
-  Nuttall, and Thomas]{goldstein1993exam}
-Harvey Goldstein, Jon Rasbash, Min Yang, Geoffrey Woodhouse, Huiqi Pan, Desmond
-  Nuttall, and Sally Thomas.
-\newblock A multilevel analysis of school examination results.
-\newblock \emph{Oxford Review of Education}, 19\penalty0 (4):\penalty0
-  425--433, 1993.
-\newblock \doi{10.1080/0305498930190401}.
-
 \bibitem[Hallac et~al.(2015)Hallac, Leskovec, and Boyd]{hallac2015network}
 David Hallac, Jure Leskovec, and Stephen Boyd.
 \newblock Network lasso: Clustering and optimization in large graphs.
@@ -143,34 +79,18 @@ Holger Hoefling.
 \newblock \emph{Journal of Computational and Graphical Statistics}, 19\penalty0
   (4):\penalty0 984--1006, 2010.
 
-\bibitem[Hoefling(2024)]{flsapkg}
-Holger Hoefling.
-\newblock \emph{\texttt{flsa}: Path Algorithm for the General Fused Lasso
-  Signal Approximator}, 2024.
-\newblock URL \url{https://cran.r-project.org/package=flsa}.
-\newblock R package reference manual.
+\bibitem[Kohavi(1995)]{kohavi1995cross}
+Ron Kohavi.
+\newblock A study of cross-validation and bootstrap for accuracy estimation and
+  model selection.
+\newblock In \emph{Proceedings of the Fourteenth International Joint Conference
+  on Artificial Intelligence}, pages 1137--1143. Morgan Kaufmann, 1995.
 
-\bibitem[Janizek and Lee(2021)]{yaglm}
-Joseph~D. Janizek and Su-In Lee.
-\newblock \texttt{yaglm}: A python package for fitting and tuning generalized
-  linear models that supports structured, adaptive and non-convex penalties,
-  2021.
-\newblock URL \url{https://github.com/yaglm/yaglm}.
-
-\bibitem[{JuliaStats}(2026)]{lassojl}
-{JuliaStats}.
-\newblock \emph{\texttt{Lasso.jl}: Lasso, Fused Lasso, and Trend Filtering
-  Documentation}, 2026.
-\newblock URL \url{https://juliastats.org/Lasso.jl/stable/smoothing/}.
-
-\bibitem[Lauridsen et~al.(1999)Lauridsen, H{\o}jsgaard, and
-  S{\o}rensen]{lauridsen1999dietox}
-Charlotte Lauridsen, S{\o}ren H{\o}jsgaard, and Martin~Tang S{\o}rensen.
-\newblock Influence of dietary rapeseed oil, vitamin {E}, and copper on the
-  performance and the antioxidative and oxidative status of pigs.
-\newblock \emph{Journal of Animal Science}, 77\penalty0 (4):\penalty0 906--916,
-  1999.
-\newblock \doi{10.2527/1999.774906x}.
+\bibitem[Miettinen(1999)]{miettinen1999nonlinear}
+Kaisa Miettinen.
+\newblock \emph{Nonlinear Multiobjective Optimization}.
+\newblock Kluwer Academic Publishers, Boston, 1999.
+\newblock \doi{10.1007/978-1-4615-5563-6}.
 
 \bibitem[Nesterov(2005)]{nesterov2005smooth}
 Yurii Nesterov.
@@ -178,12 +98,12 @@ Yurii Nesterov.
 \newblock \emph{Mathematical Programming}, 103\penalty0 (1):\penalty0 127--152,
   2005.
 
-\bibitem[{New York City Taxi and Limousine Commission}(2022)]{nyctlc2022}
-{New York City Taxi and Limousine Commission}.
-\newblock 2022 yellow taxi trip data.
-\newblock NYC Open Data, 2022.
-\newblock URL
-  \url{https://data.cityofnewyork.us/Transportation/2022-Yellow-Taxi-Trip-Data/qp3b-zxtp}.
+\bibitem[{Northern Arizona University Advanced Research
+  Computing}(2026)]{nau_monsoon}
+{Northern Arizona University Advanced Research Computing}.
+\newblock Overview of monsoon high-performance computing resources, 2026.
+\newblock URL \url{https://in.nau.edu/arc/overview/}.
+\newblock Accessed 2026-05-28.
 
 \bibitem[Omranian et~al.(2016)Omranian, Eloundou-Mbebi, Mueller-Roeber, and
   Nikoloski]{omranian2016gene}
@@ -193,11 +113,6 @@ Nooshin Omranian, Jeanne M.~O. Eloundou-Mbebi, Bernd Mueller-Roeber, and Zoran
   data sets.
 \newblock \emph{Scientific Reports}, 6:\penalty0 20533, 2016.
 \newblock \doi{10.1038/srep20533}.
-
-\bibitem[{OpenML}(2026)]{openmlsarcos}
-{OpenML}.
-\newblock Sarcos: Openml dataset 43873, 2026.
-\newblock URL \url{https://www.openml.org/d/43873}.
 
 \bibitem[Padilla et~al.(2020)Padilla, Sharpnack, Scott, and
   Tibshirani]{padilla2020adaptive}
@@ -219,11 +134,6 @@ Jos{\'e}~C. Pinheiro and Douglas~M. Bates.
 \newblock Springer, New York, 2000.
 \newblock \doi{10.1007/b98882}.
 
-\bibitem[{PyMC Development Team}(2026)]{pymcexamples}
-{PyMC Development Team}.
-\newblock Pymc examples, 2026.
-\newblock URL \url{https://github.com/pymc-devs/pymc-examples}.
-
 \bibitem[Raudenbush and Bryk(2002)]{raudenbush2002hlm}
 Stephen~W. Raudenbush and Anthony~S. Bryk.
 \newblock \emph{Hierarchical Linear Models: Applications and Data Analysis
@@ -235,13 +145,6 @@ Michael Redmond.
 \newblock Communities and crime.
 \newblock UCI Machine Learning Repository, 2002.
 \newblock DOI: 10.24432/C53W3X.
-
-\bibitem[Reid and Tibshirani(2021)]{smoothedlassopkg}
-Stephen Reid and Robert Tibshirani.
-\newblock \emph{\texttt{smoothedLasso}: A Framework to Smooth L1 Penalized
-  Regression Operators Using Nesterov Smoothing}, 2021.
-\newblock URL \url{https://cran.r-project.org/package=smoothedLasso}.
-\newblock R package reference manual.
 
 \bibitem[Ritchie et~al.(2023)Ritchie, Rosado, and Roser]{owidco2}
 Hannah Ritchie, Pablo Rosado, and Max Roser.
@@ -279,6 +182,13 @@ Artur Trindade.
 \newblock UCI Machine Learning Repository, 2015.
 \newblock DOI: 10.24432/C58C86.
 
+\bibitem[Varma and Simon(2006)]{varma2006bias}
+Sudhir Varma and Richard Simon.
+\newblock Bias in error estimation when using cross-validation for model
+  selection.
+\newblock \emph{BMC Bioinformatics}, 7:\penalty0 91, 2006.
+\newblock \doi{10.1186/1471-2105-7-91}.
+
 \bibitem[Wang et~al.(2016)Wang, Sharpnack, Smola, and
   Tibshirani]{wang2016graphtf}
 Yu-Xiang Wang, James Sharpnack, Alexander~J. Smola, and Ryan~J. Tibshirani.
@@ -297,6 +207,13 @@ Gui-Bo Ye and Xiaohui Xie.
 \newblock \emph{Computational Statistics \& Data Analysis}, 55\penalty0
   (4):\penalty0 1552--1569, 2011.
 \newblock \doi{10.1016/j.csda.2010.10.021}.
+
+\bibitem[Yu et~al.(2025)Yu, Yang, and Zhang]{yu2025graphdecomp}
+Feng Yu, Archer~Yi Yang, and Teng Zhang.
+\newblock A graph decomposition-based approach for the graph-fused lasso.
+\newblock \emph{Journal of Statistical Planning and Inference}, 235:\penalty0
+  106221, 2025.
+\newblock \doi{10.1016/j.jspi.2024.106221}.
 
 \bibitem[Yuan and Lin(2006)]{yuan2006group}
 Ming Yuan and Yi~Lin.
