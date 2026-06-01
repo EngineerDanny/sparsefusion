@@ -166,20 +166,6 @@ Rscript scripts/benchmark_atime_l1_variants.R \
   --out_prefix atime_l1_smoke
 ```
 
-## Paper Source
-
-The JMLR paper source is in:
-
-```text
-publication/paper1/fuserplus_jmlr.tex
-```
-
-Build the PDF from the paper directory:
-
-```bash
-cd publication/paper1
-latexmk -pdf -interaction=nonstopmode fuserplus_jmlr.tex
-```
 
 ## Tests
 
