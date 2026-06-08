@@ -10,12 +10,12 @@ source("R/l1_fusion_new_utils.R")
 source("R/l1_fusion_operator_new.R")
 source("R/l1_fusion_operator_ws_new.R")
 source("R/l1_fusion_dfs_chain.R")
-source("R/l1_fusion_chain_specialized.R")
+source("R/l1_fusion_chain_approx.R")
 source("R/l1_fusion_new.R")
 
 DEFAULTS <- list(
   data_rds = "data/processed/communities_crime_l2.rds",
-  methods = "old_l1,operator,operator_ws,chain_specialized",
+  methods = "old_l1,operator,operator_ws,chain_approx",
   budgets = "20,40,80,120,180,260",
   reps = 1L,
   seed = 20260214L,
@@ -126,7 +126,7 @@ fit_one <- function(method, d, budget, cfg) {
             conserve.memory = cfg$conserve_memory,
             scaling = cfg$scaling
           )
-        } else if (method %in% c("operator", "operator_ws", "chain_specialized")) {
+        } else if (method %in% c("operator", "operator_ws", "chain_approx")) {
           solver <- method
           fusedLassoProximalNew(
             X = d$X_train,
@@ -194,7 +194,7 @@ cfg <- list(
   out_png = as.character(get_opt("out_png"))
 )
 
-valid_methods <- c("old_l1", "operator", "operator_ws", "chain_specialized")
+valid_methods <- c("old_l1", "operator", "operator_ws", "chain_approx")
 if (length(cfg$methods) == 0L) cfg$methods <- valid_methods
 if (any(!cfg$methods %in% valid_methods)) {
   stop("Invalid method. Allowed: ", paste(valid_methods, collapse = ", "))
@@ -277,7 +277,7 @@ method_labels <- c(
   old_l1 = "old_l1",
   operator = "operator",
   operator_ws = "operator_ws",
-  chain_specialized = "chain_specialized"
+  chain_approx = "chain_approx"
 )
 mean_df$method_label <- method_labels[mean_df$method]
 

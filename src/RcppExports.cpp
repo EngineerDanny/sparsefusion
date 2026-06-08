@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // getNumberNativeIterationsTaken
 NumericVector getNumberNativeIterationsTaken();
-RcppExport SEXP _fuser_getNumberNativeIterationsTaken() {
+RcppExport SEXP _sparsefusion_getNumberNativeIterationsTaken() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // genFusedLassoProximal_loop
 Eigen::MatrixXd genFusedLassoProximal_loop(Nullable<List> XX, Nullable<List> XY, Nullable<List> X_list, Eigen::VectorXd Y, NumericVector samp_sizes, Eigen::MatrixXd C, bool intercept, int p, int k, int num_iters, Nullable<NumericVector> penalty_factors, double L_U_inv, Eigen::MatrixXd B_old, double mu, Eigen::MatrixXd W, Eigen::MatrixXd weighted_delta_f, double tol);
-RcppExport SEXP _fuser_genFusedLassoProximal_loop(SEXP XXSEXP, SEXP XYSEXP, SEXP X_listSEXP, SEXP YSEXP, SEXP samp_sizesSEXP, SEXP CSEXP, SEXP interceptSEXP, SEXP pSEXP, SEXP kSEXP, SEXP num_itersSEXP, SEXP penalty_factorsSEXP, SEXP L_U_invSEXP, SEXP B_oldSEXP, SEXP muSEXP, SEXP WSEXP, SEXP weighted_delta_fSEXP, SEXP tolSEXP) {
+RcppExport SEXP _sparsefusion_genFusedLassoProximal_loop(SEXP XXSEXP, SEXP XYSEXP, SEXP X_listSEXP, SEXP YSEXP, SEXP samp_sizesSEXP, SEXP CSEXP, SEXP interceptSEXP, SEXP pSEXP, SEXP kSEXP, SEXP num_itersSEXP, SEXP penalty_factorsSEXP, SEXP L_U_invSEXP, SEXP B_oldSEXP, SEXP muSEXP, SEXP WSEXP, SEXP weighted_delta_fSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -50,12 +50,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_fuser_getNumberNativeIterationsTaken", (DL_FUNC) &_fuser_getNumberNativeIterationsTaken, 0},
-    {"_fuser_genFusedLassoProximal_loop", (DL_FUNC) &_fuser_genFusedLassoProximal_loop, 17},
+    {"_sparsefusion_getNumberNativeIterationsTaken", (DL_FUNC) &_sparsefusion_getNumberNativeIterationsTaken, 0},
+    {"_sparsefusion_genFusedLassoProximal_loop", (DL_FUNC) &_sparsefusion_genFusedLassoProximal_loop, 17},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_fuser(DllInfo *dll) {
+RcppExport void R_init_sparsefusion(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

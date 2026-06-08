@@ -8,7 +8,7 @@ suppressPackageStartupMessages({
 source("R/l1_fusion_new_utils.R")
 source("R/l1_fusion_operator_new.R")
 source("R/l1_fusion_dfs_chain.R")
-source("R/l1_fusion_chain_specialized.R")
+source("R/l1_fusion_chain_approx.R")
 
 DEFAULTS <- list(
   data_mode = "real", # real | synthetic
@@ -318,7 +318,7 @@ l1_obj <- atime::atime(
         )
       ),
       quote(
-        fusedLassoProximalChainSpecialized(
+        fusedLassoProximalChainApprox(
           X, y, groups,
           lambda = lambda, gamma = gamma, G = G,
           mu = mu, tol = tol, num.it = num_it,

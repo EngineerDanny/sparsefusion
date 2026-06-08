@@ -134,7 +134,7 @@ strip_map <- setNames(vapply(dataset_order, make_strip_label, character(1), meta
 
 l1_method_map <- c(
   operator = "active_edge (ours)",
-  chain_specialized = "chain_aprox (ours)",
+  chain_approx = "chain_approx (ours)",
   old_l1 = "full_pairwise"
 )
 l2_method_map <- c(
@@ -147,7 +147,7 @@ l2_raw <- prep_elapsed(l2_csv, "L2", l2_method_map)
 l1 <- summarize_elapsed(l1_raw, strip_map)
 l2 <- summarize_elapsed(l2_raw, strip_map)
 
-l1_order <- c("active_edge (ours)", "chain_aprox (ours)", "full_pairwise")
+l1_order <- c("active_edge (ours)", "chain_approx (ours)", "full_pairwise")
 l2_order <- c("active_edge (ours)", "full_pairwise")
 check_required(l1, "L1", l1_order)
 check_required(l2, "L2", l2_order)
@@ -155,7 +155,7 @@ plot_df <- rbind(l1, l2)
 plot_df$panel <- factor(plot_df$panel, levels = c("L1", "L2"))
 plot_df$method_label <- factor(
   plot_df$method_label,
-  levels = rev(c("active_edge (ours)", "chain_aprox (ours)", "full_pairwise"))
+  levels = rev(c("active_edge (ours)", "chain_approx (ours)", "full_pairwise"))
 )
 
 p <- ggplot(plot_df, aes(x = mean_log10_elapsed_ms, y = method_label)) +

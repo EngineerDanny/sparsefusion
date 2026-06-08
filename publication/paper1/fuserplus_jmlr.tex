@@ -13,7 +13,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\argmin}{\mathop{\mathrm{argmin}}}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
-\newcommand{\fuserplus}{\texttt{fuserplus}\xspace}
+\newcommand{\sparsefusion}{\texttt{sparsefusion}\xspace}
 \DeclareMathOperator{\clip}{clip}
 
 \jmlrheading{1}{2026}{1-\pageref{LastPage}}{4/26}{--}{26-0000}{Agyapong, Gowanlock, Marks, and Hocking}
@@ -64,7 +64,7 @@ dominant fusion representation from all-pairs graph construction to
 edge-linear construction. The empirical comparisons intentionally hold the
 optimizer family fixed relative to the legacy grouped fused-regression
 solvers, so that the measured differences isolate graph representation rather
-than changes in optimization architecture. A chain-specialized L1 variant is
+than changes in optimization architecture. An L1 chain approximation is
 also analyzed as a deliberate approximation that trades graph fidelity for
 additional efficiency. Across public grouped-regression benchmarks, the exact
 L1 operator matches legacy predictive accuracy while reducing median runtime
@@ -72,7 +72,7 @@ by 2.26x and median peak memory by 10.7\%. The chain variant gives a median
 3.26x runtime reduction with an accuracy tradeoff. Across 19 L2 benchmark
 datasets, active-edge construction has no systematic loss in test error and
 reduces median fit time by 14.9x. The algorithms are implemented in the
-open-source R package \fuserplus, with benchmark scripts and summaries
+open-source R package \sparsefusion, with benchmark scripts and summaries
 provided for reproducibility.
 \end{abstract}
 
@@ -141,8 +141,8 @@ proximal-gradient fusion term only over active edges. Second, it gives an
 exact active-edge L2 augmented-design construction that emits sparse triplets
 only for nonzero graph edges before delegating the regularized regression path
 to \texttt{glmnet} \citep{glmnet}. Third, it separates these exact
-reformulations from approximation-oriented solver modes, including a
-chain-specialized L1 approximation that collapses a graph to $k-1$ chain edges
+reformulations from approximation-oriented solver modes, including an
+L1 chain approximation that collapses a graph to $k-1$ chain edges
 using a depth-first traversal, motivated by chain-structured fused lasso
 solvers. The result is a reusable design pattern for multi-task fused
 regression and other graph-penalized models whose penalties decompose over
@@ -165,7 +165,7 @@ over legacy fused solvers; and
 manifests, and figure-generation artifacts.
 \end{itemize}
 
-The algorithms are implemented in the R package \fuserplus. The current
+The algorithms are implemented in the R package \sparsefusion. The current
 benchmark suite uses public grouped regression datasets and synthetic scaling
 experiments to compare prediction error, wall time, and peak resident memory.
 The results show that graph-aware construction can deliver substantial runtime
@@ -299,7 +299,7 @@ Changes the ADMM decomposition and optimizer architecture; this paper keeps the 
 
 Figures~\ref{fig:concept-l1} and~\ref{fig:concept-l2} summarize the main
 computational distinction between the legacy fused-regression representation
-and the sparse-graph representation used in \fuserplus. In both cases the
+and the sparse-graph representation used in \sparsefusion. In both cases the
 statistical model is defined by a graph on the $k$ groups, with an edge
 weight indicating how strongly two subgroup coefficient vectors should be
 encouraged to agree. The legacy construction first expands this modeling graph
@@ -367,7 +367,7 @@ runtime and memory cost.
 
 \section{Model and Legacy Computation}
 
-The L1 solver in \fuserplus follows a smoothed proximal-gradient strategy for
+The L1 solver in \sparsefusion follows a smoothed proximal-gradient strategy for
 Equation~\ref{eq:model}. Let $B=[\beta_1,\ldots,\beta_k]$ be the $p \times k$
 coefficient matrix. The legacy implementation builds a constraint matrix with
 columns for sparsity and fusion constraints, then uses a smoothed dual
@@ -667,7 +667,7 @@ likelihood and sparsity gradients in the accelerated update.
 \paragraph{Optimization algorithm.}
 The implementation used in the experiments is the following active-edge APG
 procedure. Here $T$ is the maximum number of APG iterations and $\varepsilon$
-is the stopping tolerance. It is the central exact L1 routine in \fuserplus.
+is the stopping tolerance. It is the central exact L1 routine in \sparsefusion.
 \begin{algorithm}[H]
 \caption{Active-Edge Operator APG (\texttt{operator})}
 \label{alg:active_edge_operator}
@@ -696,9 +696,9 @@ is the stopping tolerance. It is the central exact L1 routine in \fuserplus.
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Chain-Specialized L1 Approximation}
+\subsection{L1 Chain Approximation}
 
-The chain-specialized solver is a deliberately approximate method. It builds a
+The chain approximation solver is a deliberately approximate method. It builds a
 depth-first traversal of a maximum spanning tree or of the thresholded graph,
 reorders the groups along that traversal, and keeps only the $k-1$ adjacent
 chain edges. Let $\pi$ denote the resulting group ordering and let
@@ -724,7 +724,7 @@ graph fidelity.
 \label{prop:chain-target}
 \leavevmode\par\noindent
 Let $G_\pi=(V,E_\pi)$ be the chain graph produced by the DFS/MST ordering, with
-edge weights inherited from the original graph. The chain-specialized solver
+edge weights inherited from the original graph. The chain approximation solver
 applies the exact active-edge L1 update to the smoothed fused objective on
 $G_\pi$. Define the original graph-fusion penalty as
 \[
@@ -753,16 +753,16 @@ edges, which is nonnegative.
 \end{proof}
 
 \paragraph{Optimization algorithm.}
-The chain-specialized code first builds the DFS/MST order and adjacent chain
+The chain approximation code first builds the DFS/MST order and adjacent chain
 weights, then runs a separate vectorized APG routine rather than calling the
-general edge loop. In Algorithm~\ref{alg:chain_specialized},
+general edge loop. In Algorithm~\ref{alg:chain_approx},
 $\eta=1/L_U$ is the step size, $H_t$ is the smoothed gradient at iteration
 $t$, $R^{(t)}$ is the accumulated scaled-gradient term, $Z^{(t)}=-R^{(t)}$ is
 the aggregate point used in the acceleration step, and $W^{(t)}$ is the
 accelerated iterate:
 \begin{algorithm}[t]
-\caption{Chain-Specialized APG (\texttt{chain\_specialized})}
-\label{alg:chain_specialized}
+\caption{Chain Approximation APG (\texttt{chain\_approx})}
+\label{alg:chain_approx}
 \begin{algorithmic}[1]
 \Require grouped data, $G$, chain settings, $\lambda,\gamma,\mu,T,\varepsilon$
 \State Build DFS/MST chain order $\pi$ and adjacent chain weights $(w_1,\dots,w_{k-1})$
@@ -874,7 +874,7 @@ Method & Time & Memory \\
 \midrule
 L1 full edge & $O(np+pkq)$ & $O(np+pk+pq+kq)$ \\
 L1 active-edge operator & $O(np+pm)$ & $O(np+pk+m)$ \\
-L1 chain-specialized & $O(np+pk)$ & $O(np+pk)$ \\
+L1 chain approximation & $O(np+pk)$ & $O(np+pk)$ \\
 \midrule
 L2 full pairwise & $O(np+p_{\mathrm{eff}}q)$ & $O(np+p_{\mathrm{eff}}q)$ \\
 L2 active-edge & $O(np+p_{\mathrm{eff}}m)$ & $O(np+p_{\mathrm{eff}}m)$ \\
@@ -975,7 +975,7 @@ same outer-fold and graph protocol with the L2 solvers.
 
 For L1 fusion, the benchmark compares the legacy full construction
 (\texttt{old\_l1}), the exact active-edge operator solver
-(\texttt{operator}), the chain approximation (\texttt{chain\_specialized}),
+(\texttt{operator}), the chain approximation (\texttt{chain\_approx}),
 and a featureless baseline. For L2 fusion, the benchmark compares the legacy
 augmented design (\texttt{old\_l2}), the active-edge augmented design
 (\texttt{new\_l2}), and the featureless baseline.
@@ -990,7 +990,7 @@ question about optimizer choice; the present experiments instead test whether
 the sparse graph can be preserved while keeping the L1 solver within the
 smoothed proximal-gradient family and the L2 solver within the
 augmented-design plus \texttt{glmnet} family.
-The chain-specialized L1 method is reported separately because
+The chain approximation L1 method is reported separately because
 it changes the graph and is therefore an approximation rather than an exact
 replacement.
 
@@ -1086,7 +1086,7 @@ datasets, and the L2 active-edge augmented design similarly overlaps the
 full-pairwise L2 reference. This matches the equivalence results in
 Section~\ref{sec:solvers}: the active-edge representation changes
 the data structure used by the solver, not the fitted objective. The
-chain-specialized L1 method is shown separately in the L1 row because it is an
+chain approximation L1 method is shown separately in the L1 row because it is an
 approximation; its accuracy can differ because replacing the graph by a chain
 changes the fusion penalty.
 
@@ -1098,7 +1098,7 @@ changes the fusion penalty.
   horizontal bars showing one standard deviation. The label
   \texttt{legacy\_full\_edge} denotes the full-construction reference. Exact
   active-edge solvers preserve the full-construction RMSE, while the
-  chain-specialized L1 method is an approximate variant.}
+  chain approximation L1 method is an approximate variant.}
   \label{fig:l1-l2-accuracy-three-datasets}
 \end{figure}
 
@@ -1127,7 +1127,7 @@ The L2 timing gains are especially large because all-pair augmented-design
 construction is expensive when $k$ is large and the graph is sparse. The L1
 operator also improves timing, although the gain is smaller because the
 smoothed proximal-gradient iterations retain fixed overhead beyond graph
-updates. The chain-specialized L1 method is fastest among the L1 variants in
+updates. The chain approximation L1 method is fastest among the L1 variants in
 these examples, but it should be interpreted as an accuracy-efficiency tradeoff
 rather than an exact replacement for the sparse graph.
 
@@ -1272,7 +1272,7 @@ The experiments show that sparse fusion graphs need corresponding sparse
 computational representations. When the graph has $m$ edges, an implementation
 that constructs $O(k^2)$ pairwise constraints can lose the computational
 advantage of using a sparse graph. This is a general issue for edge-penalized
-regression, not only for \fuserplus. Any method whose penalty decomposes over
+regression, not only for \sparsefusion. Any method whose penalty decomposes over
 graph edges can pay an unnecessary quadratic cost if the graph is represented
 by a complete set of candidate pairs. The L1 operator and L2 active-edge
 builders recover the intended $O(pm)$ fusion representation while preserving
@@ -1281,7 +1281,7 @@ the original objective in the exact cases.
 The exact L1 operator is the safest default among the L1 variants.
 It preserves the same fitted objective as the legacy active-edge formulation
 and gives substantial median runtime and memory improvements on the completed
-benchmark summary. The chain-specialized solver is more aggressive. It is best
+benchmark summary. The chain approximation solver is more aggressive. It is best
 viewed as an approximation for exploratory or large-scale settings where a
 small loss in predictive accuracy is acceptable.
 
@@ -1293,7 +1293,7 @@ smoothed-objective convergence guarantee for the L1 APG updates, while
 Propositions~\ref{prop:l1-equivalence} and~\ref{prop:l2-equivalence} identify
 the exact cases where the new representations preserve the legacy objective.
 Proposition~\ref{prop:complexity} makes the representation-dependent graph
-cost explicit. The chain-specialized method is separated from those exact
+cost explicit. The chain approximation method is separated from those exact
 methods because replacing a graph by a chain changes the fusion geometry;
 Proposition~\ref{prop:chain-target} states the precise chain objective being
 optimized and the omitted-edge penalty that accounts for the approximation.
@@ -1302,7 +1302,7 @@ The empirical evidence is strongest for the exact L1 operator and active-edge
 L2 construction. The chain variant is included because it is a useful solver
 mode in the package, but it involves an additional graph-approximation choice.
 For that reason, the recommended default for sparse L1 fusion is the exact
-active-edge operator, with chain-specialized fitting reserved for exploratory
+active-edge operator, with chain approximation fitting reserved for exploratory
 or memory-constrained settings.
 
 \subsection{When Sparse-Graph Representations Help}
@@ -1316,7 +1316,7 @@ The computational gains therefore come from settings where the graph encodes a
 structured notion of similarity, such as temporal adjacency, spatial
 neighborhoods, nearest-neighbor group similarity, or task relationships.
 For complete or nearly complete graphs, the only L1 variant in this paper that
-can still reduce the fusion edge budget substantially is the chain-specialized
+can still reduce the fusion edge budget substantially is the chain approximation
 approximation. It does so by replacing the original graph with a connected
 chain, so the gain comes from changing the optimization target rather than
 from an exact sparse representation of the same graph. The empirical results
@@ -1426,20 +1426,18 @@ rather than from a changed fitting convention.
 
 \section{Software Availability}
 
-The algorithms are available in the open-source R package \fuserplus at
-\url{https://github.com/EngineerDanny/fuserplus}. A grouped regression problem
+The algorithms are available in the open-source R package \sparsefusion at
+\url{https://github.com/EngineerDanny/sparsefusion}. A grouped regression problem
 is supplied as a feature matrix $X$, response vector $y$, group labels
 \texttt{groups}, and a symmetric fusion graph matrix $G$. For new data, the
-exact sparse L1 solver can be run with
-\texttt{fusedLasso\allowbreak Proximal\allowbreak New} with
-\texttt{solver = "operator"}. The same wrapper also exposes
-\texttt{solver = "chain\_specialized"} for the approximate chain variant.
-The active-edge L2 augmented-design solver is
-\texttt{fusedL2\allowbreak Descent\allowbreak GLMNet\allowbreak New}. The
-package retains the original public functions
-\texttt{fusedLasso\allowbreak Proximal} and
-\texttt{fusedL2\allowbreak Descent\allowbreak GLMNet} as reference
-implementations for the L1 and L2 full-pair constructions.
+recommended entry point is \texttt{sparse\_fusion}. The argument
+\texttt{fusion} selects \texttt{l1} or \texttt{l2} fusion, and the argument
+\texttt{solver} selects \texttt{active\_edge}, \texttt{full\_pairwise}, or
+\texttt{chain\_approx}. The \texttt{active\_edge} solver is the exact sparse
+graph representation for L1 and L2 fusion, \texttt{full\_pairwise} runs the
+reference all-pair construction, and \texttt{chain\_approx} runs the
+approximate L1 chain solver. The package also retains the lower-level fitting
+functions used by the experiments for direct solver comparisons.
 
 The returned object from each fitting function is a coefficient matrix with
 one column per group, so prediction on new observations requires selecting the
@@ -1451,9 +1449,9 @@ in the repository.
 
 \section{Reproducibility}
 
-The algorithms are implemented in the \fuserplus R package, version 0.1.0,
+The algorithms are implemented in the \sparsefusion R package, version 0.1.0,
 released under the MIT license. The project repository and issue tracker are
-available at \url{https://github.com/EngineerDanny/fuserplus}. The experiments
+available at \url{https://github.com/EngineerDanny/sparsefusion}. The experiments
 in this paper were evaluated from repository commit prefix
 \texttt{99c69ae}. The benchmark environment used R version 4.5.2
 (2025-10-31). The package includes documentation, a vignette, and
@@ -1485,7 +1483,7 @@ that scales with the represented edge set.
 The empirical results support the same conclusion. The exact L1 and L2
 active-edge solvers preserve predictive accuracy relative to the corresponding
 full-construction references while reducing fit time and, in many cases, peak
-memory. The chain-specialized L1 solver gives an additional approximate option
+memory. The chain approximation L1 solver gives an additional approximate option
 when reducing the edge budget is more important than preserving the original
 graph exactly. More broadly, graph-penalized regression methods should carry
 the edge structure of the penalty into the numerical representation rather

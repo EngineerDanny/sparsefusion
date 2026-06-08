@@ -39,7 +39,7 @@ clean_dataset_name <- function(x) {
 
 format_method_axis_labels <- function(x) {
   label_expr <- ifelse(
-    x %in% c("active_edge (ours)", "chain_aprox (ours)"),
+    x %in% c("active_edge (ours)", "chain_approx (ours)"),
     sprintf("bold('%s')", x),
     sprintf("'%s'", x)
   )
@@ -59,11 +59,11 @@ make_strip_label <- function(dataset, meta) {
 
 prep_l1 <- function(path) {
   x <- read_checked(path)
-  x <- x[x$dataset %in% datasets_keep & x$method %in% c("operator", "old_l1", "chain_specialized", "featureless"), , drop = FALSE]
+  x <- x[x$dataset %in% datasets_keep & x$method %in% c("operator", "old_l1", "chain_approx", "featureless"), , drop = FALSE]
   method_map <- c(
     operator = "active_edge (ours)",
     old_l1 = "full_pairwise",
-    chain_specialized = "chain_aprox (ours)",
+    chain_approx = "chain_approx (ours)",
     featureless = "featureless"
   )
   x$panel <- "L1"
@@ -100,11 +100,11 @@ plot_df <- rbind(
 required_rows <- expand.grid(
   dataset = datasets_keep,
   panel = c("L1", "L2"),
-  method_label = c("active_edge (ours)", "full_pairwise", "chain_aprox (ours)", "featureless"),
+  method_label = c("active_edge (ours)", "full_pairwise", "chain_approx (ours)", "featureless"),
   stringsAsFactors = FALSE
 )
 required_rows <- required_rows[
-  !(required_rows$panel == "L2" & required_rows$method_label == "chain_aprox (ours)"),
+  !(required_rows$panel == "L2" & required_rows$method_label == "chain_approx (ours)"),
   ,
   drop = FALSE
 ]
@@ -117,7 +117,7 @@ if (anyNA(merged_check$mean_test_rmse) || anyNA(merged_check$sd_test_rmse)) {
 
 dataset_order <- c("communities_crime", "rdatasets_hsb82", "owid_co2")
 panel_order <- c("L1", "L2")
-method_order <- c("active_edge (ours)", "chain_aprox (ours)", "full_pairwise", "featureless")
+method_order <- c("active_edge (ours)", "chain_approx (ours)", "full_pairwise", "featureless")
 
 strip_map <- setNames(vapply(dataset_order, make_strip_label, character(1), meta = meta), dataset_order)
 plot_df$dataset_strip <- factor(strip_map[plot_df$dataset], levels = unname(strip_map[dataset_order]))

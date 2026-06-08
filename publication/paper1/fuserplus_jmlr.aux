@@ -62,7 +62,7 @@
 \@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{12}{subsection.4.1}\protected@file@percent }
 \@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Active-Edge Operator APG (\texttt  {operator})}}{12}{algorithm.2}\protected@file@percent }
 \newlabel{alg:active_edge_operator}{{2}{12}{}{algorithm.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Chain-Specialized L1 Approximation}{12}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}L1 Chain Approximation}{12}{subsection.4.2}\protected@file@percent }
 \citation{glmnet}
 \newlabel{prop:chain-target}{{5}{13}{Chain approximation target}{theorem.5}{}}
 \@writefile{toc}{\contentsline {paragraph}{Optimization algorithm.}{13}{theorem.5}\protected@file@percent }
@@ -73,8 +73,8 @@
 \citation{owidco2}
 \citation{worldbankwdi}
 \citation{pinheiro2000mixed,raudenbush2002hlm}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Chain-Specialized APG (\texttt  {chain\_specialized})}}{14}{algorithm.3}\protected@file@percent }
-\newlabel{alg:chain_specialized}{{3}{14}{}{algorithm.3}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Chain Approximation APG (\texttt  {chain\_approx})}}{14}{algorithm.3}\protected@file@percent }
+\newlabel{alg:chain_approx}{{3}{14}{}{algorithm.3}{}}
 \@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces L2 Augmented-Design Solver with \texttt  {glmnet}}}{15}{algorithm.4}\protected@file@percent }
 \newlabel{alg:l2_augmented_design}{{4}{15}{}{algorithm.4}{}}
 \@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Dominant representation costs of the solver variants. Here $n$ is total sample size, $p$ is feature count, $p_{\mathrm  {eff}}$ is the number of coordinates included in the L2 fusion block, $k$ is group count, $m=|E|$ is the number of active fusion edges, and $q=\binom  {k}{2}$. The table isolates graph-representation costs and omits lower-order constants from R bookkeeping and solver overhead.}}{15}{table.2}\protected@file@percent }
@@ -91,8 +91,8 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Changepoint Structure Relative to Lasso}{17}{subsection.6.1}\protected@file@percent }
 \@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Controlled changepoint example comparing fused regression with unfused lasso baselines. Points show the coefficient for the first predictor across all 60 ordered groups, and dashed vertical lines mark the true changepoints. lasso(all) fits only one shared coefficient path, lasso(same) produces noisy separate paths, and the fused lasso model recovers the piecewise-constant coefficient structure. The lasso baselines are fit with \texttt  {glmnet}.}}{18}{figure.4}\protected@file@percent }
 \newlabel{fig:changepoint-glmnet}{{4}{18}{Controlled changepoint example comparing fused regression with unfused lasso baselines. Points show the coefficient for the first predictor across all 60 ordered groups, and dashed vertical lines mark the true changepoints. lasso(all) fits only one shared coefficient path, lasso(same) produces noisy separate paths, and the fused lasso model recovers the piecewise-constant coefficient structure. The lasso baselines are fit with \texttt {glmnet}}{figure.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Prediction accuracy for L1 and L2 fusion on representative datasets. Points show test RMSE means over five cross-validation folds, with horizontal bars showing one standard deviation. The label \texttt  {legacy\_full\_edge} denotes the full-construction reference. Exact active-edge solvers preserve the full-construction RMSE, while the chain-specialized L1 method is an approximate variant.}}{19}{figure.5}\protected@file@percent }
-\newlabel{fig:l1-l2-accuracy-three-datasets}{{5}{19}{Prediction accuracy for L1 and L2 fusion on representative datasets. Points show test RMSE means over five cross-validation folds, with horizontal bars showing one standard deviation. The label \texttt {legacy\_full\_edge} denotes the full-construction reference. Exact active-edge solvers preserve the full-construction RMSE, while the chain-specialized L1 method is an approximate variant}{figure.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Prediction accuracy for L1 and L2 fusion on representative datasets. Points show test RMSE means over five cross-validation folds, with horizontal bars showing one standard deviation. The label \texttt  {legacy\_full\_edge} denotes the full-construction reference. Exact active-edge solvers preserve the full-construction RMSE, while the chain approximation L1 method is an approximate variant.}}{19}{figure.5}\protected@file@percent }
+\newlabel{fig:l1-l2-accuracy-three-datasets}{{5}{19}{Prediction accuracy for L1 and L2 fusion on representative datasets. Points show test RMSE means over five cross-validation folds, with horizontal bars showing one standard deviation. The label \texttt {legacy\_full\_edge} denotes the full-construction reference. Exact active-edge solvers preserve the full-construction RMSE, while the chain approximation L1 method is an approximate variant}{figure.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Accuracy Preservation on Representative Datasets}{19}{subsection.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Timing Gains on Representative Datasets}{19}{subsection.6.3}\protected@file@percent }
 \citation{miettinen1999nonlinear}

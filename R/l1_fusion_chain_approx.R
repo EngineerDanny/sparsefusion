@@ -1,4 +1,4 @@
-# Chain-specialized L1 fused solver.
+# Chain approximation L1 fused solver.
 # Uses a DFS-induced chain graph and a vectorized chain fusion operator.
 
 .chain_fusion_operator_term <- function(B.fusion, edge.w, gamma, mu, return_stats = FALSE) {
@@ -139,7 +139,7 @@
           intercept = intercept
         )
         .append_trace_row(trace_state, list(
-          stage = "chain_specialized",
+          stage = "chain_approx",
           iter_local = i,
           iter_global = trace_state$iter_global,
           objective = objective,
@@ -201,17 +201,16 @@
   out
 }
 
-#' Chain-specialized DFS approximation for fused L1 regression.
+#' Chain approximation for fused L1 regression.
 #'
 #' @description
 #' Builds a DFS-induced chain from `G`, reorders groups along the chain, and
-#' runs a chain-specialized vectorized solver for the fusion operator.
+#' runs a vectorized chain solver for the fusion operator.
 #'
 #' @inheritParams fusedLassoProximalDFSChainApprox
 #'
 #' @return Coefficient matrix (p by k, or (p+1) by k if intercept=TRUE).
-#' @export
-fusedLassoProximalChainSpecialized <- function(
+fusedLassoProximalChainApprox <- function(
     X,
     Y,
     groups,
@@ -235,7 +234,7 @@ fusedLassoProximalChainSpecialized <- function(
     chain.min.weight = 1e-8) {
   .validate_l1new_common(lambda, gamma, mu, edge.block)
   if (c.flag) {
-    warning("fusedLassoProximalChainSpecialized does not use c.flag; running R implementation.")
+    warning("fusedLassoProximalChainApprox does not use c.flag; running R implementation.")
   }
   if (is.null(conserve.memory)) {
     conserve.memory <- (ncol(X) >= 10000)

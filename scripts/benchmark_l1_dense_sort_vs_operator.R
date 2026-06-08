@@ -6,13 +6,13 @@ source("R/l1_fusion_new_utils.R")
 source("R/l1_fusion_operator_new.R")
 source("R/l1_fusion_dense_sort.R")
 source("R/l1_fusion_dfs_chain.R")
-source("R/l1_fusion_chain_specialized.R")
+source("R/l1_fusion_chain_approx.R")
 source("R/l1_fusion_new.R")
 
 DEFAULTS <- list(
   mode = "sweep", # sweep | run
   method = NULL, # required in mode=run
-  methods = "old_l1,operator,dense_sort_scaffold,dfs_chain,chain_specialized",
+  methods = "old_l1,operator,dense_sort_scaffold,dfs_chain,chain_approx",
   k = NULL, # required in mode=run
   k_values = "40,80,120,160",
   reps = 2L,
@@ -244,12 +244,12 @@ fit_once <- function(method, d, cfg) {
             conserve.memory = cfg$conserve_memory,
             scaling = cfg$scaling
           )
-        } else if (method %in% c("operator", "dense_sort_scaffold", "dfs_chain", "chain_specialized")) {
+        } else if (method %in% c("operator", "dense_sort_scaffold", "dfs_chain", "chain_approx")) {
           solver <- switch(method,
             operator = "operator",
             dense_sort_scaffold = "dense_sort",
             dfs_chain = "dfs_chain",
-            chain_specialized = "chain_specialized"
+            chain_approx = "chain_approx"
           )
           fusedLassoProximalNew(
             X = d$X_train,
@@ -413,7 +413,7 @@ cfg <- list(
   print_spec = as_bool(get_opt("print_spec"), default = TRUE)
 )
 
-valid_methods <- c("old_l1", "operator", "dense_sort_scaffold", "dfs_chain", "chain_specialized")
+valid_methods <- c("old_l1", "operator", "dense_sort_scaffold", "dfs_chain", "chain_approx")
 if (!length(cfg$methods)) cfg$methods <- valid_methods
 if (any(!cfg$methods %in% valid_methods)) {
   stop("Invalid method in --methods. Allowed: ", paste(valid_methods, collapse = ", "))

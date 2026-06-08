@@ -34,8 +34,8 @@ install.packages(c("atime", "ggplot2"))
 ## Minimal Reviewer Example
 
 This example creates a small grouped regression problem with a sparse chain
-fusion graph. It fits the public L1 and L2 solvers and then runs the internal
-active-edge variants used in the paper's solver comparisons.
+fusion graph. It fits L1 and L2 grouped fused-regression models through the
+recommended `sparse_fusion()` interface.
 
 ```r
 library(sparsefusion)
@@ -62,42 +62,52 @@ for (i in seq_len(k - 1L)) {
   G[i + 1L, i] <- 1
 }
 
-fit_l1_ref <- fusedLassoProximal(
+fit_l1_ref <- sparse_fusion(
   X, y, groups,
   lambda = 1e-3, gamma = 1e-2, G = G,
+  fusion = "l1", solver = "full_pairwise",
   mu = 1e-4, tol = 1e-3, num.it = 800,
   intercept = FALSE, scaling = FALSE
 )
 
-fit_l1_active <- fusedLassoProximalNew(
+fit_l1_active <- sparse_fusion(
   X, y, groups,
   lambda = 1e-3, gamma = 1e-2, G = G,
+  fusion = "l1", solver = "active_edge",
   mu = 1e-4, tol = 1e-3, num.it = 800,
-  intercept = FALSE, scaling = FALSE,
-  solver = "operator"
+  intercept = FALSE, scaling = FALSE
 )
 
-fit_l2_ref <- fusedL2DescentGLMNet(
+fit_l1_chain <- sparse_fusion(
   X, y, groups,
   lambda = 1e-3, gamma = 1e-2, G = G,
+  fusion = "l1", solver = "chain_approx",
+  mu = 1e-4, tol = 1e-3, num.it = 800,
+  intercept = FALSE, scaling = FALSE
+)
+
+fit_l2_ref <- sparse_fusion(
+  X, y, groups,
+  lambda = 1e-3, gamma = 1e-2, G = G,
+  fusion = "l2", solver = "full_pairwise",
   scaling = FALSE
 )
 
-fit_l2_active <- fusedL2DescentGLMNetNew(
+fit_l2_active <- sparse_fusion(
   X, y, groups,
   lambda = 1e-3, gamma = 1e-2, G = G,
+  fusion = "l2", solver = "active_edge",
   scaling = FALSE
 )
 
 dim(fit_l1_ref)
 dim(fit_l1_active)
+dim(fit_l1_chain)
 dim(fit_l2_ref)
 dim(fit_l2_active)
 ```
 
-Expected dimensions are `p` by `k`, here `8` by `4`. The active-edge functions
-are exported so reviewers can run the sparse-graph solvers directly on new
-grouped data.
+Expected dimensions are `p` by `k`, here `8` by `4`.
 
 ## Conceptual Timing Panels
 
@@ -177,13 +187,15 @@ R -q -e "testthat::test_dir('tests/testthat')"
 
 ## Notes On Solver Variants
 
-- `fusedLassoProximal` is the public L1 full-pairwise smoothed APG reference.
-- `fusedLassoProximalNewOperator` is the exact L1 active-edge operator used in
-  the paper experiments.
-- `fusedLassoProximalChainSpecialized` is an approximate chain solver for L1
-  fusion.
-- `fusedL2DescentGLMNet` is the public L2 augmented-design reference.
-- `fusedL2DescentGLMNetNew` is the active-edge L2 augmented-design builder used
-  in the paper experiments.
+- `sparse_fusion(..., fusion = "l1", solver = "active_edge")` runs the exact
+  L1 active-edge operator.
+- `sparse_fusion(..., fusion = "l1", solver = "full_pairwise")` runs the L1
+  full-pairwise reference.
+- `sparse_fusion(..., fusion = "l1", solver = "chain_approx")` runs the
+  approximate L1 chain solver.
+- `sparse_fusion(..., fusion = "l2", solver = "active_edge")` runs the L2
+  active-edge augmented-design builder.
+- `sparse_fusion(..., fusion = "l2", solver = "full_pairwise")` runs the L2
+  full-pairwise augmented-design reference.
 
 For a longer modeling walkthrough, see `vignettes/subgroup_fusion.Rmd`.

@@ -16,7 +16,7 @@ source("R/l1_fusion_new_utils.R")
 source("R/l1_fusion.R")
 source("R/l1_fusion_operator_new.R")
 source("R/l1_fusion_dfs_chain.R")
-source("R/l1_fusion_chain_specialized.R")
+source("R/l1_fusion_chain_approx.R")
 source("R/l1_fusion_dense_sort.R")
 source("R/l1_fusion_new.R")
 
@@ -236,7 +236,7 @@ fit_l1 <- function(method, d, cfg) {
   solver <- switch(method,
     operator = "operator",
     dense_sort = "dense_sort",
-    chain_approx = "chain_specialized",
+    chain_approx = "chain_approx",
     stop("Unknown L1 method: ", method)
   )
 

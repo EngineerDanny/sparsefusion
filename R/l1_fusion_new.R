@@ -6,7 +6,7 @@
 #'
 #' @param ... Arguments forwarded to the selected solver.
 #' @param solver Solver variant. One of `"operator"`, `"operator_ws"`,
-#'   `"dfs_chain"`, `"chain_specialized"`, `"dense_sort"`.
+#'   `"dfs_chain"`, `"chain_approx"`, `"dense_sort"`.
 #'   If NULL, dispatch is controlled by `working_set` for backward compatibility.
 #' @param working_set Deprecated dispatch switch for backward compatibility.
 #'   If `solver` is NULL, `TRUE -> "operator_ws"` and `FALSE -> "operator"`.
@@ -61,7 +61,7 @@ fusedLassoProximalNew <- function(
   }
   solver <- match.arg(
     solver,
-    choices = c("operator", "operator_ws", "dfs_chain", "chain_specialized", "dense_sort")
+    choices = c("operator", "operator_ws", "dfs_chain", "chain_approx", "dense_sort")
   )
 
   if (solver == "operator") {
@@ -88,8 +88,8 @@ fusedLassoProximalNew <- function(
       chain.start = chain.start,
       chain.min.weight = chain.min.weight
     )
-  } else if (solver == "chain_specialized") {
-    fusedLassoProximalChainSpecialized(
+  } else if (solver == "chain_approx") {
+    fusedLassoProximalChainApprox(
       ...,
       chain.use.mst = chain.use.mst,
       chain.start = chain.start,
