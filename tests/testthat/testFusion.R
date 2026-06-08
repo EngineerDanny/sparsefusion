@@ -1,4 +1,4 @@
-library(fuserplus)
+library(sparsefusion)
 
 # Test of using fusion approach to model heterogeneous
 # datasets

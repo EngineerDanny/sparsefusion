@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex fuserplus_jmlr"] 1780173657.49564 "fuserplus_jmlr.aux" "fuserplus_jmlr.bbl" "fuserplus_jmlr" 1780173658.90911 0
+["bibtex fuserplus_jmlr"] 1780952391.05212 "fuserplus_jmlr.aux" "fuserplus_jmlr.bbl" "fuserplus_jmlr" 1780952392.46804 0
   "./fuserplus_refs.bib" 1780014996.68191 15440 fa52fbe3340507e022d3c50cb39b57c7 ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "fuserplus_jmlr.aux" 1780173658.61504 18868 f7cd52f5c1c961ffd1211709f5ce7203 "pdflatex"
+  "fuserplus_jmlr.aux" 1780952392.19518 20972 ec1a64517fc39d30d61cf9e46f9ba595 "pdflatex"
   (generated)
   "fuserplus_jmlr.bbl"
   "fuserplus_jmlr.blg"
   (rewritten before read)
-["pdflatex"] 1780173657.62519 "fuserplus_jmlr.tex" "fuserplus_jmlr.pdf" "fuserplus_jmlr" 1780173658.90926 0
+["pdflatex"] 1780952391.15203 "fuserplus_jmlr.tex" "fuserplus_jmlr.pdf" "fuserplus_jmlr" 1780952392.46819 0
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
@@ -127,14 +127,15 @@
   "figures/changepoint_fused_vs_glmnet.png" 1779813925.86708 90706 fefb063fd7aff51aa0cd7e329d067a0e ""
   "figures/concept1.png" 1779994483.50984 169971 696126952e70d890063be70543638cca ""
   "figures/concept2.png" 1779994484.33604 193609 211751eca4c128e58e335695654b95d6 ""
+  "figures/fusion_coefficient_matrix_concepts.png" 1780948266.35541 32822 c66b253bbb99a08525b8e25ccefa6fd2 ""
   "figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png" 1779914576.03787 363473 5cd425de04da31a4e738916907ec0720 ""
   "figures/hpc_l1_l2_three_datasets.png" 1779905692.48635 280353 4f3fada2abe9e4e43191cbc32da99b1b ""
   "figures/hpc_l1_l2_three_datasets_timing.png" 1779905692.48881 90437 813afebc9fb34775b0bb3b1b1d04487a ""
   "figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png" 1779914576.04162 356110 cda08fc7d964d8556458bbae762ed573 ""
-  "fuserplus_jmlr.aux" 1780173658.61504 18868 f7cd52f5c1c961ffd1211709f5ce7203 "pdflatex"
-  "fuserplus_jmlr.bbl" 1780173657.62291 9835 9e3c61f953df605f45ced7dfa5f6f09e "bibtex fuserplus_jmlr"
-  "fuserplus_jmlr.out" 1780173658.61636 4913 fec02d4b8621e5ce12d0f69b3ca9126d "pdflatex"
-  "fuserplus_jmlr.tex" 1780173648.63365 73766 f5b7872b82706f7d31ef8095747d5d2a ""
+  "fuserplus_jmlr.aux" 1780952392.19518 20972 ec1a64517fc39d30d61cf9e46f9ba595 "pdflatex"
+  "fuserplus_jmlr.bbl" 1780952391.14986 9835 9e3c61f953df605f45ced7dfa5f6f09e "bibtex fuserplus_jmlr"
+  "fuserplus_jmlr.out" 1780952392.19655 5224 617997a2bc595b6d346624ac3a4bf9c9 "pdflatex"
+  "fuserplus_jmlr.tex" 1780952384.01729 79884 c80f3c6b970adcf2b2006fc005ed21d9 ""
   "jmlr2e.sty" 1777500766.15154 15712 e2712b3d8283b823dc75f9962fab3193 ""
   (generated)
   "fuserplus_jmlr.aux"

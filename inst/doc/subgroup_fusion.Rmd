@@ -1,10 +1,10 @@
 ---
-title: "Using the fuserplus package for prediction over subgroups"
+title: "Using the sparsefusion package for prediction over subgroups"
 author: "EngineerDanny"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Fuserplus Subgroup Prediction}
+  %\VignetteIndexEntry{Sparsefusion Subgroup Prediction}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 references:
@@ -20,7 +20,7 @@ references:
     year: 2016
 ---
 
-The `fuserplus` package implements l1 penalised regression with fusion over subgroups, as described in @dondelinger_16. The fusion penalties allow for information sharing across regression parameters for different subgroups in heterogeneous datasets.
+The `sparsefusion` package implements l1 penalised regression with fusion over subgroups, as described in @dondelinger_16. The fusion penalties allow for information sharing across regression parameters for different subgroups in heterogeneous datasets.
 
 The package implements l1 and l2 fusion penalties; l1 penalization is optimized via a proximal gradient algorithm, while l2 penalization uses a reformulation of the model to apply the `glmnet` package for estimation.
 
@@ -61,7 +61,7 @@ y.test <- sapply(1:k, function(k.i) X.test[[k.i]] %*% beta[, k.i] + rnorm(n.grou
 We use the function `fusedLassoProximal` to estimate the linear coefficients via an l1 fusion penalty.
 
 ```{r}
-library(fuserplus)
+library(sparsefusion)
 library(ggplot2)
 
 # Pairwise Fusion strength hyperparameters (tau(k,k'))

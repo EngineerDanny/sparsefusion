@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-suppressPackageStartupMessages(library(fuserplus))
+suppressPackageStartupMessages(library(sparsefusion))
 source("R/l1_fusion_new_utils.R")
 source("R/l1_fusion_operator_new.R")
 source("R/l1_fusion_operator_ws_new.R")

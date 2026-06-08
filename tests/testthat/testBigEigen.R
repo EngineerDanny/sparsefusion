@@ -1,4 +1,4 @@
-library(fuserplus)
+library(sparsefusion)
 
 # Test bigeigen function for calculating eigenvalues of large matrices
 set.seed(123)

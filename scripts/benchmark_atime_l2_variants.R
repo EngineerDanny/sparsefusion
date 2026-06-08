@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 suppressPackageStartupMessages({
-  library(fuserplus)
+  library(sparsefusion)
   library(atime)
 })
 

@@ -1,6 +1,6 @@
-# fuserplus
+# sparsefusion
 
-`fuserplus` fits grouped fused-regression models with L1 and L2 fusion
+`sparsefusion` fits grouped fused-regression models with L1 and L2 fusion
 penalties. The package extends the original grouped fused-regression workflow
 with sparse graph solver variants that avoid building all-pair fusion objects
 when the fusion graph is sparse.
@@ -22,7 +22,7 @@ Or from GitHub:
 
 ```r
 install.packages("remotes")
-remotes::install_github("EngineerDanny/fuserplus")
+remotes::install_github("EngineerDanny/sparsefusion")
 ```
 
 Optional packages used by the timing scripts:
@@ -38,7 +38,7 @@ fusion graph. It fits the public L1 and L2 solvers and then runs the internal
 active-edge variants used in the paper's solver comparisons.
 
 ```r
-library(fuserplus)
+library(sparsefusion)
 
 set.seed(1)
 
@@ -69,11 +69,12 @@ fit_l1_ref <- fusedLassoProximal(
   intercept = FALSE, scaling = FALSE
 )
 
-fit_l1_active <- fuserplus:::fusedLassoProximalNewOperator(
+fit_l1_active <- fusedLassoProximalNew(
   X, y, groups,
   lambda = 1e-3, gamma = 1e-2, G = G,
   mu = 1e-4, tol = 1e-3, num.it = 800,
-  intercept = FALSE, scaling = FALSE
+  intercept = FALSE, scaling = FALSE,
+  solver = "operator"
 )
 
 fit_l2_ref <- fusedL2DescentGLMNet(
@@ -82,7 +83,7 @@ fit_l2_ref <- fusedL2DescentGLMNet(
   scaling = FALSE
 )
 
-fit_l2_active <- fuserplus:::fusedL2DescentGLMNetNew(
+fit_l2_active <- fusedL2DescentGLMNetNew(
   X, y, groups,
   lambda = 1e-3, gamma = 1e-2, G = G,
   scaling = FALSE
@@ -95,9 +96,8 @@ dim(fit_l2_active)
 ```
 
 Expected dimensions are `p` by `k`, here `8` by `4`. The active-edge functions
-are currently internal because the public package API remains compatible with
-the original grouped fused-regression interface. They are used directly in the
-paper experiments to isolate representation effects.
+are exported so reviewers can run the sparse-graph solvers directly on new
+grouped data.
 
 ## Conceptual Timing Panels
 

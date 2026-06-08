@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-suppressPackageStartupMessages(library(fuserplus))
+suppressPackageStartupMessages(library(sparsefusion))
 source("R/l2_fusion_new.R")
 
 # -----------------------------
@@ -125,7 +125,7 @@ fit_once <- function(variant, data, lambda, gamma, scaling) {
     fit <- withCallingHandlers(
       {
         if (variant == "old") {
-          fuserplus::fusedL2DescentGLMNet(
+          sparsefusion::fusedL2DescentGLMNet(
             data$X_train, data$y_train, data$groups_train,
             lambda = lambda, G = data$G, gamma = gamma, scaling = scaling
           )

@@ -48,8 +48,8 @@
 \maketitle
 
 \begin{abstract}
-Grouped regression models estimate related but subgroup-specific linear
-parameters by combining sparsity with fusion penalties across a graph of
+Grouped regression models estimate related linear parameters for each group
+by combining sparsity with fusion penalties across a graph of
 groups. Although the statistical graph is often sparse, standard
 implementations can still materialize full pairwise fusion operators or
 augmented designs, making the computational representation much denser than
@@ -188,11 +188,51 @@ penalties \citep{ye2011split,boyd2011admm}. General graph fusion is more
 flexible but computationally harder because the penalty couples many
 coefficient blocks.
 
+It is useful to separate three forms of fusion that are sometimes discussed under
+related fused-lasso terminology. In the classic fused lasso, the ordered
+objects being fused are usually variables, coordinates, or signal locations.
+For a single regression vector, this means penalizing adjacent coefficient
+differences such as $|\beta_{j+1}-\beta_j|$. In graph-guided multi-task
+learning, the fused objects are tasks, often corresponding to related
+responses or prediction problems. In grouped fused regression, the fused
+objects are groups of observations in one regression problem. The model
+estimates a coefficient matrix $B\in\R^{p\times k}$, with one column for each
+group. The fusion graph is on the groups, and an edge $(g,h)$ penalizes the
+difference between the two coefficient vectors $B_g$ and $B_h$. Thus the
+paper studies fusion between groups rather than fusion between variables or
+responses.
+
+Figure~\ref{fig:fusion-matrix-concepts} illustrates these distinctions.
+Classic variable fusion acts within a single ordered coefficient vector, as
+in the fused lasso \citep{tibshirani2005fused}. Multi-task fusion encourages
+sharing across columns of a coefficient matrix, where the columns correspond
+to responses or tasks \citep{chen2010graph,chen2012smoothing}. Grouped fused
+regression also encourages sharing across columns, but the columns are groups
+from one grouped regression problem with common predictors and a common
+response \citep{dondelinger2020joint}. This is why graph-guided multi-task
+learning is related but not identical to the setting studied here.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.95\textwidth]{figures/fusion_coefficient_matrix_concepts.png}
+  \caption{Three forms of fusion shown as coefficient-vector and
+  coefficient-matrix schematics. Rows labeled $x_1$ and $x_2$ denote
+  predictors. In Panel B, columns $y_1$ and $y_2$ denote related responses or
+  tasks. In Panel C, columns $g_1$ and $g_2$ denote groups of observations.
+  Colored links indicate which objects are coupled by the fusion penalty.
+  Panel A shows fused lasso penalties on ordered coefficients
+  \citep{tibshirani2005fused}. Panel B shows graph-guided multi-task fusion
+  across related responses or tasks \citep{chen2010graph,chen2012smoothing}.
+  Panel C shows grouped fused regression, where the fusion graph is placed on
+  groups of observations \citep{dondelinger2020joint}.}
+  \label{fig:fusion-matrix-concepts}
+\end{figure}
+
 Graph-structured multi-task regression extended these ideas to arbitrary task
 graphs and developed smoothed proximal-gradient methods for the general fused
 lasso \citep{chen2010graph,chen2012smoothing}. Related multi-task and
 scientific applications use graph-guided fusion for eQTL mapping, additive
-modeling, gene regulatory network inference, and subgroup-specific regression
+modeling, gene regulatory network inference, and grouped regression
 \citep{chen2012twograph,petersen2016flam,omranian2016gene}.
 Network lasso methods \citep{hallac2015network}, graph trend filtering,
 DFS fused lasso denoising \citep{tansey2018dfs}, and
@@ -236,7 +276,7 @@ Combines sparsity with penalties on adjacent coefficient differences. &
 Introduces the core sparsity and fusion penalties, while this paper studies how to represent sparse fusion graphs efficiently in grouped fused-regression. \\
 Graph-guided multitask regression \citep{chen2010graph,chen2012smoothing,chen2012twograph} &
 Uses task graphs and smoothed proximal-gradient methods for general fused multitask penalties. &
-This paper uses related graph-fusion ideas in grouped regression, where graph edges couple coefficient vectors across groups, and focuses on efficient sparse-edge representations for L1 and L2 fusion. \\
+Uses related graph fusion across columns of a coefficient matrix. In this paper the columns are groups from one grouped regression problem, and the focus is efficient sparse edge representation for L1 and L2 fusion. \\
 Generalized lasso and graph trend filtering \citep{tibshirani2011genlasso,wang2016graphtf} &
 Uses linear operators or graph differences to encode structured variation. &
 Provides a broad operator framework, but does not isolate active-edge construction for paired L1/L2 grouped fused-regression solvers. \\
@@ -1347,6 +1387,67 @@ problems can be dominated by fixed interpreter, allocation, and
 small-benchmark slowdown and motivate the recommendation to use the exact
 operator as the default sparse-graph path rather than as a universal speed
 guarantee.
+
+\section{Implementation Details}
+
+The main implementation challenge was to change the graph representation
+without changing the fitted objective. In the original all-pair construction,
+inactive graph pairs can still appear as zero-weight algebraic objects. This
+is convenient for indexing, but it hides sparsity from the solver. The L1
+operator code therefore first converts the fusion graph into edge arrays
+$(u_e,v_e,w_e)_{e=1}^m$ and keeps those arrays as the only fusion structure
+used inside the accelerated iterations. Each edge update computes a
+coefficient difference, clips the smoothed dual quantity, and scatters the
+result back to the two incident group columns with opposite signs. The
+difficult part was not the edge formula itself, but preserving the same
+orientation, weighting, intercept convention, group ordering, and final
+thresholding semantics as the reference implementation.
+
+Memory management was another practical issue. A direct vectorized
+implementation can form a large edge by coefficient matrix during each L1
+iteration. That is fast for moderate problems but can dominate memory when
+both $p$ and $m$ are large. The implementation therefore supports blocked edge
+processing, which applies the same scatter updates in edge batches while
+keeping the accumulated gradient in the original coefficient matrix shape.
+The chain solver required a separate bookkeeping step: groups are temporarily
+reordered along the selected chain for fast adjacent differences and then
+reordered back before returning fitted coefficients.
+
+The L2 implementation required a different construction. The statistical
+problem is represented as an augmented least-squares design passed to
+\texttt{glmnet}. The key coding step was to build this augmented matrix
+directly from sparse triplets. For each active edge $(g,h)$ and each fused
+coefficient coordinate, the builder emits one row with opposite signed entries
+in the two group blocks and a zero augmented response. This avoids allocating
+rows for inactive group pairs. The implementation also preserves the original
+loss scaling and lambda correction convention, so that any observed difference
+between full-pair and active-edge runs comes from the represented graph rows
+rather than from a changed fitting convention.
+
+\section{Software Availability}
+
+The algorithms are available in the open-source R package \fuserplus at
+\url{https://github.com/EngineerDanny/fuserplus}. A grouped regression problem
+is supplied as a feature matrix $X$, response vector $y$, group labels
+\texttt{groups}, and a symmetric fusion graph matrix $G$. For new data, the
+exact sparse L1 solver can be run with
+\texttt{fusedLasso\allowbreak Proximal\allowbreak New} with
+\texttt{solver = "operator"}. The same wrapper also exposes
+\texttt{solver = "chain\_specialized"} for the approximate chain variant.
+The active-edge L2 augmented-design solver is
+\texttt{fusedL2\allowbreak Descent\allowbreak GLMNet\allowbreak New}. The
+package retains the original public functions
+\texttt{fusedLasso\allowbreak Proximal} and
+\texttt{fusedL2\allowbreak Descent\allowbreak GLMNet} as reference
+implementations for the L1 and L2 full-pair constructions.
+
+The returned object from each fitting function is a coefficient matrix with
+one column per group, so prediction on new observations requires selecting the
+coefficient column associated with the observation's group. The package
+includes examples, benchmark scripts, and a minimal reviewer example in the
+repository README. The paper experiments call the same package functions used
+for new data analysis, with fixed folds and graph construction scripts stored
+in the repository.
 
 \section{Reproducibility}
 

@@ -70,7 +70,7 @@ fusedLassoProximalIterationsTaken <- function() {
 #'
 #' @return
 #'
-#' @useDynLib fuserplus, .registration=TRUE
+#' @useDynLib sparsefusion, .registration=TRUE
 #' @importFrom Rcpp evalCpp
 #'
 .genFusedLassoProximal <- function(X, Y, groups, group.names = sort(unique(groups)),

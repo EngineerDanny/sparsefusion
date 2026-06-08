@@ -1,7 +1,7 @@
 .runThisTest <- Sys.getenv("RunAllRcppTests") == "yes"
 
 if (.runThisTest) {
-  library(fuserplus)
+  library(sparsefusion)
 
   # Test of Rcpp code for l1 fusion
   set.seed(123)

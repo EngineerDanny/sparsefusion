@@ -1,4 +1,4 @@
-Package: fuserplus
+Package: sparsefusion
 Title: Fused Lasso for High-Dimensional Regression over Groups
 Version: 0.1.0
 Authors@R: c(
@@ -21,5 +21,5 @@ VignetteBuilder: knitr
 NeedsCompilation: yes
 Maintainer: EngineerDanny <agyapongdaniel7777@gmail.com>
 Repository: GitHub
-URL: https://github.com/EngineerDanny/fuserplus
-BugReports: https://github.com/EngineerDanny/fuserplus/issues
+URL: https://github.com/EngineerDanny/sparsefusion
+BugReports: https://github.com/EngineerDanny/sparsefusion/issues

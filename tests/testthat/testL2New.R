@@ -1,4 +1,4 @@
-library(fuserplus)
+library(sparsefusion)
 
 make_tiny_l2_data <- function(seed = 42L, k = 3L, n_group = 10L, p = 5L, sigma = 0.1) {
   set.seed(seed)
@@ -15,15 +15,15 @@ test_that("L2-new validates scalar lambda and gamma", {
   diag(G) <- 0
 
   expect_error(
-    fuserplus:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = NULL, G = G, gamma = 1e-3),
+    sparsefusion:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = NULL, G = G, gamma = 1e-3),
     "lambda"
   )
   expect_error(
-    fuserplus:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = c(1e-3, 1e-2), G = G, gamma = 1e-3),
+    sparsefusion:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = c(1e-3, 1e-2), G = G, gamma = 1e-3),
     "lambda"
   )
   expect_error(
-    fuserplus:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = 1e-3, G = G, gamma = NA_real_),
+    sparsefusion:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = 1e-3, G = G, gamma = NA_real_),
     "gamma"
   )
 })
@@ -35,7 +35,7 @@ test_that("L2-new validates G and symmetrizes asymmetric G", {
   G_bad[1, 2] <- -1
 
   expect_error(
-    fuserplus:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = 1e-3, G = G_bad, gamma = 1e-3),
+    sparsefusion:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = 1e-3, G = G_bad, gamma = 1e-3),
     "non-negative"
   )
 
@@ -46,7 +46,7 @@ test_that("L2-new validates G and symmetrizes asymmetric G", {
   G_asym[3, 2] <- 1
 
   expect_warning(
-    fit <- fuserplus:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = 1e-3, G = G_asym, gamma = 1e-3),
+    fit <- sparsefusion:::fusedL2DescentGLMNetNew(d$X, d$y, d$groups, lambda = 1e-3, G = G_asym, gamma = 1e-3),
     "not symmetric"
   )
   expect_true(is.matrix(fit))
@@ -58,7 +58,7 @@ test_that("L2-new returns expected coefficient dimensions with and without inter
   G <- matrix(1, 3, 3)
   diag(G) <- 0
 
-  fit_no_intercept <- fuserplus:::fusedL2DescentGLMNetNew(
+  fit_no_intercept <- sparsefusion:::fusedL2DescentGLMNetNew(
     d$X, d$y, d$groups,
     lambda = 1e-3,
     G = G,
@@ -67,7 +67,7 @@ test_that("L2-new returns expected coefficient dimensions with and without inter
   )
   expect_equal(dim(fit_no_intercept), c(ncol(d$X), length(unique(d$groups))))
 
-  fit_intercept <- fuserplus:::fusedL2DescentGLMNetNew(
+  fit_intercept <- sparsefusion:::fusedL2DescentGLMNetNew(
     d$X, d$y, d$groups,
     lambda = 1e-3,
     G = G,

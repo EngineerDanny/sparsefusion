@@ -26,7 +26,7 @@ X.test <- lapply(1:k, function(k.i) matrix(rnorm(n.group * p), n.group, p)) # co
 y.test <- sapply(1:k, function(k.i) X.test[[k.i]] %*% beta[, k.i] + rnorm(n.group, 0, sigma)) # response
 
 ## ------------------------------------------------------------------------
-library(fuserplus)
+library(sparsefusion)
 library(ggplot2)
 
 # Pairwise Fusion strength hyperparameters (tau(k,k'))

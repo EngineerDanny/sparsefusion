@@ -1,6 +1,6 @@
-# fuserplus 0.1.0
+# sparsefusion 0.1.0
 
-Package rename and metadata reset for the standalone `fuserplus` project.
+Package rename and metadata reset for the standalone `sparsefusion` project.
 
 # fuser 1.0.1
 

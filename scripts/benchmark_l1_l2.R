@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 
-suppressPackageStartupMessages(library(fuserplus))
+suppressPackageStartupMessages(library(sparsefusion))
 
 # -----------------------------
 # User defaults (edit here)

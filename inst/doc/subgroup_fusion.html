@@ -14,7 +14,7 @@
 
 <meta name="date" content="2018-06-17" />
 
-<title>Using the fuserplus package for prediction over subgroups</title>
+<title>Using the sparsefusion package for prediction over subgroups</title>
 
 
 
@@ -68,13 +68,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<h1 class="title toc-ignore">Using the fuserplus package for prediction over subgroups</h1>
+<h1 class="title toc-ignore">Using the sparsefusion package for prediction over subgroups</h1>
 <h4 class="author"><em>EngineerDanny</em></h4>
 <h4 class="date"><em>2018-06-17</em></h4>
 
 
 
-<p>The <code>fuserplus</code> package implements l1 penalised regression with fusion over subgroups, as described in <span class="citation">Dondelinger (2016)</span>. The fusion penalties allow for information sharing across regression parameters for different subgroups in heterogeneous datasets. Currently, the functionality of the package is limited to estimating the linear coefficients, although we intend to extend this with functions for prediction, cross-validation and visualization.</p>
+<p>The <code>sparsefusion</code> package implements l1 penalised regression with fusion over subgroups, as described in <span class="citation">Dondelinger (2016)</span>. The fusion penalties allow for information sharing across regression parameters for different subgroups in heterogeneous datasets. Currently, the functionality of the package is limited to estimating the linear coefficients, although we intend to extend this with functions for prediction, cross-validation and visualization.</p>
 <p>The package implements l1 and l2 fusion penalties; l1 penalization is optimized via a proximal gradient algorithm, while l2 penalization uses a reformulation of the model to apply the <code>glmnet</code> package for estimation.</p>
 <div id="running-example" class="section level2">
 <h2>Running Example</h2>

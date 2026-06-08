@@ -357,6 +357,7 @@ generateBlockDiagonalMatricesNew <- function(
 #' @param ... Additional parameters passed to glmnet.
 #'
 #' @return Coefficient matrix (p by k).
+#' @export
 fusedL2DescentGLMNetNew <- function(
     X,
     y,
