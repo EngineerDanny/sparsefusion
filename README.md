@@ -34,8 +34,8 @@ install.packages(c("atime", "ggplot2"))
 ## Minimal Reviewer Example
 
 This example creates a small grouped regression problem with a sparse chain
-fusion graph. It fits L1 and L2 grouped fused-regression models through the
-recommended `sparse_fusion()` interface.
+fusion graph and fits one L1 active-edge model through the recommended
+`sparse_fusion()` interface.
 
 ```r
 library(sparsefusion)
@@ -62,15 +62,7 @@ for (i in seq_len(k - 1L)) {
   G[i + 1L, i] <- 1
 }
 
-fit_l1_ref <- sparse_fusion(
-  X, y, groups,
-  lambda = 1e-3, gamma = 1e-2, G = G,
-  fusion = "l1", solver = "full_pairwise",
-  mu = 1e-4, tol = 1e-3, num.it = 800,
-  intercept = FALSE, scaling = FALSE
-)
-
-fit_l1_active <- sparse_fusion(
+fit <- sparse_fusion(
   X, y, groups,
   lambda = 1e-3, gamma = 1e-2, G = G,
   fusion = "l1", solver = "active_edge",
@@ -78,33 +70,7 @@ fit_l1_active <- sparse_fusion(
   intercept = FALSE, scaling = FALSE
 )
 
-fit_l1_chain <- sparse_fusion(
-  X, y, groups,
-  lambda = 1e-3, gamma = 1e-2, G = G,
-  fusion = "l1", solver = "chain_approx",
-  mu = 1e-4, tol = 1e-3, num.it = 800,
-  intercept = FALSE, scaling = FALSE
-)
-
-fit_l2_ref <- sparse_fusion(
-  X, y, groups,
-  lambda = 1e-3, gamma = 1e-2, G = G,
-  fusion = "l2", solver = "full_pairwise",
-  scaling = FALSE
-)
-
-fit_l2_active <- sparse_fusion(
-  X, y, groups,
-  lambda = 1e-3, gamma = 1e-2, G = G,
-  fusion = "l2", solver = "active_edge",
-  scaling = FALSE
-)
-
-dim(fit_l1_ref)
-dim(fit_l1_active)
-dim(fit_l1_chain)
-dim(fit_l2_ref)
-dim(fit_l2_active)
+dim(fit)
 ```
 
 Expected dimensions are `p` by `k`, here `8` by `4`.
@@ -112,13 +78,7 @@ Expected dimensions are `p` by `k`, here `8` by `4`.
 ## Conceptual Timing Panels
 
 The conceptual figures in the paper use timing panels that compare full-pairwise
-reference construction with active-edge construction. The labels and colors are
-defined in the scripts:
-
-- `Full-Pairwise Ref.` uses `#FA786E`
-- `Active-Edge (Ours)` uses `#64A0FF`
-- `Chain Approx. (Ours)` uses `#8E63D9`
-
+reference construction with active-edge construction.
 Run the L1 timing panel from the repository root:
 
 ```bash
@@ -161,21 +121,6 @@ build/atime_l2_l2_atime_obj.rds
 inst/figures/atime_l2_l2_atime.png
 ```
 
-The L1 run can be slow because the full-pairwise reference is intentionally
-included at larger numbers of groups. For a quick smoke test of the plotting
-pipeline, reduce the grid and repeats:
-
-```bash
-Rscript scripts/benchmark_atime_l1_variants.R \
-  --data_mode synthetic \
-  --k_values 10,20,30 \
-  --p 120 \
-  --n_group_train 35 \
-  --g_structure sparse_chain \
-  --times 1 \
-  --out_prefix atime_l1_smoke
-```
-
 
 ## Tests
 
@@ -187,15 +132,11 @@ R -q -e "testthat::test_dir('tests/testthat')"
 
 ## Notes On Solver Variants
 
-- `sparse_fusion(..., fusion = "l1", solver = "active_edge")` runs the exact
-  L1 active-edge operator.
-- `sparse_fusion(..., fusion = "l1", solver = "full_pairwise")` runs the L1
-  full-pairwise reference.
-- `sparse_fusion(..., fusion = "l1", solver = "chain_approx")` runs the
-  approximate L1 chain solver.
-- `sparse_fusion(..., fusion = "l2", solver = "active_edge")` runs the L2
-  active-edge augmented-design builder.
-- `sparse_fusion(..., fusion = "l2", solver = "full_pairwise")` runs the L2
-  full-pairwise augmented-design reference.
+Use `fusion = "l1"` for smoothed L1 fusion and `fusion = "l2"` for the
+augmented-design L2 solver. Available solver values are:
+
+- `active_edge`, the sparse-graph solver used as the recommended default.
+- `full_pairwise`, the all-pair reference construction.
+- `chain_approx`, the approximate L1 chain solver.
 
 For a longer modeling walkthrough, see `vignettes/subgroup_fusion.Rmd`.
