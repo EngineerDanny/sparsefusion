@@ -1,178 +1,137 @@
 ---
-title: "Using the sparsefusion package for prediction over subgroups"
-author: "EngineerDanny"
+title: "Getting started with sparsefusion"
+author: "Daniel Agyapong"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Sparsefusion Subgroup Prediction}
+  %\VignetteIndexEntry{Getting started with sparsefusion}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-references:
-- id: dondelinger_16
-  title: High-dimensional regression over disease subgroups
-  author:
-  - family: Dondelinger
-    given: Frank
-  container-title: arXiv
-  URL: 'https://arxiv.org/abs/1611.00953'
-  type: article-journal
-  issued:
-    year: 2016
 ---
 
-The `sparsefusion` package implements l1 penalised regression with fusion over subgroups, as described in @dondelinger_16. The fusion penalties allow for information sharing across regression parameters for different subgroups in heterogeneous datasets.
+The `sparsefusion` package fits grouped fused-regression models. The data
+interface is a feature matrix `X`, response vector `y`, group labels `groups`,
+and a fusion graph matrix `G` whose nonzero entries define which groups are
+encouraged to share regression coefficients.
 
-The package implements l1 and l2 fusion penalties; l1 penalization is optimized via a proximal gradient algorithm, while l2 penalization uses a reformulation of the model to apply the `glmnet` package for estimation.
+The recommended entry point is `sparse_fusion()`. Use `fusion = "l1"` for the
+smoothed L1 fused solver and `fusion = "l2"` for the augmented-design L2 solver.
+The default solver is `active_edge`, which works directly with the nonzero
+edges of `G`.
 
-## Running Example
-
-We will generate example data from a simple model with 4 groups, 100 covariates and 15 samples per group. Roughly half of the non-zero linear coefficients used for generating the data will be shared between all groups. Note also that shared coefficients are negative, independent coefficients are positive.
-
-```{r}
-# Test of using fusion approach to model heterogeneous
-# datasets
-set.seed(123)
-
-# Generate simple heterogeneous dataset
-k <- 4 # number of groups
-p <- 100 # number of covariates
-n.group <- 15 # number of samples per group
-sigma <- 0.05 # observation noise sd
-groups <- rep(1:k, each = n.group) # group indicators
-
-# sparse linear coefficients
-beta <- matrix(0, p, k)
-nonzero.ind <- rbinom(p * k, 1, 0.025 / k) # Independent coefficients
-nonzero.shared <- rbinom(p, 1, 0.025) # shared coefficients
-beta[which(nonzero.ind == 1)] <- rnorm(sum(nonzero.ind), 1, 0.25)
-beta[which(nonzero.shared == 1), ] <- rnorm(sum(nonzero.shared), -1, 0.25)
-
-X <- lapply(1:k, function(k.i) matrix(rnorm(n.group * p), n.group, p)) # covariates
-y <- sapply(1:k, function(k.i) X[[k.i]] %*% beta[, k.i] + rnorm(n.group, 0, sigma)) # response
-X <- do.call("rbind", X)
-
-# Generate test dataset
-X.test <- lapply(1:k, function(k.i) matrix(rnorm(n.group * p), n.group, p)) # covariates
-y.test <- sapply(1:k, function(k.i) X.test[[k.i]] %*% beta[, k.i] + rnorm(n.group, 0, sigma)) # response
-```
-
-## L1 Fusion
-
-We use the function `fusedLassoProximal` to estimate the linear coefficients via an l1 fusion penalty.
+## Simulated grouped data
 
 ```{r}
 library(sparsefusion)
-library(ggplot2)
 
-# Pairwise Fusion strength hyperparameters (tau(k,k'))
-# Same for all pairs in this example
-G <- matrix(1, k, k)
+set.seed(1)
 
-# Use L1 fusion to estimate betas (with near-optimal sparsity and
-# information sharing among groups)
-beta.estimate <- fusedLassoProximal(X, y, groups,
-  lambda = 0.001, tol = 9e-5,
-  gamma = 0.001, G, intercept = FALSE,
-  num.it = 2000
-)
+k <- 4L
+p <- 8L
+n_group <- 10L
+groups <- rep(seq_len(k), each = n_group)
+
+X <- matrix(rnorm(length(groups) * p), nrow = length(groups), ncol = p)
+
+beta <- matrix(0, nrow = p, ncol = k)
+beta[1:2, 1:2] <- 1
+beta[1:2, 3:4] <- -1
+
+y <- rowSums(X * t(beta[, groups, drop = FALSE])) +
+  rnorm(length(groups), sd = 0.1)
 ```
 
-Alternatively, we can use the compiled implementation of the proximal algorithm. This can be faster on some systems, especially for large numbers of subgroups.
+The matrix `beta` has one coefficient vector for each group. Here the first two
+groups share one coefficient pattern and the last two groups share another.
 
-```{r,eval=FALSE}
-beta.estimate <- fusedLassoProximal(X, y, groups,
-  lambda = 0.001, tol = 9e-5,
-  gamma = 0.001, G, intercept = FALSE,
-  num.it = 2000, c.flag = TRUE
-)
-```
+## Sparse fusion graph
 
-```{r, fig.align='center', fig.width=5}
-plotting.frame <- data.frame(
-  Beta.True = c(beta),
-  Beta.Estimate = c(beta.estimate),
-  Group = factor(rep(1:k, each = p))
-)
-
-correlation <- round(cor(c(beta.estimate), c(beta)), digits = 2)
-
-
-ggplot(plotting.frame, aes(x = Beta.True, y = Beta.Estimate, colour = Group)) +
-  geom_point() +
-  annotate("text", x = 0.5, y = 1, label = paste("Pearson Cor.:", correlation))
-```
-
-Then we can use the estimated coefficients to predict the response for unseen data points.
+The fusion graph is represented as a symmetric matrix over groups. This example
+uses a chain graph.
 
 ```{r}
-# Predict response based on estimated betas
-y.predict <- sapply(1:k, function(k.i) X.test[[k.i]] %*% beta.estimate[, k.i])
+G <- matrix(0, k, k)
+for (i in seq_len(k - 1L)) {
+  G[i, i + 1L] <- 1
+  G[i + 1L, i] <- 1
+}
+
+G
 ```
 
-```{r, fig.align='center', fig.width=5}
-plotting.frame <- data.frame(
-  Y.Test = c(y.test),
-  Y.Predict = c(y.predict),
-  Group = factor(rep(1:k, each = n.group))
-)
-
-correlation <- round(cor(c(y.test), c(y.predict)), digits = 2)
-
-
-ggplot(plotting.frame, aes(x = Y.Test, y = Y.Predict, colour = Group)) +
-  geom_point() +
-  annotate("text", x = 0.5, y = 2.35, label = paste("Pearson Cor.:", correlation))
-```
-
-## L2 Fusion
-
-Estimating the linear coefficients via an l2 fusion penalty is done via the wrapper function `fusedL2DescentGLMNet`, which internally performs the required transformation and calls `glmnet`.
+## Fit an L1 active-edge model
 
 ```{r}
-# Use L2 fusion to estimate betas (with near-optimal information sharing among groups)
-beta.estimate <- fusedL2DescentGLMNet(X, y, groups,
-  lambda = c(0, 0.001, 0.1, 1),
-  G = G,
-  gamma = 0.001
+fit <- sparse_fusion(
+  X, y, groups, G,
+  lambda = 1e-3,
+  gamma = 1e-2,
+  fusion = "l1",
+  solver = "active_edge",
+  mu = 1e-4,
+  tol = 1e-3,
+  num.it = 800,
+  intercept = FALSE,
+  scaling = FALSE
 )
 
-# Returns a beta matrix for each lambda value, so we extract the one we think is optimal.
-beta.estimate <- beta.estimate[, , 2]
+dim(fit)
 ```
 
+The result is a coefficient matrix with one column per group.
 
-```{r, fig.align='center', fig.width=5}
-plotting.frame <- data.frame(
-  Beta.True = c(beta),
-  Beta.Estimate = c(beta.estimate),
-  Group = factor(rep(1:k, each = p))
-)
+## Predict on new observations
 
-correlation <- round(cor(c(beta.estimate), c(beta)), digits = 2)
-
-
-ggplot(plotting.frame, aes(x = Beta.True, y = Beta.Estimate, colour = Group)) +
-  geom_point() +
-  annotate("text", x = 0.5, y = 1, label = paste("Pearson Cor.:", correlation))
-```
-
-Again we can use the estimated coefficients to predict the response for unseen data points.
+For observations whose groups were present during fitting, predictions are
+obtained by selecting the corresponding coefficient column.
 
 ```{r}
-# Predict response based on estimated betas
-y.predict <- sapply(1:k, function(k.i) X.test[[k.i]] %*% beta.estimate[, k.i])
+X_new <- X[1:6, , drop = FALSE]
+groups_new <- groups[1:6]
+
+y_hat <- numeric(nrow(X_new))
+for (g in unique(groups_new)) {
+  idx <- groups_new == g
+  y_hat[idx] <- X_new[idx, , drop = FALSE] %*% fit[, g]
+}
+
+y_hat
 ```
 
-```{r, fig.align='center', fig.width=5}
-plotting.frame <- data.frame(
-  Y.Test = c(y.test),
-  Y.Predict = c(y.predict),
-  Group = factor(rep(1:k, each = n.group))
+## Solver modes
+
+The `solver` argument controls the graph representation used by the optimizer.
+
+```{r, eval=FALSE}
+# Exact sparse graph representation, recommended default.
+sparse_fusion(X, y, groups, G, lambda, gamma,
+  fusion = "l1", solver = "active_edge"
 )
 
-correlation <- round(cor(c(y.test), c(y.predict)), digits = 2)
+# Full all-pair reference construction.
+sparse_fusion(X, y, groups, G, lambda, gamma,
+  fusion = "l1", solver = "full_pairwise"
+)
 
-ggplot(plotting.frame, aes(x = Y.Test, y = Y.Predict, colour = Group)) +
-  geom_point() +
-  annotate("text", x = 0.5, y = 2.5, label = paste("Pearson Cor.:", correlation))
+# Approximate L1 chain solver.
+sparse_fusion(X, y, groups, G, lambda, gamma,
+  fusion = "l1", solver = "chain_approx"
+)
+```
+
+The same interface is used for L2 fusion. The `chain_approx` solver is only
+available for L1 fusion.
+
+```{r}
+fit_l2 <- sparse_fusion(
+  X, y, groups, G,
+  lambda = 1e-3,
+  gamma = 1e-2,
+  fusion = "l2",
+  solver = "active_edge",
+  intercept = FALSE,
+  scaling = FALSE
+)
+
+dim(fit_l2)
 ```
