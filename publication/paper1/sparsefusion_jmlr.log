@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  9 JUN 2026 10:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  9 JUN 2026 14:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -424,234 +424,63 @@ Package hyperref Info: Link coloring OFF on input line 23.
 \@outlinefile=\write3
 \openout3 = `sparsefusion_jmlr.out'.
 
+LaTeX Font Info:    Trying to load font information for U+msa on input line 59.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-LaTeX Font Info:    Trying to load font information for U+msa on input line 83.
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 83.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 59.
 
 
 (/usr/local/texlive/2025/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+)
+
+[1{/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 {/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+
+
+Package natbib Warning: Citation `gelman2007data' on page 2 undefined on input 
+line 73.
+
+
+Package natbib Warning: Citation `padilla2018dfs' on page 2 undefined on input 
+line 91.
+
+
+Package natbib Warning: Citation `padilla2020knn' on page 2 undefined on input 
+line 91.
+
 
 
 [2]
 
 [3]
-<figures/fusion_coefficient_matrix_concepts.png, id=192, 521.95pt x 154.5775pt>
 
-File: figures/fusion_coefficient_matrix_concepts.png Graphic file (type png)
-<use figures/fusion_coefficient_matrix_concepts.png>
-Package pdftex.def Info: figures/fusion_coefficient_matrix_concepts.png  used o
-n input line 227.
-(pdftex.def)             Requested size: 411.93767pt x 121.9993pt.
+LaTeX Warning: File `figures/concept_fusion.png' not found on input line 150.
 
 
-[4 <./figures/fusion_coefficient_matrix_concepts.png>]
-<figures/concept1.png, id=267, 2894.815pt x 798.985pt>
-File: figures/concept1.png Graphic file (type png)
-<use figures/concept1.png>
-Package pdftex.def Info: figures/concept1.png  used on input line 348.
-(pdftex.def)             Requested size: 372.91345pt x 102.92075pt.
+! Package pdftex.def Error: File `figures/concept_fusion.png' not found: using 
+draft setting.
 
-Underfull \vbox (badness 5050) has occurred while \output is active []
+See the pdftex.def package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.150 ...95\textwidth]{figures/concept_fusion.png}
+                                                  
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
 
-
-
-[5]
-<figures/concept2.png, id=286, 2865.70625pt x 815.045pt>
-File: figures/concept2.png Graphic file (type png)
-<use figures/concept2.png>
-Package pdftex.def Info: figures/concept2.png  used on input line 365.
-(pdftex.def)             Requested size: 372.91345pt x 106.05905pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[6]
-
-[7 <./figures/concept1.png (PNG copy)> <./figures/concept2.png (PNG copy)>]
-Underfull \hbox (badness 10000) in paragraph at lines 454--468
-
- []
-
-
-
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 505--512
-
- []
-
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 514.
-
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 584--590
-
- []
-
-
-
-[10]
-Underfull \hbox (badness 10000) in paragraph at lines 630--634
-
- []
-
-
-
-[11]
-
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 756--764
-
- []
-
-
-
-[13]
-
-[14]
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[15]
-
-[16]
-
-[17]
-<figures/changepoint_fused_vs_glmnet.png, id=415, 664.884pt x 187.902pt>
-File: figures/changepoint_fused_vs_glmnet.png Graphic file (type png)
-<use figures/changepoint_fused_vs_glmnet.png>
-Package pdftex.def Info: figures/changepoint_fused_vs_glmnet.png  used on input
- line 1082.
-(pdftex.def)             Requested size: 338.22305pt x 95.58504pt.
-
-
-[18]
-<figures/hpc_l1_l2_three_datasets.png, id=423, 867.24pt x 289.08pt>
-File: figures/hpc_l1_l2_three_datasets.png Graphic file (type png)
-<use figures/hpc_l1_l2_three_datasets.png>
-Package pdftex.def Info: figures/hpc_l1_l2_three_datasets.png  used on input li
-ne 1115.
-(pdftex.def)             Requested size: 433.62pt x 144.53964pt.
-
-
-[19 <./figures/changepoint_fused_vs_glmnet.png>]
-<figures/hpc_l1_l2_three_datasets_timing.png, id=432, 867.24pt x 289.08pt>
-File: figures/hpc_l1_l2_three_datasets_timing.png Graphic file (type png)
-<use figures/hpc_l1_l2_three_datasets_timing.png>
-Package pdftex.def Info: figures/hpc_l1_l2_three_datasets_timing.png  used on i
-nput line 1156.
-(pdftex.def)             Requested size: 433.62pt x 144.53964pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[20 <./figures/hpc_l1_l2_three_datasets.png (PNG copy)> <./figures/hpc_l1_l2_th
-ree_datasets_timing.png>]
-<figures/hpc_l1_l2_three_datasets_memory.png, id=442, 867.24pt x 289.08pt>
-File: figures/hpc_l1_l2_three_datasets_memory.png Graphic file (type png)
-<use figures/hpc_l1_l2_three_datasets_memory.png>
-Package pdftex.def Info: figures/hpc_l1_l2_three_datasets_memory.png  used on i
-nput line 1188.
-(pdftex.def)             Requested size: 433.62pt x 144.53964pt.
-
-Underfull \vbox (badness 3375) has occurred while \output is active []
-
-
-
-[21 <./figures/hpc_l1_l2_three_datasets_memory.png>]
-<figures/hpc_l1_l2_combined_pareto.png, id=456, 1011.78pt x 404.712pt>
-File: figures/hpc_l1_l2_combined_pareto.png Graphic file (type png)
-<use figures/hpc_l1_l2_combined_pareto.png>
-Package pdftex.def Info: figures/hpc_l1_l2_combined_pareto.png  used on input l
-ine 1239.
-(pdftex.def)             Requested size: 433.62pt x 173.44846pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-
-[22 <./figures/hpc_l1_l2_combined_pareto.png>]
-
-[23]
-
-[24]
-Underfull \vbox (badness 7099) has occurred while \output is active []
-
-
-
-[25]
-Underfull \vbox (badness 3746) has occurred while \output is active []
-
-
-
-[26]
-Underfull \vbox (badness 1960) has occurred while \output is active []
-
-
-
-[27] (./sparsefusion_jmlr.bbl
-
-[28]
-
-[29])
-
-[30] 
-enddocument/afterlastpage (AED): lastpage setting LastPage.
-(./sparsefusion_jmlr.aux)
- ***********
-LaTeX2e <2024-11-01> patch level 2
-L3 programming layer <2025-01-18>
- ***********
-Package rerunfilecheck Info: File `sparsefusion_jmlr.out' has not changed.
-(rerunfilecheck)             Checksum: 24825F1A33384AD9FEA0A7465C3887A9;5194.
- ) 
+ 
 Here is how much of TeX's memory you used:
- 11472 strings out of 473190
- 177350 string characters out of 5715801
- 589250 words of memory out of 5000000
- 34449 multiletter control sequences out of 15000+600000
- 568430 words of font info for 72 fonts, out of 8000000 for 9000
+ 11241 strings out of 473190
+ 172225 string characters out of 5715801
+ 582107 words of memory out of 5000000
+ 34296 multiletter control sequences out of 15000+600000
+ 568503 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,93p,926b,593s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
-</usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
-/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></us
-r/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/
-local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
-cal/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local
-/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/te
-xlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texli
-ve/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texliv
-e/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/
-2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/20
-25/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/202
-5/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2025
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2025/t
-exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/20
-25/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2025
-/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on sparsefusion_jmlr.pdf (30 pages, 1878429 bytes).
-PDF statistics:
- 623 PDF objects out of 1000 (max. 8388607)
- 521 compressed objects within 6 object streams
- 117 named destinations out of 1000 (max. 500000)
- 265 words of extra memory for PDF output out of 10000 (max. 10000000)
-
+ 90i,9n,93p,921b,449s stack positions out of 10000i,1000n,20000p,200000b,200000s
+!  ==> Fatal error occurred, no output PDF file produced!
