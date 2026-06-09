@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex fuserplus_jmlr"] 1780994352.79874 "fuserplus_jmlr.aux" "fuserplus_jmlr.bbl" "fuserplus_jmlr" 1780994354.19016 0
+["bibtex sparsefusion_jmlr"] 1781027946.10819 "sparsefusion_jmlr.aux" "sparsefusion_jmlr.bbl" "sparsefusion_jmlr" 1781027948.97944 0
   "./fuserplus_refs.bib" 1780014996.68191 15440 fa52fbe3340507e022d3c50cb39b57c7 ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "fuserplus_jmlr.aux" 1780994353.93011 20956 caef86711d31181781c56e56d6aa6aac "pdflatex"
+  "sparsefusion_jmlr.aux" 1781027948.65728 21364 c852d6de4ce02f038c419cb8f997c2f1 "pdflatex"
   (generated)
-  "fuserplus_jmlr.bbl"
-  "fuserplus_jmlr.blg"
+  "sparsefusion_jmlr.bbl"
+  "sparsefusion_jmlr.blg"
   (rewritten before read)
-["pdflatex"] 1780994352.8939 "fuserplus_jmlr.tex" "fuserplus_jmlr.pdf" "fuserplus_jmlr" 1780994354.19033 0
+["pdflatex"] 1781027946.2065 "sparsefusion_jmlr.tex" "sparsefusion_jmlr.pdf" "sparsefusion_jmlr" 1781027948.97962 0
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
@@ -128,18 +128,18 @@
   "figures/concept1.png" 1779994483.50984 169971 696126952e70d890063be70543638cca ""
   "figures/concept2.png" 1779994484.33604 193609 211751eca4c128e58e335695654b95d6 ""
   "figures/fusion_coefficient_matrix_concepts.png" 1780948266.35541 32822 c66b253bbb99a08525b8e25ccefa6fd2 ""
-  "figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png" 1779914576.03787 363473 5cd425de04da31a4e738916907ec0720 ""
+  "figures/hpc_l1_l2_combined_pareto.png" 1781026765.5374 617409 43c9af44d05e539e94744d2014f94a5e ""
   "figures/hpc_l1_l2_three_datasets.png" 1779905692.48635 280353 4f3fada2abe9e4e43191cbc32da99b1b ""
+  "figures/hpc_l1_l2_three_datasets_memory.png" 1781026765.53792 88808 f50fd3bbe6b94ad152213425d6581eb1 ""
   "figures/hpc_l1_l2_three_datasets_timing.png" 1779905692.48881 90437 813afebc9fb34775b0bb3b1b1d04487a ""
-  "figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png" 1779914576.04162 356110 cda08fc7d964d8556458bbae762ed573 ""
-  "fuserplus_jmlr.aux" 1780994353.93011 20956 caef86711d31181781c56e56d6aa6aac "pdflatex"
-  "fuserplus_jmlr.bbl" 1780994352.89164 9835 9e3c61f953df605f45ced7dfa5f6f09e "bibtex fuserplus_jmlr"
-  "fuserplus_jmlr.out" 1780994353.93132 5164 062dc0285adfd43faf676d836665b8dc "pdflatex"
-  "fuserplus_jmlr.tex" 1780994342.52721 80924 9f81975f8b83686bb87d4c4dbe100bb9 ""
   "jmlr2e.sty" 1777500766.15154 15712 e2712b3d8283b823dc75f9962fab3193 ""
+  "sparsefusion_jmlr.aux" 1781027948.65728 21364 c852d6de4ce02f038c419cb8f997c2f1 "pdflatex"
+  "sparsefusion_jmlr.bbl" 1781027946.20404 9835 9e3c61f953df605f45ced7dfa5f6f09e "bibtex sparsefusion_jmlr"
+  "sparsefusion_jmlr.out" 1781027948.65864 5194 24825f1a33384ad9fea0a7465c3887a9 "pdflatex"
+  "sparsefusion_jmlr.tex" 1781027937.89405 82739 cb73dbc0363049b30fcb7a524c0125a5 ""
   (generated)
-  "fuserplus_jmlr.aux"
-  "fuserplus_jmlr.log"
-  "fuserplus_jmlr.out"
-  "fuserplus_jmlr.pdf"
+  "sparsefusion_jmlr.aux"
+  "sparsefusion_jmlr.log"
+  "sparsefusion_jmlr.out"
+  "sparsefusion_jmlr.pdf"
   (rewritten before read)

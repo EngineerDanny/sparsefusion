@@ -1122,7 +1122,7 @@ changes the fusion penalty.
   \label{fig:l1-l2-accuracy-three-datasets}
 \end{figure}
 
-\subsection{Timing and Memory on Representative Datasets}
+\subsection{Timing Gains on Representative Datasets}
 
 Figure~\ref{fig:l1-l2-timing-three-datasets} reports the corresponding fit
 times for the same three datasets and solver families. The timing figure
@@ -1161,20 +1161,27 @@ rather than an exact replacement for the sparse graph.
   \label{fig:l1-l2-timing-three-datasets}
 \end{figure}
 
+\subsection{Memory Gains on Representative Datasets}
+
 Figure~\ref{fig:l1-l2-memory-three-datasets} reports the corresponding
 absolute peak resident memory. This complements the relative memory ratios
-reported below: the representative fits use hundreds of megabytes rather than
-many gigabytes of memory. Consequently, part of the timing advantage may come
-from a smaller and more cache-friendly working set, especially on processors
-with large last-level caches, but the comparison is not only a cache effect.
+reported later because the representative fits use hundreds of megabytes rather
+than many gigabytes of memory. This matters for interpreting the optimization
+results: sparse construction reduces the graph objects created by the solver,
+but peak resident memory also includes the design matrix, response vector,
+group indices, coefficient iterates, validation state, and R runtime
+allocations.
+
 For L2 fusion, the active-edge augmented design consistently reduces peak
-resident memory relative to the full-pairwise reference because it avoids
-materializing augmented rows for absent graph edges. For L1 fusion, the
-absolute memory differences are smaller and less uniform because peak resident
-memory includes fixed R objects, model matrices, cross-validation state, and
-temporary allocations in addition to the graph representation. Thus the
-absolute-memory panel clarifies the scale of the experiments, while the Pareto
-plots below show the broader dataset-by-dataset resource tradeoffs.
+resident memory relative to the full-pairwise reference. The reason is direct:
+the active-edge builder avoids materializing augmented rows for absent graph
+edges, so it holds fewer sparse-matrix entries, row indices, and construction
+triplets before calling \texttt{glmnet}. For L1 fusion, the memory gains are
+smaller and less uniform. The active-edge operator reduces the working set for
+fusion differences and scatter updates, but the smoothed proximal-gradient
+state and fixed data objects remain. The chain approximation is included in
+this panel because it further reduces the graph object, although it changes the
+fusion penalty.
 
 \begin{figure}[t]
   \centering
@@ -1202,31 +1209,18 @@ $n$, $p$, $k$, and the percent RMSE change relative to the reference.
 We use the plot in the standard multiobjective sense of a Pareto comparison:
 a method is preferable only if it improves one resource without worsening the
 other, or if the tradeoff is explicit \citep{miettinen1999nonlinear}. This is
-more informative than reporting runtime alone because sparse-graph solvers are
-intended to reduce both arithmetic work and the amount of state used to
-represent the graph. The RMSE labels stay near zero in both panels, so the
+more informative than reporting runtime and memory separately because an
+optimization change can improve one resource while leaving the other unchanged,
+or even slightly worse. The RMSE labels stay near zero in both panels, so the
 figure is primarily an efficiency comparison rather than an accuracy
 comparison.
 
-The two panels show the same active-edge principle acting through different
-solver mechanisms. In the L1 solver, the full-pairwise representation stores
-and applies candidate pair constraints that are inactive for a sparse graph,
-whereas the active-edge operator stores endpoint and weight vectors only for
-nonzero graph edges. This reduces the working set for fusion differences and
-scatter updates, although fixed R objects, model matrices, and
-proximal-gradient state remain. Consequently, most L1 datasets move left, and
-many also move downward, but the memory gains are smaller and less uniform
-than the timing gains.
-
-The L2 active-edge gains are larger because the full-pairwise augmented-design
-reference must build many rows before fitting the \texttt{glmnet} path. Under
-full-pairwise construction, the fusion block contains
-$p_{\mathrm{eff}}\binom{k}{2}$ rows before zero-weight pairs are removed;
-under active-edge construction, it contains only $p_{\mathrm{eff}}m$ rows.
-This changes not only the time required to build the augmented design, but
-also the sparse-matrix entries, row indices, and intermediate triplets held by
-the worker process. The L2 panel is therefore shifted farther left and mostly
-downward, matching the construction-cost analysis in
+The two panels connect the separate timing and memory results. Most L1 datasets
+move left, and many also move downward, but the memory gains are smaller and
+less uniform than the timing gains. The L2 panel is shifted farther left and
+mostly downward because active-edge augmented-design construction reduces both
+the number of rows built before \texttt{glmnet} and the sparse objects held by
+the worker process. These patterns match the construction-cost analysis in
 Section~\ref{sec:solvers}.
 
 The memory axis should be interpreted as an allocation and working-set
@@ -1523,7 +1517,7 @@ The real-data benchmark summaries used in the figures are
 structured synthetic example is generated by the changepoint benchmark script
 under \path{scripts}. The manifest-based
 benchmark scripts are stored under \path{scripts/hpc}, and the paper source is
-\path{publication/paper1/fuserplus_jmlr.tex}.
+\path{publication/paper1/sparsefusion_jmlr.tex}.
 
 \section{Conclusion}
 

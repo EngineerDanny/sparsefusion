@@ -1,11 +1,11 @@
 This is BibTeX, Version 0.99d (TeX Live 2025)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
-The top-level auxiliary file: fuserplus_jmlr.aux
+The top-level auxiliary file: sparsefusion_jmlr.aux
 The style file: plainnat.bst
 Database file #1: fuserplus_refs.bib
 You've used 33 entries,
             2773 wiz_defined-function locations,
-            794 strings with 10431 characters,
+            794 strings with 10437 characters,
 and the built_in function-call counts, 15563 in all, are:
 = -- 1411
 > -- 862
