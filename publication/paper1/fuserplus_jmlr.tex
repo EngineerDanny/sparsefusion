@@ -172,6 +172,16 @@ The results show that graph-aware construction can deliver substantial runtime
 and memory reductions without changing the statistical objective for the exact
 operator and L2 variants.
 
+The remainder of the paper is organized as follows. Section~2 reviews fused
+and graph-structured regression methods, together with related optimization
+approaches. Section~3 defines the grouped fused-regression model and the
+legacy full-pairwise computations used as references. Section~4 presents the
+active-edge L1 operator, the active-edge L2 augmented-design construction, and
+the chain approximation. Section~5 describes the benchmark protocol, datasets,
+and compared methods. Section~6 reports accuracy, timing, memory, and Pareto
+efficiency results. Section~7 discusses implications, limitations, and
+implementation guidance, and Section~8 summarizes reproducibility materials.
+
 \section{Related Work}
 
 The fused lasso extends the lasso by combining sparsity with penalties on
@@ -943,12 +953,17 @@ peak resident set size of the fitting process.
 The computational experiments were run on Northern Arizona University's
 Monsoon computing cluster \citep{nau_monsoon}, with solver variants in each
 comparison evaluated under the same software environment and job
-configuration. Timing experiments were submitted as single-core Slurm array
-jobs with fixed resource requests of one CPU and 32 GB memory per task. The
-jobs were not submitted with whole-node exclusive allocation, so absolute
-wall-clock times may reflect normal shared-cluster variability. For this
-reason, timing results are interpreted primarily as relative comparisons
-between solver representations under the same scheduling protocol.
+configuration. Timing experiments were submitted as Slurm array jobs with
+one CPU core per task and a 24-hour time limit. Jobs were split into
+small, medium, and large memory tiers and requested 16 GB, 32 GB, and 64 GB
+of memory, respectively. The tier assignment used a deterministic workload
+score based on $n$, $p$, and $k$, with an additional multiplier for the
+full-pairwise reference methods. The archived job scripts do not request
+whole-node exclusive allocation or pin jobs to a particular Monsoon node
+generation, so absolute wall-clock times may reflect normal shared-cluster
+and hardware variability. For this reason, timing results are interpreted
+primarily as relative comparisons between solver representations run under
+the same scheduling protocol.
 
 \subsection{Graph Construction and Hyperparameters}
 
@@ -1107,7 +1122,7 @@ changes the fusion penalty.
   \label{fig:l1-l2-accuracy-three-datasets}
 \end{figure}
 
-\subsection{Timing Gains on Representative Datasets}
+\subsection{Timing and Memory on Representative Datasets}
 
 Figure~\ref{fig:l1-l2-timing-three-datasets} reports the corresponding fit
 times for the same three datasets and solver families. The timing figure
@@ -1146,98 +1161,95 @@ rather than an exact replacement for the sparse graph.
   \label{fig:l1-l2-timing-three-datasets}
 \end{figure}
 
-\subsection{L1 Runtime-Memory Pareto Gains}
+Figure~\ref{fig:l1-l2-memory-three-datasets} reports the corresponding
+absolute peak resident memory. This complements the relative memory ratios
+reported below: the representative fits use hundreds of megabytes rather than
+many gigabytes of memory. Consequently, part of the timing advantage may come
+from a smaller and more cache-friendly working set, especially on processors
+with large last-level caches, but the comparison is not only a cache effect.
+For L2 fusion, the active-edge augmented design consistently reduces peak
+resident memory relative to the full-pairwise reference because it avoids
+materializing augmented rows for absent graph edges. For L1 fusion, the
+absolute memory differences are smaller and less uniform because peak resident
+memory includes fixed R objects, model matrices, cross-validation state, and
+temporary allocations in addition to the graph representation. Thus the
+absolute-memory panel clarifies the scale of the experiments, while the Pareto
+plots below show the broader dataset-by-dataset resource tradeoffs.
 
-Figure~\ref{fig:l1-pareto-gains} summarizes the exact L1 operator gains across
-the real-data benchmark panel. Each point compares the active-edge L1 operator
-with the full-edge L1 reference on the same dataset. The horizontal coordinate
-is the log ratio of fit time, and the vertical coordinate is the log ratio of
-peak memory. Thus points to the left of zero are faster than the full-edge
-reference, points below zero use less memory, and points in the lower-left
-quadrant improve both. Labels report the dataset, the number of groups, and
-the percent RMSE change relative to the full-edge reference.
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/hpc_l1_l2_three_datasets_memory.png}
+  \caption{Peak resident memory for the same representative datasets and
+  solver families shown in Figure~\ref{fig:l1-l2-accuracy-three-datasets}.
+  Bars show mean peak resident set size in MB over five cross-validation
+  folds, with error bars showing one standard deviation. Lower values are
+  better. The figure reports absolute memory usage, complementing the relative
+  memory ratios in the Pareto plots.}
+  \label{fig:l1-l2-memory-three-datasets}
+\end{figure}
+
+\subsection{Runtime-Memory Pareto Gains}
+
+Figure~\ref{fig:l1-l2-pareto-gains} summarizes the runtime-memory tradeoff for
+the exact active-edge solvers on the real-data benchmark panel. Each point
+compares an active-edge solver with its full-pairwise reference on the same
+dataset. The horizontal coordinate is the log ratio of fit time, and the
+vertical coordinate is the log ratio of peak memory. Thus points to the left
+of zero are faster than the reference, points below zero use less memory, and
+points in the lower-left quadrant improve both. Labels report the dataset,
+$n$, $p$, $k$, and the percent RMSE change relative to the reference.
 
 We use the plot in the standard multiobjective sense of a Pareto comparison:
 a method is preferable only if it improves one resource without worsening the
 other, or if the tradeoff is explicit \citep{miettinen1999nonlinear}. This is
 more informative than reporting runtime alone because sparse-graph solvers are
 intended to reduce both arithmetic work and the amount of state used to
-represent the graph
-that must be kept in memory. In the L1 solver, the dense full-edge
-representation stores and applies candidate pair constraints that are inactive
-for a sparse graph, whereas the active-edge operator stores endpoint and weight
-vectors only for nonzero graph edges. This directly reduces the working set for
-fusion differences and scatter updates; in the implementation used here,
-fixed R objects, model matrices, and proximal-gradient state remain, so memory
-gains are real but smaller than the asymptotic edge-count reduction.
+represent the graph. The RMSE labels stay near zero in both panels, so the
+figure is primarily an efficiency comparison rather than an accuracy
+comparison.
 
-The plot therefore separates three empirical claims. First, the RMSE labels
-stay near zero, confirming that the operator representation preserves the
-fitted L1 objective. Second, most datasets move left, showing faster fitting.
-Third, many points also move downward, showing lower peak resident memory.
-Points in the upper-left quadrant are still faster but use slightly more
-memory, which indicates that runtime and memory should be reported as separate
-resources rather than collapsed into a single efficiency number.
+The two panels show the same active-edge principle acting through different
+solver mechanisms. In the L1 solver, the full-pairwise representation stores
+and applies candidate pair constraints that are inactive for a sparse graph,
+whereas the active-edge operator stores endpoint and weight vectors only for
+nonzero graph edges. This reduces the working set for fusion differences and
+scatter updates, although fixed R objects, model matrices, and
+proximal-gradient state remain. Consequently, most L1 datasets move left, and
+many also move downward, but the memory gains are smaller and less uniform
+than the timing gains.
 
-The memory gains are also expected to be smaller and less uniform than the
-runtime gains because peak resident memory measures the whole fitting process,
-not only the graph representation. The active-edge solvers reduce the
-working set associated with graph construction, but the process still stores the design matrix,
-response, group indices, coefficient iterates, validation objects, and R
-runtime allocations. In addition, peak memory can be determined by temporary
-sparse-matrix triplets, edge buffers, or copies created during construction.
-Thus the expected memory improvement is strongest when objects used to
-represent the graph
-dominate the working set, and weaker when fixed data and runtime overheads
-dominate.
+The L2 active-edge gains are larger because the full-pairwise augmented-design
+reference must build many rows before fitting the \texttt{glmnet} path. Under
+full-pairwise construction, the fusion block contains
+$p_{\mathrm{eff}}\binom{k}{2}$ rows before zero-weight pairs are removed;
+under active-edge construction, it contains only $p_{\mathrm{eff}}m$ rows.
+This changes not only the time required to build the augmented design, but
+also the sparse-matrix entries, row indices, and intermediate triplets held by
+the worker process. The L2 panel is therefore shifted farther left and mostly
+downward, matching the construction-cost analysis in
+Section~\ref{sec:solvers}.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=.78\textwidth]{figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png}
-  \caption{Runtime-memory Pareto plot for the exact L1 active-edge operator.
-  Each point compares the operator solver with the full-edge L1 reference on
-  the same dataset. Left is faster, down is lower peak memory, and the
-  lower-left quadrant indicates improvement on both efficiency axes.}
-  \label{fig:l1-pareto-gains}
-\end{figure}
-
-\subsection{L2 Runtime-Memory Pareto Gains}
-
-Figure~\ref{fig:l2-pareto-gains} gives the corresponding Pareto plot for L2
-fusion. The active-edge L2 builder gives larger timing gains than the L1
-operator because the full-pairwise L2 baseline must build many augmented rows
-before fitting the \texttt{glmnet} path. When $k$ is large and the graph is
-sparse, deleting zero-weight pair rows changes the augmented design from an
-all-pairs construction to an active-edge construction with the same objective.
-
-The memory axis is especially important for L2 because the solver works by
-forming an augmented sparse regression problem. Under full-pairwise
-construction, the fusion block contains $p_{\mathrm{eff}}\binom{k}{2}$ rows
-before zero-weight pairs are removed. Under active-edge construction, the
-fusion block contains only $p_{\mathrm{eff}}m$ rows. This changes not only the
-time required to build the augmented design, but also the number of sparse
-matrix entries, row indices, and intermediate triplets that must be held by
-the worker process. The Pareto plot makes this visible: most datasets lie
-below zero on the memory axis, so active-edge L2 is not merely faster; it also
-reduces peak RAM demand.
-
-The L2 points are concentrated further to the left than the L1 points, which
-matches the construction-cost analysis in Section~\ref{sec:solvers}. As in
-the L1 plot, the RMSE labels remain close to zero, so the figure should be read
-primarily as an efficiency comparison, not as an accuracy comparison. The
-larger downward and leftward shifts for high-$k$ datasets are the empirical
-signature of the sparse representation: the full-pairwise builder pays for
-absent group pairs, while the active-edge builder allocates memory only for
-edges present in the graph.
+The memory axis should be interpreted as an allocation and working-set
+comparison within moderate-memory jobs. Across the L1 benchmark, peak resident
+memory ranged from about 72 MB for featureless fits to 452 MB for the largest
+full-pairwise reference fit; the active-edge operator and chain approximation
+had median peak resident memories of about 265 MB. Across the L2 benchmark,
+peak resident memory ranged from about 71 MB for featureless fits to 439 MB
+overall, with median peak resident memory about 204 MB for active-edge L2 and
+264 MB for the full-pairwise L2 reference. Some timing gains may therefore
+also reflect improved cache locality from avoiding full-pairwise
+materialization, in addition to the reduced arithmetic and allocation work.
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=.78\textwidth]{figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png}
-  \caption{Runtime-memory Pareto plot for the L2 active-edge augmented-design
-  builder. Each point compares active-edge construction with the full-pairwise
-  L2 reference on the same dataset. Left is faster, down is lower peak memory,
-  and labels report dataset, number of groups, and percent RMSE change.}
-  \label{fig:l2-pareto-gains}
+  \includegraphics[width=\textwidth]{figures/hpc_l1_l2_combined_pareto.png}
+  \caption{Runtime-memory Pareto plots for the exact active-edge solvers.
+  The L1 panel compares the active-edge operator with the full-pairwise L1
+  reference, and the L2 panel compares active-edge augmented-design
+  construction with the full-pairwise L2 reference. Left is faster, down is
+  lower peak memory, and the lower-left quadrant indicates improvement on
+  both efficiency axes.}
+  \label{fig:l1-l2-pareto-gains}
 \end{figure}
 
 \begin{table}[t]
@@ -1254,7 +1266,7 @@ the decrease in peak resident memory.}
 \toprule
 Solver comparison & Accuracy change & Median speedup & Median memory reduction \\
 \midrule
-L1 active-edge operator vs. full-edge L1 &
+L1 active-edge operator vs. full-pairwise L1 &
 maximum mean-RMSE difference $<10^{-5}$\% & 2.26x & 10.7\% \\
 L2 active-edge augmented design vs. full-pairwise L2 &
 -0.025\% median RMSE difference & 14.9x & 19.9\% \\
@@ -1479,11 +1491,31 @@ released under the MIT license. The project repository and issue tracker are
 available at \url{https://github.com/EngineerDanny/sparsefusion}. The experiments
 in this paper were evaluated from repository commit prefix
 \texttt{99c69ae}. The benchmark environment used R version 4.5.2
-(2025-10-31). The package includes documentation, a vignette, and
-\texttt{testthat} coverage for the solver routines used in the experiments.
+(2025-10-31). The package contains R and Rcpp/C++ code, links against the
+BLAS and LAPACK libraries exposed through R, and uses \texttt{glmnet},
+\texttt{Matrix}, \texttt{Rcpp}, and \texttt{RcppEigen} for compiled numerical
+routines used in the timing experiments. The saved job metadata do not record
+the compiler version, BLAS/LAPACK implementation, operating-system release, or
+physical node model. Consequently, the response-time results should be read as
+within-environment relative comparisons between solver representations rather
+than as hardware-normalized absolute benchmarks. The package includes
+documentation, a vignette, and \texttt{testthat} coverage for the solver
+routines used in the experiments.
 The large-scale empirical experiments were run on Northern Arizona
 University's Monsoon computing cluster \citep{nau_monsoon} using fixed job
-settings within each solver comparison.
+settings within each solver comparison. The Slurm arrays requested one CPU
+core per task and used three memory tiers: 16 GB for small jobs, 32 GB for
+medium jobs, and 64 GB for large jobs. Tiering was based on
+$s=np+pk+k^2$, with $s$ doubled for \texttt{old\_l1} and \texttt{old\_l2}
+because those full-pairwise reference methods are expected to require more
+memory. The L1 run used approximate tier cutoffs
+$s\leq 24{,}196$ for small jobs, $24{,}196<s\leq 99{,}050$ for medium jobs,
+and $s>99{,}050$ for large jobs; the L2 run used the same rule with nearly
+identical empirical quantile cutoffs. The L1 benchmark arrays correspond to
+Slurm job IDs 27073874--27073876, and the L2 benchmark arrays correspond to
+Slurm job IDs 27086933--27086935. The archived Slurm script does not include
+an exclusive-node request, and the saved result files record the cluster
+(\texttt{monsoon}) and job IDs but not the physical node model.
 
 The real-data benchmark summaries used in the figures are
 \path{build/hpc/final_test_summary.csv} for the L1 panel and
