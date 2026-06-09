@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  8 JUN 2026 14:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.7.7)  9 JUN 2026 01:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -526,6 +526,9 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [14]
 
 [15]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
 
 [16]
 
@@ -534,76 +537,73 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: figures/changepoint_fused_vs_glmnet.png Graphic file (type png)
 <use figures/changepoint_fused_vs_glmnet.png>
 Package pdftex.def Info: figures/changepoint_fused_vs_glmnet.png  used on input
- line 1062.
+ line 1067.
 (pdftex.def)             Requested size: 338.22305pt x 95.58504pt.
+
+
+[18]
+<figures/hpc_l1_l2_three_datasets.png, id=422, 867.24pt x 289.08pt>
+File: figures/hpc_l1_l2_three_datasets.png Graphic file (type png)
+<use figures/hpc_l1_l2_three_datasets.png>
+Package pdftex.def Info: figures/hpc_l1_l2_three_datasets.png  used on input li
+ne 1100.
+(pdftex.def)             Requested size: 433.62pt x 144.53964pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[18 <./figures/changepoint_fused_vs_glmnet.png>]
-<figures/hpc_l1_l2_three_datasets.png, id=421, 867.24pt x 289.08pt>
-File: figures/hpc_l1_l2_three_datasets.png Graphic file (type png)
-<use figures/hpc_l1_l2_three_datasets.png>
-Package pdftex.def Info: figures/hpc_l1_l2_three_datasets.png  used on input li
-ne 1095.
-(pdftex.def)             Requested size: 433.62pt x 144.53964pt.
-
-
-[19 <./figures/hpc_l1_l2_three_datasets.png (PNG copy)>]
+[19 <./figures/changepoint_fused_vs_glmnet.png> <./figures/hpc_l1_l2_three_data
+sets.png (PNG copy)>]
 <figures/hpc_l1_l2_three_datasets_timing.png, id=430, 867.24pt x 289.08pt>
 File: figures/hpc_l1_l2_three_datasets_timing.png Graphic file (type png)
 <use figures/hpc_l1_l2_three_datasets_timing.png>
 Package pdftex.def Info: figures/hpc_l1_l2_three_datasets_timing.png  used on i
-nput line 1136.
+nput line 1141.
 (pdftex.def)             Requested size: 433.62pt x 144.53964pt.
 
 
 [20 <./figures/hpc_l1_l2_three_datasets_timing.png>]
-<figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png, id=444, 505.89pt x 310.
+<figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png, id=443, 505.89pt x 310.
 761pt>
 File: figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png Graphic file (type 
 png)
 <use figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png>
 Package pdftex.def Info: figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png 
- used on input line 1191.
+ used on input line 1196.
 (pdftex.def)             Requested size: 338.22305pt x 207.76779pt.
-
-
-[21 <./figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png (PNG copy)>]
-<figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png, id=452, 505.89pt x 310.76
+<figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png, id=446, 505.89pt x 310.76
 1pt>
 File: figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png Graphic file (type pn
 g)
 <use figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png>
 Package pdftex.def Info: figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png  u
-sed on input line 1230.
+sed on input line 1235.
 (pdftex.def)             Requested size: 338.22305pt x 207.76779pt.
 
 
-[22 <./figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png (PNG copy)>]
+[21]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 
-[23]
-Underfull \vbox (badness 6078) has occurred while \output is active []
+[22 <./figures/hpc_l1_efficiency_diff_vs_old_l1_operator.png (PNG copy)>]
+Underfull \vbox (badness 3128) has occurred while \output is active []
 
 
+
+[23 <./figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png (PNG copy)>]
 
 [24]
 
 [25]
-Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[26]
+Underfull \vbox (badness 3514) has occurred while \output is active []
 
 
 
-[26] (./fuserplus_jmlr.bbl
-Underfull \vbox (badness 1173) has occurred while \output is active []
-
-
-
-[27]
+[27] (./fuserplus_jmlr.bbl
 
 [28]
 
@@ -620,13 +620,13 @@ Package rerunfilecheck Info: File `fuserplus_jmlr.out' has not changed.
 (rerunfilecheck)             Checksum: 062DC0285ADFD43FAF676D836665B8DC;5164.
  ) 
 Here is how much of TeX's memory you used:
- 11470 strings out of 473190
- 177371 string characters out of 5715801
+ 11472 strings out of 473190
+ 177431 string characters out of 5715801
  592045 words of memory out of 5000000
- 34447 multiletter control sequences out of 15000+600000
+ 34449 multiletter control sequences out of 15000+600000
  568430 words of font info for 72 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 90i,12n,93p,923b,615s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 90i,12n,93p,923b,601s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb>
@@ -647,7 +647,7 @@ e/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/
 exmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/20
 25/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2025
 /texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb>
-Output written on fuserplus_jmlr.pdf (30 pages, 1936223 bytes).
+Output written on fuserplus_jmlr.pdf (30 pages, 1938593 bytes).
 PDF statistics:
  619 PDF objects out of 1000 (max. 8388607)
  519 compressed objects within 6 object streams

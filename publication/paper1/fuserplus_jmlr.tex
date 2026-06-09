@@ -943,7 +943,12 @@ peak resident set size of the fitting process.
 The computational experiments were run on Northern Arizona University's
 Monsoon computing cluster \citep{nau_monsoon}, with solver variants in each
 comparison evaluated under the same software environment and job
-configuration.
+configuration. Timing experiments were submitted as single-core Slurm array
+jobs with fixed resource requests of one CPU and 32 GB memory per task. The
+jobs were not submitted with whole-node exclusive allocation, so absolute
+wall-clock times may reflect normal shared-cluster variability. For this
+reason, timing results are interpreted primarily as relative comparisons
+between solver representations under the same scheduling protocol.
 
 \subsection{Graph Construction and Hyperparameters}
 
@@ -1424,6 +1429,12 @@ loss scaling and lambda correction convention, so that any observed difference
 between full-pair and active-edge runs comes from the represented graph rows
 rather than from a changed fitting convention.
 
+The package retains Rcpp/C++ routines from the original L1 implementation, but
+the active-edge L1 operator and L1 chain approximation used for the sparse-graph
+comparisons are implemented in R. The L2 sparse-graph solver builds the sparse
+augmented design in R and delegates the regularized path computation to
+\texttt{glmnet}.
+
 \section{Software Availability}
 
 The algorithms are available in the open-source R package \sparsefusion at
@@ -1438,6 +1449,20 @@ graph representation for L1 and L2 fusion, \texttt{full\_pairwise} runs the
 reference all-pair construction, and \texttt{chain\_approx} runs the
 approximate L1 chain solver. The package also retains the lower-level fitting
 functions used by the experiments for direct solver comparisons.
+
+For example, an exact sparse-graph L1 fit on new grouped data can be run as
+follows:
+\begin{verbatim}
+library(sparsefusion)
+
+fit <- sparse_fusion(
+  X, y, groups, G,
+  lambda = 1e-3,
+  gamma = 1e-2,
+  fusion = "l1",
+  solver = "active_edge"
+)
+\end{verbatim}
 
 The returned object from each fitting function is a coefficient matrix with
 one column per group, so prediction on new observations requires selecting the
