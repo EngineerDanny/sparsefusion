@@ -1,4 +1,4 @@
-\begin{thebibliography}{33}
+\begin{thebibliography}{35}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -67,6 +67,12 @@ Jerome Friedman, Trevor Hastie, and Robert Tibshirani.
 \newblock \emph{Journal of Statistical Software}, 33\penalty0 (1):\penalty0
   1--22, 2010.
 
+\bibitem[Gelman and Hill(2007)]{gelman2007data}
+Andrew Gelman and Jennifer Hill.
+\newblock \emph{Data Analysis Using Regression and Multilevel/Hierarchical
+  Models}.
+\newblock Cambridge University Press, Cambridge, 2007.
+
 \bibitem[Hallac et~al.(2015)Hallac, Leskovec, and Boyd]{hallac2015network}
 David Hallac, Jure Leskovec, and Stephen Boyd.
 \newblock Network lasso: Clustering and optimization in large graphs.
@@ -86,11 +92,23 @@ Ron Kohavi.
 \newblock In \emph{Proceedings of the Fourteenth International Joint Conference
   on Artificial Intelligence}, pages 1137--1143. Morgan Kaufmann, 1995.
 
-\bibitem[Miettinen(1999)]{miettinen1999nonlinear}
-Kaisa Miettinen.
-\newblock \emph{Nonlinear Multiobjective Optimization}.
-\newblock Kluwer Academic Publishers, Boston, 1999.
-\newblock \doi{10.1007/978-1-4615-5563-6}.
+\bibitem[Madrid~Padilla et~al.(2018)Madrid~Padilla, Sharpnack, Scott, and
+  Tibshirani]{padilla2018dfs}
+Oscar~Hernan Madrid~Padilla, James Sharpnack, James~G. Scott, and Ryan~J.
+  Tibshirani.
+\newblock The dfs fused lasso: Linear-time denoising over general graphs.
+\newblock \emph{Journal of Machine Learning Research}, 18\penalty0
+  (176):\penalty0 1--36, 2018.
+\newblock URL \url{https://www.jmlr.org/papers/v18/16-532.html}.
+
+\bibitem[Madrid~Padilla et~al.(2020)Madrid~Padilla, Sharpnack, Chen, and
+  Witten]{padilla2020knn}
+Oscar~Hernan Madrid~Padilla, James Sharpnack, Yanzhen Chen, and Daniela~M.
+  Witten.
+\newblock Adaptive nonparametric regression with the {$K$}-nearest neighbour
+  fused lasso.
+\newblock \emph{Biometrika}, 107\penalty0 (2):\penalty0 293--310, 2020.
+\newblock \doi{10.1093/biomet/asz071}.
 
 \bibitem[Nesterov(2005)]{nesterov2005smooth}
 Yurii Nesterov.

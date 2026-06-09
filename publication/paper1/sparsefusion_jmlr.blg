@@ -2,45 +2,45 @@ This is BibTeX, Version 0.99d (TeX Live 2025)
 Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: sparsefusion_jmlr.aux
 The style file: plainnat.bst
-Database file #1: fuserplus_refs.bib
-You've used 33 entries,
+Database file #1: refs.bib
+You've used 35 entries,
             2773 wiz_defined-function locations,
-            794 strings with 10437 characters,
-and the built_in function-call counts, 15563 in all, are:
-= -- 1411
-> -- 862
+            802 strings with 10859 characters,
+and the built_in function-call counts, 16727 in all, are:
+= -- 1515
+> -- 951
 < -- 23
-+ -- 295
-- -- 261
-* -- 1269
-:= -- 2371
-add.period$ -- 112
-call.type$ -- 33
-change.case$ -- 184
-chr.to.int$ -- 32
-cite$ -- 66
-duplicate$ -- 692
-empty$ -- 1297
-format.name$ -- 310
-if$ -- 3269
++ -- 324
+- -- 288
+* -- 1384
+:= -- 2552
+add.period$ -- 119
+call.type$ -- 35
+change.case$ -- 199
+chr.to.int$ -- 34
+cite$ -- 70
+duplicate$ -- 734
+empty$ -- 1376
+format.name$ -- 341
+if$ -- 3506
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 30
-newline$ -- 185
-num.names$ -- 132
-pop$ -- 366
+missing$ -- 32
+newline$ -- 196
+num.names$ -- 140
+pop$ -- 390
 preamble$ -- 1
-purify$ -- 153
+purify$ -- 166
 quote$ -- 0
-skip$ -- 541
+skip$ -- 576
 stack$ -- 0
-substring$ -- 632
-swap$ -- 75
+substring$ -- 677
+swap$ -- 77
 text.length$ -- 5
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 348
+type$ -- 370
 warning$ -- 0
-while$ -- 148
+while$ -- 158
 width$ -- 0
-write$ -- 457
+write$ -- 485

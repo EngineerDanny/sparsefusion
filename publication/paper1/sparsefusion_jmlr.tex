@@ -348,8 +348,8 @@ The active-edge operator implementation computes exactly the same smoothed fusio
 \end{proposition}
 
 \begin{proof}
-Let $e_u$ be the $u$th coordinate vector in $\R^k$. For any pair
-$1\leq u<v\leq k$, define the smoothed dual block
+Let $e_u$ be the $u$th coordinate vector in $\R^k$. 
+For any pair $1\leq u<v\leq k$, we define the smoothed dual block
 \[
   P_{uv}(B)
   =
@@ -373,7 +373,7 @@ If $w_{uv}=0$, then the corresponding summand is zero. Therefore
   =
   \Delta_{\mathrm{active}}(B).
 \]
-Algorithm~\ref{alg:active_edge_operator} computes this last expression by adding $\gamma w_{uv}P_{uv}(B)$ to column $u$ and subtracting it from column $v$ for each active edge. 
+The active-edge APG algorithm computes this last expression by adding $\gamma w_{uv}P_{uv}(B)$ to column $u$ and subtracting it from column $v$ for each active edge.
 Hence the dense and active-edge implementations produce the same smoothed fusion-gradient contribution, and therefore the same L1 update when the remaining APG quantities are held fixed.
 \end{proof}
 
@@ -603,7 +603,7 @@ If $E_\pi\subseteq E$, the second sum removes exactly the retained chain edges, 
 
 \paragraph{Optimization algorithm.}
 The chain approximation algorithm first builds the DFS/MST order and adjacent chain weights, then runs a separate vectorized APG routine rather than calling the general edge loop. 
-In Algorithm~\ref{alg:chain_approx}, $\eta=1/L_U$ is the step size, $H_t$ is the smoothed gradient at iteration $t$, $R^{(t)}$ is the accumulated scaled-gradient term, $Z^{(t)}=-R^{(t)}$ is the aggregate point used in the acceleration step, and $W^{(t)}$ is the accelerated iterate:
+In Algorithm~\ref{alg:chain_approx}, $\eta=1/L_U$ is the step size, $H_t$ is the smoothed gradient at iteration $t$, $R^{(t)}$ is the accumulated scaled-gradient term, $Z^{(t)}=-R^{(t)}$ is the aggregate point used in the acceleration step, and $W^{(t)}$ is the accelerated iterate.
 \begin{algorithm}[H]
 \caption{Chain Approximation APG}
 \label{alg:chain_approx}
@@ -651,7 +651,7 @@ This change leaves the fitted objective unchanged for a given active graph but r
 The largest expected gains occur when $m \ll k(k-1)/2$.
 
 \paragraph{Optimization algorithm.}
-The L2 path uses \texttt{glmnet} \citep{glmnet} after building an augmented sparse regression problem. 
+Algorithm~\ref{alg:l2_augmented_design} summarizes the L2 path, which uses \texttt{glmnet} \citep{glmnet} after building an augmented sparse regression problem.
 The fitted vector $\theta$ stacks the groupwise coefficients and is reshaped into the coefficient matrix $B$ after fitting:
 \begin{algorithm}[t]
 \caption{L2 Augmented Design Solver with \texttt{glmnet}}
@@ -731,23 +731,15 @@ The final model is then refit on the full outer-training fold using the selected
 The featureless baseline predicts the mean of the training fold for the corresponding response. 
 Timing measures only the model-fitting step, and memory is the maximum RAM used by the fitting process.
 
-The experiments were run on Northern Arizona University's Monsoon cluster, an
-x86\_64 Linux cluster running Red Hat Enterprise Linux 8 and scheduled with
-Slurm \citep{nau_monsoon}. 
-The package was evaluated in R, with R and Rcpp/C++ code linked against the
-BLAS and LAPACK libraries available through R. 
-Timing experiments were submitted as Slurm array jobs with one CPU core per
-task and a 24-hour time limit. 
-Jobs were split into small, medium, and large memory tiers and requested 16 GB,
-32 GB, and 64 GB of memory, respectively. 
-The tier assignment used a deterministic workload score based on $n$, $p$, and
-$k$ of the data.
-The job scripts do not request exclusive allocation or pin jobs to a particular
-Monsoon node generation, so absolute wall-clock times may reflect normal
-shared-cluster and hardware variability. 
-For this reason, timing results are interpreted primarily as relative
-comparisons between solver representations run under the same scheduling
-protocol.
+We ran the computational experiments on Northern Arizona University's HPC infrastructure (Monsoon), an x86\_64 Linux cluster running Red Hat Enterprise Linux 8 and scheduled with Slurm \citep{nau_monsoon}.
+The experiments and analysis code were written in R and run with R version 4.5.2. 
+The implementation uses R and Rcpp/C++, with compiled code built through R's standard package toolchain and linear algebra calls handled by the BLAS and LAPACK libraries available through the R installation.
+Timing experiments were submitted as Slurm array jobs with one CPU core per task and a 24-hour time limit. 
+Jobs were split into small, medium, and large memory tiers and requested 16 GB, 32 GB, and 64 GB of memory, respectively. 
+The tier assignment used a deterministic workload score based on $n$, $p$, and $k$ of the data.
+Each job ran one dataset experiment on a single compute node under the same scheduling protocol.
+The job scripts do not request exclusive allocation or pin jobs to a particular Monsoon node generation, so absolute wall-clock times may reflect normal shared-cluster and hardware variability. 
+For this reason, timing results are interpreted primarily as relative comparisons between solver representations run under the same scheduling protocol.
 
 
 \subsection{Graph Construction and Hyperparameters}
@@ -1062,8 +1054,7 @@ Second, the largest gains occur when the user-supplied or data-derived graph is 
 If the modeling graph is close to complete, the active-edge representation has little to no advantage.
 
 \section{Implementation Details}
-The active-edge and chain approximation used for the sparse-graph
-comparisons are implemented entirely in R programming language.
+The active-edge and chain approximation used for the sparse-graph comparisons are implemented entirely in R programming language.
 The main implementation challenge was to change the graph representation without changing the fitted objective. 
 In the original all-pair construction, inactive graph pairs can still appear as zero-weight algebraic objects.
 This implies, looping over edges that do not exist, essentially wasting resources.
@@ -1073,8 +1064,7 @@ Each edge update computes a coefficient difference, clips the smoothed dual quan
 The difficult part was preserving the same orientation, weighting, intercept convention, group ordering, and final thresholding semantics as the reference implementation.
 
 Memory management was another practical issue. 
-A direct vectorized implementation can form a large edge by coefficient matrix during each L1
-iteration. 
+A direct vectorized implementation can form a large edge by coefficient matrix during each L1 iteration. 
 That is fast for moderate problems but can dominate memory when both $p$ and $m$ are large. 
 The implementation supports blocked edge processing, which applies the same scatter updates in edge batches while keeping the accumulated gradient in the original coefficient matrix shape.
 The chain solver required a separate step. 
