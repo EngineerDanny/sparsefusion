@@ -13,7 +13,6 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\argmin}{\mathop{\mathrm{argmin}}}
 \newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
-\newcommand{\fuserplus}{\texttt{fuserplus}\xspace}
 \DeclareMathOperator{\clip}{clip}
 
 \jmlrheading{1}{2026}{1-\pageref{LastPage}}{4/26}{--}{26-0000}{Agyapong}
@@ -49,19 +48,17 @@
 \maketitle
 
 \begin{abstract}
-Although the statistical graph in grouped fused regression is often sparse, standard implementations still materialize full pairwise fusion operators or augmented designs, making the computational representation much denser than the model.
+Although the statistical graph in grouped fused regression is often sparse, standard implementations still materialize full-pairwise fusion operators or augmented designs, making the computational representation much denser than the model.
 We propose sparse-graph representations for grouped fused regression that preserve the graph edge set directly in the optimizer.
 For L1 fusion, an active-edge operator evaluates the same smoothed proximal-gradient fusion term using only nonzero graph edges.
-For L2 fusion, an active-edge augmented-design construction emits sparse triplets only for the modeled edges before solving the regularized path.
+For L2 fusion, an active-edge L2 augmented-design construction emits sparse triplets only for the modeled edges before solving the regularized path.
 These constructions preserve the main objective in the exact L1 and L2 cases while reducing the dominant fusion representation from full-pairwise graph construction to edge-linear construction.
 Our empirical comparisons hold the optimizer family fixed relative to reference grouped fused-regression solvers, so that the measured differences isolate graph representation rather than changes in optimization architecture.
 We also analyze a chain approximation L1 solver which trades graph fidelity for additional efficiency thereby slightly reducing accuracy.
 For the exact L1 and L2 solvers, the active-edge representation changes the dominant fusion-side construction from all-pairs dependence on \(\binom{k}{2}\) candidate group pairs to edge-linear dependence on the \(m\) modeled graph edges.
 The chain approximation L1 solver further reduces the represented fusion graph to \(k-1\) edges, so as to solve an approximate chain-fusion problem.
-On public grouped-regression datasets, we illustrate that the exact active-edge methods preserve predictive accuracy while reducing the dominant fusion-side representation cost from dependence on all \(\binom{k}{2}\) group pairs to dependence on the \(m\) active graph edges.
+On public grouped-regression datasets, we illustrate that the exact active-edge L1 and L2 solvers preserve predictive accuracy while reducing the dominant fusion-side representation cost from dependence on all \(\binom{k}{2}\) group pairs to dependence on the \(m\) active graph edges.
 The largest practical efficiency gains occur for sparse graphs with many groups (above 100).
-% The algorithms are available in the open-source R implementation at
-% \href{https://github.com/EngineerDanny/fuserplus}{https://github.com/EngineerDanny/fuserplus}.
 \end{abstract}
 
 \begin{keywords}
@@ -70,9 +67,28 @@ The largest practical efficiency gains occur for sparse graphs with many groups 
 \end{keywords}
 
 \section{Introduction}
-Many regression problems contain a natural grouping variable such as patients may belong to disease subtypes, schools to districts or countries to continents \citep{gelman2007data}.
-Fitting a separate model in each group ignores shared signal, whereas fitting one global model forces all groups to share the same coefficients.
-Grouped fused regression addresses this middle ground by estimating one coefficient vector per group and penalizing differences between coefficient vectors along a graph of group relationships.
+Many regression problems contain a natural grouping variable, such as patients
+belonging to disease subtypes, schools to districts, or countries to continents
+\citep{gelman2007data}. 
+Fitting a separate model in each group ignores shared signal, whereas fitting
+one global model forces all groups to share the same coefficients.
+Grouped fused regression addresses this middle ground by estimating one
+coefficient vector per group and penalizing differences between coefficient
+vectors along a graph of group relationships.
+
+The graph is often sparse. 
+For example, temporal groups may be connected only to neighboring time points,
+spatial groups only to nearby locations, and data-driven group graphs only to a
+small set of nearest neighbors. 
+In these cases, the statistical model says that only selected group pairs
+should be fused. 
+However, a full-pairwise implementation can still construct fusion objects for
+all \(\binom{k}{2}\) possible group pairs and then assign zero weights to pairs
+that are not edges of the graph. 
+This creates avoidable computation and memory use because the solver pays for
+relationships that the model explicitly excluded. 
+The motivation for this paper is to remove that mismatch between a sparse
+modeling graph and a dense computational representation.
 
 Let $X_g \in \R^{n_g \times p}$ and $y_g \in \R^{n_g}$ denote the data for group $g$, and let $\beta_g \in \R^p$ be that group's linear coefficient vector. 
 For a graph $G=(V,E)$ over $k$ groups with nonnegative edge weights $w_{gh}$, the estimators considered in this paper have the form
@@ -87,37 +103,43 @@ For a graph $G=(V,E)$ over $k$ groups with nonnegative edge weights $w_{gh}$, th
 For the L1 fused model, $\Omega(u)=\norm{u}_1$; for the L2 fused model, $\Omega(u)=\frac{1}{2}\norm{u}_2^2$ after the standard augmented-design reformulation. 
 This formulation is a direct descendant of the lasso, fused lasso, grouped and elastic-net regularization, graph-structured fused optimization, and subgroup regression models. 
 The L1 solver uses the standard Nesterov smoothing strategy for nonsmooth penalties \citep{nesterov2005smooth}.
-The central computational issue is that the model may use only a sparse set of graph edges, while the solver may still construct fusion terms for all possible pairs of groups.
-A complete graph has \(k(k-1)/2\) edges, but practical graphs are frequently chains \citep{hoefling2010path}, trees \citep{padilla2018dfs}, nearest-neighbor graphs \citep{padilla2020knn}, or sparse networks informed by prior knowledge \citep{hallac2015network}.
-If the objective is defined on only $m$ active edges, a solver that builds all pairwise fusion constraints and then uses zero weights for inactive edges changes the computational scaling of the problem without changing its statistical content. 
-This matters especially as \(k\) grows. 
-The modeling graph may be sparse, but the reference representation still scales with all \(\binom{k}{2}\) group pairs.
+A complete graph has \(k(k-1)/2\) edges, but practical graphs are frequently
+chains \citep{hoefling2010path}, trees \citep{padilla2018dfs},
+nearest-neighbor graphs \citep{padilla2020knn}, or sparse networks informed by
+prior knowledge \citep{hallac2015network}.
+If the objective is defined on only $m$ active edges, a solver that builds all
+pairwise fusion constraints and then uses zero weights for inactive edges
+changes the computational scaling of the problem without changing its
+statistical content.
 
 The paper therefore evaluates graph representation as the primary algorithmic variable, while keeping the underlying optimizer family fixed.
-For L1 fusion, both the reference solver and the exact active-edge solver use the same smoothed proximal-gradient framework. 
-For L2 fusion, both the reference solver and the active-edge solver use the same augmented-design reduction before fitting the regularized path.
+For L1 fusion, both the reference solver and the exact active-edge L1 operator use the same smoothed proximal-gradient framework. 
+For L2 fusion, both the reference solver and the active-edge L2 augmented-design solver use the same augmented-design reduction before fitting the regularized path.
 Alternative methods such as ADMM-based solvers \citep{boyd2011admm,hallac2015network} and split-Bregman solvers \citep{ye2011split} are important for nonsmooth fused penalties, but they change the optimization architecture and introduce additional tuning and implementation choices.
 The comparisons here are designed to isolate the effect of preserving the sparse graph inside the existing grouped fused-regression optimization framework.
 The contribution of this paper is an algorithmic representation of grouped fused regression that makes the sparse graph a first-class object in the optimizer. 
 Instead of constructing all possible group-pair fusion terms and encoding graph sparsity through zero weights, the proposed representations operate directly on the modeled graph edges. 
-This principle yields exact active-edge L1 and L2 reformulations, and also motivates approximate high-efficiency solvers when additional graph reduction is acceptable.
+This principle yields the exact active-edge L1 operator and exact active-edge L2 augmented-design reformulation, and also motivates approximate high-efficiency solvers when additional graph reduction is acceptable.
 
 The main contributions are:
 \begin{itemize}
 \item a sparse-graph representation principle for grouped fused regression solvers;
-\item exact active-edge L1 and L2 reformulations that preserve the reference objective while avoiding zero-weight all-pair construction;
+\item an exact active-edge L1 operator and an exact active-edge L2 augmented-design reformulation that preserve the reference objective while avoiding zero-weight full-pairwise construction;
 \item complexity reductions that replace fusion-side dependence on all \(\binom{k}{2}\) group pairs with dependence on the \(m\) modeled graph edges;
 \item a clear separation between exact sparse-graph solvers and approximate chain variants that reduce the represented graph to \(k-1\) edges;
 \item a controlled empirical design that keeps the optimizer family fixed and isolates the effect of graph representation; and
-\item empirical comparisons showing that active-edge construction preserves predictive accuracy while reducing runtime and memory on public grouped-regression benchmarks.
+\item empirical comparisons showing that the exact active-edge L1 and L2 solvers preserve predictive accuracy while reducing runtime and memory on public grouped-regression benchmarks.
 \end{itemize}
 
 The remainder of the paper is organized as follows. 
 Section~2 reviews fused and graph-structured regression methods, together with related optimization approaches. 
 Section~3 defines the grouped fused-regression model and the full-pairwise computations used as references. 
-Section~4 presents the active-edge L1, the active-edge L2 augmented-design construction, and the chain approximation. 
-Section~5 describes the benchmark protocol, datasets, and compared methods. Section~6 reports accuracy, timing, memory, and  efficiency results. 
-Section~7 discusses implications, limitations, and implementation guidance, and Section~8 summarizes reproducibility materials.
+Section~4 presents the active-edge L1 operator, the active-edge L2 augmented-design construction, and the chain approximation. 
+Section~5 describes the benchmark protocol, datasets, and compared methods. 
+Section~6 reports accuracy, timing, memory, and efficiency results. 
+Section~7 discusses implications and limitations. 
+Section~8 describes implementation details and software availability. 
+Section~9 concludes.
 
 
 \section{Related Work}
@@ -173,9 +195,9 @@ The active-edge constructions proposed restore the intended edge-level represent
 Table~\ref{tab:literature-comparison} summarizes the existing methodological literature. 
 The comparison is organized around modeling and optimization ideas. 
 The novel contribution of this paper is an active-edge representation that preserves a sparse graph inside the existing grouped fused-regression objective. 
-In this view, the closest statistical existing literatures are the joint-lasso/grouped fused-regression formulation of \citet{dondelinger2020joint} and the graph-guided multitask learning and smoothed proximal-gradient methods for general fused penalties \citep{chen2010graph,chen2012smoothing}. 
+In this view, the closest existing statistical literature includes the joint-lasso/grouped fused-regression formulation of \citet{dondelinger2020joint} and the graph-guided multitask learning and smoothed proximal-gradient methods for general fused penalties \citep{chen2010graph,chen2012smoothing}. 
 The role of the present work is to isolate the representation question. 
-This implies that when the graph is sparse, the optimization data structures should scale with the active edge set rather than with all possible group pairs.
+When the graph is sparse, the optimization data structures should scale with the active edge set rather than with all possible group pairs.
 
 \begin{table}[t]
 \centering
@@ -208,10 +230,10 @@ Penalizes graph-edge differences to cluster or share information over networks. 
 Uses graph-edge penalties to share information over networks, but studies a different objective and optimization framework from the grouped fused-regression in this paper. \\
 Joint lasso for subgroup regression \citep{dondelinger2020joint} &
 Estimates grouped regressions with sparsity and fusion across groups. &
-Closest statistical predecessor and reference used in this paper. This paper preserves its objective while replacing all-pair graph construction with active-edge construction. \\
+Closest statistical predecessor and reference used in this paper. This paper preserves its objective while replacing full-pairwise graph construction with active-edge construction. \\
 Graph decomposition for graph-fused lasso \citep{yu2025graphdecomp} &
 Uses graph decomposition to build a faster ADMM algorithm for graph-fused lasso on general graphs. &
-Changes the ADMM decomposition and optimizer architecture; this paper keeps the smoothed L1 and augmented-design L2 solver families fixed to measure representation effects. \\
+Changes the ADMM decomposition and optimizer architecture. This paper keeps the smoothed L1 and augmented-design L2 solver families fixed to measure representation effects. \\
 \bottomrule
 \end{tabular}
 }
@@ -223,7 +245,7 @@ Changes the ADMM decomposition and optimizer architecture; this paper keeps the 
   \includegraphics[width=1\textwidth]{figures/concept1.png}
   \caption{Conceptual overview of L1 sparse-graph fusion. 
   A: Fusion graph construction. 
-  The reference full-edge construction associated with \citet{dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge operator works directly on the sparse graph. 
+  The full-pairwise reference construction associated with \citet{dondelinger2020joint} forms a combined constraint matrix over all group pairs, while the active-edge L1 operator works directly on the sparse graph. 
   The chain approximation replaces the modeled edge set with a chain before fitting.
   B: Asymptotic complexity. 
   The synthetic example uses $p=120$ features and 35 training observations per group. 
@@ -243,9 +265,9 @@ That expansion is benign for small $k$, but it becomes the dominant cost when th
 Figure~\ref{fig:concept-l1} describes the L1 fusion case. 
 Panel A begins with the intended fusion graph. 
 Nodes are regression groups and each drawn edge marks a coefficient difference penalized by the model. 
-The reference full-edge construction expands that graph into an all-pairs layout for the combined L1 constraint matrix. 
+The full-pairwise reference construction expands that graph into an all-pairs layout for the combined L1 constraint matrix. 
 In the four-group concept, it introduces pair slots that are absent from the modeled graph. 
-The exact active-edge operator keeps the original graph and evaluates the nonsmooth fusion penalty only along its $m$ nonzero edges. 
+The exact active-edge L1 operator keeps the original graph and evaluates the nonsmooth fusion penalty only along its $m$ nonzero edges. 
 The chain approximation makes a different tradeoff by replacing the original edge set with a chain before fitting. 
 Panel B then shows the computational consequence. 
 The active-edge L1 representation avoids the all-pairs constraint matrix, so fusion-side scaling depends entirely on the graph edges rather than powers of $k$.
@@ -253,7 +275,7 @@ The active-edge L1 representation avoids the all-pairs constraint matrix, so fus
 Figure~\ref{fig:concept-l2} gives the analogous picture for L2 fusion.
 In the quadratic case, fusion can be represented by augmenting the regression design with pseudo-observations that penalize differences between coefficient vectors assigned to connected groups.
 The reference construction emits augmented rows for the expanded set of group pairs. 
-The active-edge construction emits sparse triplets only for edges with nonzero fusion weight. 
+The active-edge L2 construction emits sparse triplets only for edges with nonzero fusion weight. 
 Thus the same modeling graph produces a much smaller linear-algebra problem whenever $m \ll k^2$. 
 These two figures motivate the solver descriptions in this paper and the scaling experiments reported below. 
 The central question is whether preserving the edge-level graph representation yields the same fitted objective at lower runtime and memory cost.
@@ -263,10 +285,10 @@ The central question is whether preserving the edge-level graph representation y
   \includegraphics[width=1\textwidth]{figures/concept2.png}
   \caption{Conceptual overview of L2 sparse-graph fusion. 
   A: augmented matrix construction. 
-  The reference full-edge construction associated with \citet{dondelinger2020joint} forms augmented rows for all group pairs, while the active-edge builder emits only sparse triplets for graph edges with nonzero weight. 
+  The full-pairwise reference construction associated with \citet{dondelinger2020joint} forms augmented rows for all group pairs, while the active-edge L2 builder emits only sparse triplets for graph edges with nonzero weight. 
   B: asymptotic complexity. 
   The synthetic example uses $p=120$ features and 35 training observations per group, so when $k=100$ the training set has $n=3500$ observations. 
-  For the sparse chain graph, where $m$ is the number of fusion edges ($m=k-1$), active-edge construction changes the dominant fusion-block cost from $O(pk^2)$ to $O(pm)$.
+  For the sparse chain graph, where $m$ is the number of fusion edges ($m=k-1$), active-edge L2 construction changes the dominant fusion-block cost from $O(pk^2)$ to $O(pm)$.
   }
   \label{fig:concept-l2}
 \end{figure}
@@ -404,7 +426,7 @@ Hence the dense and active-edge implementations produce the same smoothed fusion
 \end{algorithm}
 
 
-\subsection{Full-Edge L2 Augmented Design}
+\subsection{Full-Pairwise L2 Augmented Design}
 The L2 solver uses a different reduction. 
 It constructs an augmented response and design matrix,
 \[
@@ -442,7 +464,7 @@ Therefore the all-pairs fusion contribution satisfies
   \gamma w_{uv}\norm{\beta_u-\beta_v}_2^2,
 \]
 because inactive pairs have $w_{uv}=0$. 
-The active-edge builder constructs exactly the rows corresponding to the right-hand side using sparse triplets.
+The active-edge L2 builder constructs exactly the rows corresponding to the right-hand side using sparse triplets.
 Permuting those rows changes only their order, not the sum of squared residuals, so the objective minimized by \texttt{glmnet} is unchanged.
 \end{proof}
 
@@ -482,9 +504,9 @@ Deleting zero-weight pairs gives the stated row reduction, with $p_{\mathrm{eff}
 \section{Sparse-Graph Solvers}
 \label{sec:solvers}
 
-\subsection{Exact L1 Operator Solver}
+\subsection{Exact Active-Edge L1 Operator}
 Here $B=[\beta_1,\ldots,\beta_k]$ is the grouped coefficient matrix, with one column per group. 
-The exact L1 operator solver replaces the dense fusion matrix representation with edge lists $(u_e,v_e,w_e)_{e=1}^m$, where $m=|E|$ is the number of active fusion edges, $u_e$ and $v_e$ are the incident groups for edge $e$, and $w_e>0$ is its fusion weight. 
+The exact active-edge L1 operator solver replaces the dense fusion matrix representation with edge lists $(u_e,v_e,w_e)_{e=1}^m$, where $m=|E|$ is the number of active fusion edges, $u_e$ and $v_e$ are the incident groups for edge $e$, and $w_e>0$ is its fusion weight. 
 At each iteration, the solver computes the fusion differences only on active edges,
 \[
   D_e = \beta_{u_e}-\beta_{v_e},
@@ -637,11 +659,11 @@ In Algorithm~\ref{alg:chain_approx}, $\eta=1/L_U$ is the step size, $H_t$ is the
 
 \subsection{Active-Edge L2 Augmented Design}
 
-The L2 active-edge solver preserves the augmented-design strategy but changes how the design is built.  
+The active-edge L2 augmented-design solver preserves the augmented-design strategy but changes how the design is built.  
 Instead of allocating all pairwise fusion blocks and then assigning zero-weight rows, it finds the upper-triangular nonzero entries of $G$ and builds sparse triplets only for those edges. 
 The $p_{\mathrm{eff}}$ denotes the number of coefficient coordinates included in the L2 fusion block, and $n_{\mathrm{fusion}}=p_{\mathrm{eff}}m$ is the number of active fusion rows. 
 
-The active-edge construction keeps the same augmented-design scaling:
+The active-edge L2 construction keeps the same augmented-design scaling:
 \[
   \sqrt{\gamma(n+n_{\mathrm{fusion}})}\sqrt{w_{gh}}
 \]
@@ -683,7 +705,7 @@ Table~\ref{tab:complexity} summarizes the asymptotic costs implied by the preced
 The purpose is to separate the common groupwise regression cost, represented by $O(np)$ terms, from the cost of the fusion representation. 
 The L1 time entries describe one APG iteration, while the L2 time entries describe one pass over the augmented design. 
 For L2, the table uses $p_{\mathrm{eff}}$ because the intercept convention determines how many coefficient coordinates are included in the fusion block. 
-The active-edge L1 memory bound assumes the block processing, so edge-difference workspaces are not materialized for all $m$ edges at once.
+The active-edge L1 operator memory bound assumes the block processing, so edge-difference workspaces are not materialized for all $m$ edges at once.
 
 \begin{table}[t]
 \centering
@@ -750,17 +772,17 @@ Graphs are constructed using \(k=5\) nearest neighbors \citep{hallac2015network,
 This follows the general idea that graph structure should encode similarity between groups rather than defaulting to a complete graph.
 A complete graph may still be appropriate when every group pair is intended to be fused, but in that case the active-edge representation has $m=\binom{k}{2}$ and therefore does not provide the sparse-graph efficiency gains targeted in this paper.
 Each dataset is evaluated with five outer folds. 
-The regularization parameter $\lambda$ is warm-started from \texttt{cv.glmnet}; the fusion parameter $\gamma$ is selected from the grid $10^{-6}$ to $10^{-1}$.
+The regularization parameter $\lambda$ is warm-started from \texttt{cv.glmnet}. The fusion parameter $\gamma$ is selected from the grid $10^{-6}$ to $10^{-1}$.
 The L1 optimization tolerance is $10^{-5}$ with a maximum of 1200 iterations.
 % Runs use intercepts for L1 models, no feature scaling inside the L1 solver, standardized inputs for benchmark construction, an edge-block size of 256 for the operator implementation. 
 The L2 panel uses the same outer-fold and graph protocol with the L2 solvers.
 
 \subsection{Compared Methods}
-For L1 fusion, we compare the reference full construction, the exact active-edge operator, the chain approximation, and a featureless baseline. 
-For L2 fusion, we compare the reference augmented design, the active-edge augmented design, and the featureless baseline.
+For L1 fusion, we compare the full-pairwise reference construction, the exact active-edge L1 operator, the chain approximation, and a featureless baseline. 
+For L2 fusion, we compare the reference augmented design, the active-edge L2 augmented design, and the featureless baseline.
 
 The exact comparisons are intentionally conservative. 
-The operator and active-edge L2 methods are compared against reference implementations using the same graph, outer folds, selected hyperparameters, and prediction pipeline.
+The active-edge L1 operator and active-edge L2 augmented-design method are compared against reference implementations using the same graph, outer folds, selected hyperparameters, and prediction pipeline.
 Thus the reported differences isolate representation and construction costs, not changes in the statistical model or optimizer family.
 Comparisons against ADMM \citep{boyd2011admm,hallac2015network}, split-Bregman \citep{ye2011split}, or other edge-splitting optimizers answer a broader question about optimizer choice.
 The present experiments instead test whether the sparse graph can be preserved while keeping the L1 solver within the smoothed proximal-gradient family \citep{chen2012smoothing} and the L2 solver within the augmented-design family.
@@ -817,17 +839,18 @@ By comparison, lasso(all) has test RMSE 1.957 and relative coefficient error 0.8
   \includegraphics[width=\textwidth]{figures/hpc_l1_l2_three_datasets.png}
   \caption{Prediction accuracy for L1 and L2 fusion on real grouped regression datasets. 
   Points show test RMSE means over five cross-validation folds, with horizontal bars showing the standard deviation. 
-  The vertical red lines indicate the full pairwise baseline error which we want to preserve with the other methods.
-  Exact active-edge solvers preserve the full-construction RMSE, while the chain approximation is an approximate method.}
+  The vertical red lines indicate the full-pairwise baseline error which we want to preserve with the other methods.
+  The exact active-edge L1 operator and active-edge L2 augmented-design solver preserve the reference RMSE, while the chain approximation is an approximate method.}
   \label{fig:l1-l2-accuracy-three-datasets}
 \end{figure}
 
 \subsection{Accuracy Preservation}
 Figure~\ref{fig:l1-l2-accuracy-three-datasets} compares prediction accuracy for L1 and L2 fusion on three real grouped regression datasets. 
-These datasets span a high-feature setting with fewer groups (\texttt{communities\_crime}) and two higher group settings with moderate feature counts (\texttt{hsb82} and \texttt{owid\_co2}). 
-The figure is intended to answer the research question, does replacing all-pair construction with active-edge construction change the test error?
-For the exact sparse-graph solvers, we could see that our optimization approaches does not change the accuracy.
-The L1 active-edge operator overlaps the full-edge L1 reference on all three datasets, and the L2 active-edge augmented design similarly overlaps the full-pairwise L2 reference.
+The \texttt{communities\_crime} dataset gives a high-feature setting with fewer groups. 
+The \texttt{hsb82} and \texttt{owid\_co2} datasets give higher group settings with moderate feature counts. 
+The figure is intended to answer whether replacing full-pairwise construction with active-edge construction changes the test error.
+For the exact sparse-graph solvers, the optimization approach does not materially change test accuracy.
+The active-edge L1 operator overlaps the full-pairwise L1 reference on all three datasets, and the active-edge L2 augmented design similarly overlaps the full-pairwise L2 reference.
 This matches the equivalence results in Section~\ref{sec:solvers}.
 The active-edge representation changes the data structure used by the solver, not the fitted objective. 
 The chain-approximation L1 method is shown separately in the L1 row because it is an approximation; its accuracy can differ because replacing the graph by a chain changes the fusion penalty.
@@ -847,38 +870,37 @@ The chain-approximation L1 method is shown separately in the L1 row because it i
 Figure~\ref{fig:l1-l2-timing-three-datasets} reports the corresponding fit times for the same three datasets and solver families. 
 The timing figure addresses the second part of the empirical claim. 
 Once accuracy is preserved, the benefit of the active-edge representation is computational. 
-The L1 operator avoids applying fusion updates to inactive graph pairs, while the L2 builder avoids materializing zero-weight augmented rows before fitting the model.
+The active-edge L1 operator avoids applying fusion updates to inactive graph pairs, while the active-edge L2 builder avoids materializing zero-weight augmented rows before fitting the model.
 
 The number of groups is the main factor of this efficiency gap. 
-A full pairwise construction has $q=\binom{k}{2}$ candidate group pairs, so increasing $k$ increases the graph side of the computation quadratically even when the intended graph is sparse. 
+A full-pairwise construction has $q=\binom{k}{2}$ candidate group pairs, so increasing $k$ increases the graph side of the computation quadratically even when the intended graph is sparse. 
 In contrast, the active-edge representation scales with the number of nonzero graph edges $m$. 
-For sparse graphs such as nearest-neighbor or chain graphs, $m$ grows much more slowly than $\binom{k}{2}$; for a chain, $m=k-1$. 
+For sparse graphs such as nearest-neighbor or chain graphs, $m$ grows much more slowly than $\binom{k}{2}$. For a chain, $m=k-1$. 
 This is why the high-$k$ datasets \texttt{hsb82} and \texttt{owid\_co2} show the clearest timing separation.
 
-The L2 timing gains are especially large because all-pair augmented-design construction is expensive when $k$ is large and the graph is sparse.
-The L1 operator also improves timing, although the gain is smaller because the smoothed proximal-gradient iterations retain fixed overhead beyond graph updates. 
+The L2 timing gains are especially large because full-pairwise augmented-design construction is expensive when $k$ is large and the graph is sparse.
+The active-edge L1 operator also improves timing, although the gain is smaller because the smoothed proximal-gradient iterations retain fixed overhead beyond graph updates. 
 The chain-approximation method is fastest among the L1 methods in these examples, but it is interpreted as an accuracy-efficiency tradeoff instead of an exact replacement for the sparse graph.
 
 
 \subsection{Memory Gains}
 
 Figure~\ref{fig:l1-l2-memory-three-datasets} reports the corresponding absolute peak resident memory. 
-The figure should therefore be read as a  memory comparison in a process, not as a direct measurement of the graph object
-alone. 
+The figure should therefore be read as a whole fitting-process memory comparison, not as a direct measurement of the graph object alone. 
 This helps in interpreting the optimization results. 
 For instance, sparse construction reduces the graph objects created by the solver, but peak resident memory also includes the design matrix, response vector, group indices, coefficient iterates, validation state, and runtime allocations.
 
 The L1 panel shows why memory is a weaker and less uniform outcome than timing.
-For the lower-$k$ \texttt{communities\_crime} problem, the active-edge and chain fits use slightly more peak memory than the full-pairwise reference, indicating that fixed data objects and temporary APG allocations dominate the peak RSS. 
-For the higher-$k$ \texttt{hsb82} and \texttt{owid\_co2} problems, the active-edge and chain fits use less memory than the full-pairwise reference.
+For the lower-$k$ \texttt{communities\_crime} problem, the active-edge L1 operator and chain fits use slightly more peak memory than the full-pairwise reference, indicating that fixed data objects and temporary APG allocations dominate the peak RSS. 
+For the higher-$k$ \texttt{hsb82} and \texttt{owid\_co2} problems, the active-edge L1 operator and chain fits use less memory than the full-pairwise reference.
 This is the expected pattern when the number of candidate pairs $\binom{k}{2}$ becomes large relative to the sparse edge set.
 The chain approximation further reduces the graph object, although it changes the fusion penalty.
 
-The L2 panel gives a cleaner memory story that the active-edge augmented design uses less peak memory than the full-pairwise reference in all three datasets. 
+The L2 panel gives a cleaner memory story that the active-edge L2 augmented design uses less peak memory than the full-pairwise reference in all three datasets. 
 This follows from the construction itself. 
-The full-pairwise reference can create augmented rows for all candidate group pairs before zero-weight pairs are discarded, whereas the active-edge builder creates rows only for nonzero graph edges. 
+The full-pairwise reference can create augmented rows for all candidate group pairs before zero-weight pairs are discarded, whereas the active-edge L2 builder creates rows only for nonzero graph edges. 
 The resulting sparse regression problem contains fewer rows, sparse-matrix entries, row indices, and construction triplets before calling \texttt{glmnet}. 
-The reduction is visible for all three datasets and is epsecially largest for the higher-$k$ examples.
+The reduction is visible for all three datasets and is largest for the higher-$k$ examples.
 
 \begin{figure}[t]
   \centering
@@ -892,15 +914,15 @@ The reduction is visible for all three datasets and is epsecially largest for th
 
 
 \subsection{Runtime-Memory Efficiency Gains}
-Figure~\ref{fig:l1-l2-pareto-gains} summarizes the exact L1 operator gains across the real data benchmark panel.
-Each point compares the active-edge L1 operator with the full-edge L1 reference on the same dataset.
+Figure~\ref{fig:l1-l2-pareto-gains} summarizes the exact active-edge L1 operator gains across the real data benchmark panel.
+Each point compares the active-edge L1 operator with the full-pairwise L1 reference on the same dataset.
 The horizontal coordinate is the log ratio of fit time, and the vertical coordinate is the log ratio of peak memory.  
-Points to the left of zero are faster than the full-edge reference, points below zero use less memory, and points in the lower-left quadrant improve both.
-Labels report the dataset, the number of groups, and the percent RMSE change relative to the full-edge reference.
+Points to the left of zero are faster than the full-pairwise reference, points below zero use less memory, and points in the lower-left quadrant improve both.
+Labels report the dataset, the number of groups, and the percent RMSE change relative to the full-pairwise reference.
 
 The plot is interpreted as a standard multiobjective efficiency comparison, where methods are compared by accuracy and computational cost.
 A method is preferable only if it improves one resource without worsening the other, or if the tradeoff is explicit. 
-This is relevant because sparse-graph solvers are intended to reduce both arithmetic work and the amount of graph-derived state that must be kept in memory. 
+This is relevant because sparse-graph solvers are intended to reduce both arithmetic work and the graph state that must be kept in memory. 
 The plot separates three empirical claims. 
 First, the RMSE labels stay near zero, confirming that the operator representation preserves the fitted L1 objective. 
 Second, most datasets move left, showing faster fitting. 
@@ -909,7 +931,7 @@ Points in the upper-left quadrant are still faster but use slightly more memory.
 
 The two panels connect the separate timing and memory results. 
 In the L1 panel in Figure~\ref{fig:l1-l2-pareto-gains}, most datasets move left, and many also move downward, but the memory gains are smaller and less uniform than the timing gains. 
-The L2 panel is shifted farther left and mostly downward because active-edge augmented-design construction reduces both
+The L2 panel is shifted farther left and mostly downward because active-edge L2 augmented-design construction reduces both
 the number of rows built before \texttt{glmnet} and the sparse objects held by the worker process. 
 These patterns match the construction-cost analysis in Section~\ref{sec:solvers}.
 Across the L1 and L2 benchmarks, peak resident memory ranged from about 70 MB for featureless fits to about 500 MB for the largest full-pairwise reference fit.
@@ -918,74 +940,10 @@ Across the L1 and L2 benchmarks, peak resident memory ranged from about 70 MB fo
   \centering
   \includegraphics[width=\textwidth]{figures/hpc_l1_l2_combined_pareto.png}
   \caption{Runtime-memory Pareto plots for the exact active-edge solvers.
-  The L1 panel compares the active-edge operator with the full-pairwise L1 reference, and the L2 panel compares active-edge augmented-design construction with the full-pairwise L2 reference. 
+  The L1 panel compares the active-edge L1 operator with the full-pairwise L1 reference, and the L2 panel compares active-edge L2 augmented-design construction with the full-pairwise L2 reference. 
   Left is faster, down is lower peak memory, and the lower-left quadrant indicates improvement on both efficiency axes.}
   \label{fig:l1-l2-pareto-gains}
 \end{figure}
-
-% \subsection{L1 Runtime-Memory Efficiency Gains}
-% Figure~\ref{fig:l1-pareto-gains} summarizes the exact L1 operator gains across the real data benchmark panel.
-% Each point compares the active-edge L1 operator with the full-edge L1 reference on the same dataset.
-% The horizontal coordinate is the log ratio of fit time, and the vertical coordinate is the log ratio of peak memory.  
-% Points to the left of zero are faster than the full-edge reference, points below zero use less memory, and points in the lower-left quadrant improve both.
-% Labels report the dataset, the number of groups, and the percent RMSE change relative to the full-edge reference.
-
-% The plot is interpreted as a standard multiobjective efficiency comparison, where methods are compared by accuracy and computational cost.
-% A method is preferable only if it improves one resource without worsening the other, or if the tradeoff is explicit. 
-% This is relevant because sparse-graph solvers are intended to reduce both arithmetic work and the amount of graph-derived state that must be kept in memory. 
-% In the L1 solver, the dense full-edge representation stores and applies candidate pair constraints that are inactive for a sparse graph, whereas the active-edge operator stores endpoint and weight vectors only for nonzero graph edges. 
-% This directly reduces the working set for fusion differences and scatter updates. 
-
-% The plot therefore separates three empirical claims. 
-% First, the RMSE labels stay near zero, confirming that the operator representation preserves the fitted L1 objective. 
-% Second, most datasets move left, showing faster fitting. 
-% Third, many points also move downward, showing lower peak resident memory.
-% Points in the upper-left quadrant are still faster but use slightly more memory.
-
-% The memory gains are also expected to be smaller and less uniform than the runtime gains because peak resident memory measures the whole fitting process, not only the graph representation. 
-% The active-edge solvers reduce the working set associated with graph construction, but the process still stores the design matrix,
-% response, group indices, coefficient iterates and validation objects. 
-% In addition, peak memory can be determined by temporary sparse-matrix triplets, edge buffers, or copies created during construction.
-% Therefore, the expected memory improvement is strongest when graph objects dominate the working set, and weaker when fixed data and runtime overheads dominate.
-
-% \begin{figure}[t]
-%   \centering
-%   \includegraphics[width=1.0\textwidth]{figures/hpc_l1_l2_combined_pareto.png}
-%   \caption{Runtime-memory plot for the exact L1 active-edge operator.
-%   Each point compares the operator solver with the full-edge L1 reference on the same dataset. 
-%   Left is faster, down is lower peak memory, and labels report dataset, number of groups, and percent RMSE change.
-%   The lower-left quadrant indicates improvement on both efficiency axes.}
-%   \label{fig:l1-pareto-gains}
-% \end{figure}
-
-% \subsection{L2 Runtime-Memory Efficiency Gains}
-
-% Figure~\ref{fig:l2-pareto-gains} gives the corresponding efficiency plot for L2 fusion. 
-% The active-edge L2 builder shows larger timing gains because the full-pairwise L2 reference first creates augmented regression rows for many group pairs that are absent from the sparse graph before passing the problem to \texttt{glmnet}. 
-% When $k$ is large and the graph is sparse, deleting zero-weight pair rows changes the augmented design from an all-pairs construction to an active-edge construction with the same objective.
-
-% Under full-pairwise construction, the fusion block contains $p_{\mathrm{eff}}\binom{k}{2}$ rows before zero-weight pairs are removed. 
-% Under active-edge construction, the fusion block contains only $p_{\mathrm{eff}}m$ rows. 
-% This changes the time required to build the augmented design, and also the number of sparse matrix entries, row indices, and intermediate triplets that must be held by the worker process. 
-% The figure makes this visible because most datasets lie below zero on the memory axis, so active-edge L2 is faster and also reduces peak RAM demand.
-
-% The L2 points are concentrated further to the left than the L1 points, which matches the construction cost analysis in Section~\ref{sec:solvers}.
-% As in the L1 plot, the RMSE labels remain close to zero. 
-% The larger downward and leftward shifts for high-$k$ datasets are the empirical signature of the sparse representation. 
-
-% \begin{figure}[t]
-%   \centering
-%   \includegraphics[width=.78\textwidth]{figures/hpc_l2_efficiency_diff_vs_old_l2_new_l2.png}
-%   \caption{Runtime-memory plot for the L2 active-edge augmented-design builder. 
-%   Each point compares active-edge construction with the full-pairwise L2 reference on the same dataset. 
-%   Left is faster, down is lower peak memory, and labels report dataset, number of groups, and percent RMSE change.
-%   The lower-left quadrant indicates improvement on both efficiency axes.
-%   }
-%   \label{fig:l2-pareto-gains}
-% \end{figure}
-
-
-
 
 \section{Discussion}
 
@@ -993,22 +951,22 @@ The experiments show that sparse fusion graphs need corresponding sparse computa
 When the graph has $m$ edges, an implementation that constructs $O(k^2)$ pairwise constraints can lose the computational advantage of using a sparse graph. 
 This is a general issue for edge-penalized regression. 
 Any method whose penalty decomposes over graph edges can pay an unnecessary quadratic cost if the graph is represented by a complete set of candidate pairs. 
-The L1 operator and L2 active-edge builders recover the intended $O(pm)$ fusion representation while preserving the original objective in the exact cases.
+The active-edge L1 operator and active-edge L2 augmented-design builder recover the intended $O(pm)$ fusion representation while preserving the original objective in the exact cases.
 
-The exact L1 operator is the safest default among the proposed L1 solvers.
+The exact active-edge L1 operator is the safest default among the proposed L1 solvers.
 It preserves the same fitted objective as the reference active-edge formulation and gives substantial runtime and memory improvements. 
 The chain-approximation solver is an approximation for exploratory or large-scale cases where a small loss in predictive accuracy is acceptable.
 
 The solver representation aligns the computational graph with the modeling graph. 
-Edge-explicit L1 fusion updates, blocked edge processing, DFS/MST chain approximation, and active-edge L2 matrix construction are instances of that representation. 
+Edge-explicit L1 fusion updates, blocked edge processing, DFS/MST chain approximation, and active-edge L2 augmented-design construction are instances of that representation. 
 Proposition~\ref{prop:l1-convergence} gives the corresponding smoothed-objective convergence guarantee for the L1 APG updates, while Propositions~\ref{prop:l1-equivalence} and~\ref{prop:l2-equivalence} identify the exact cases where the new representations preserve the main objective.
 Proposition~\ref{prop:complexity} clarifies how the graph construction cost changes with the number of represented edges.
 The chain-approximation method is separated from those exact methods because replacing a graph by a chain changes the fusion geometry.
 Proposition~\ref{prop:chain-target} states the precise chain objective being optimized and the omitted-edge penalty that accounts for the approximation.
 
-The empirical evidence is strongest for the exact L1 operator and active-edge L2 construction. 
+The empirical evidence is strongest for the exact active-edge L1 operator and active-edge L2 augmented-design construction. 
 The chain method provides a more aggressive efficiency option, but it changes the fusion graph before fitting.
-For sparse L1 fusion, the exact active-edge operator is therefore the preferred default, while chain-approximation fitting is best viewed as an option for exploratory or analyses with tight memory budgets.
+For sparse L1 fusion, the exact active-edge L1 operator is therefore the preferred default, while chain-approximation fitting is best viewed as an option for exploratory analyses or analyses with tight memory budgets.
 
 
 \subsection{When Sparse-Graph Representations Help}
@@ -1029,11 +987,11 @@ optimizer.
 \subsection{Scope of the Optimization Comparisons}
 The experiments compare the new representations against the reference grouped fused-regression solvers rather than against a broad collection of alternative optimizer families. 
 This choice is central to the empirical design. 
-The L1 reference solver and the exact active-edge operator both use the same smoothed proximal-gradient framework. 
-The L2 reference and active-edge solvers both use the same augmented-design reduction followed by \texttt{glmnet}. 
+The L1 reference solver and the exact active-edge L1 operator both use the same smoothed proximal-gradient framework. 
+The L2 reference and active-edge L2 augmented-design solvers both use the same augmented-design reduction followed by \texttt{glmnet}. 
 The comparisons therefore hold fixed the statistical objective, graph, folds, hyperparameter selection, prediction pipeline, and optimizer family. 
 The primary changing factor is the representation of the graph-fusion term. 
-This isolation  makes the empirical results interpretable as evidence for the sparse-graph representation principle.
+This isolation makes the empirical results interpretable as evidence for the sparse-graph representation principle.
 
 Alternative optimizers, including ADMM and split-Bregman methods, are important for fused-lasso problems and can be very effective in other settings. 
 An ADMM formulation would typically introduce auxiliary variables for edge differences, enforce $z_{uv}=\beta_u-\beta_v$ with augmented-Lagrangian updates, alternate between coefficient, edge-variable, and dual updates, and require choices of penalty parameters and stopping rules. 
@@ -1043,23 +1001,23 @@ Those factors would not isolate the question studied here.
 
 This distinction also clarifies the role of the reference fused-lasso baseline.
 It is included because it is the direct predecessor for the grouped fused-regression objective and software interface considered in this paper. 
-Beating that baseline while preserving the same optimizer family shows that the gain comes from avoiding zero-weight all-pair graph construction rather than from replacing the optimization architecture. 
+Beating that baseline while preserving the same optimizer family shows that the gain comes from avoiding zero-weight full-pairwise graph construction rather than from replacing the optimization architecture. 
 The same active-edge principle could be incorporated into ADMM or other edge-splitting methods, where the number of auxiliary edge variables and dual updates would also scale with the represented edge set. 
 Developing and tuning such solvers is a separate algorithmic comparison and is left for future work.
 
 There are two important limitations. 
 First, the guarantees cover representation equivalence, smoothing error, convergence for the smoothed L1 objective, and graph-construction complexity. 
 The statistical properties are those of the underlying fused-lasso and graph-guided regression objectives, while the contribution here is to preserve those objectives with a sparser computational representation. 
-Second, the largest gains occur when the user-supplied or data-derived graph is sparse. 
+Second, the largest gains occur when the user-supplied or data driven graph is sparse. 
 If the modeling graph is close to complete, the active-edge representation has little to no advantage.
 
-\section{Implementation Details}
-The active-edge and chain approximation used for the sparse-graph comparisons are implemented entirely in R programming language.
+\section{Implementation and Software Availability}
+The active-edge and chain-approximation solvers used for the sparse-graph comparisons are implemented entirely in the R programming language.
 The main implementation challenge was to change the graph representation without changing the fitted objective. 
-In the original all-pair construction, inactive graph pairs can still appear as zero-weight algebraic objects.
-This implies, looping over edges that do not exist, essentially wasting resources.
-Although, this is convenient for indexing, but it hides sparsity from the solver. 
-The L1 operator code therefore first converts the fusion graph into edge arrays $(u_e,v_e,w_e)_{e=1}^m$ and keeps those arrays as the only fusion structure used inside the accelerated iterations. 
+In the original full-pairwise construction, inactive graph pairs can still appear as zero-weight algebraic objects.
+This means the solver can loop over edges that do not exist, which wastes resources.
+Although this is convenient for indexing, it hides sparsity from the solver. 
+The active-edge L1 operator code therefore first converts the fusion graph into edge arrays $(u_e,v_e,w_e)_{e=1}^m$ and keeps those arrays as the only fusion structure used inside the accelerated iterations. 
 Each edge update computes a coefficient difference, clips the smoothed dual quantity, and scatters the result back to the two incident group columns with opposite signs. 
 The difficult part was preserving the same orientation, weighting, intercept convention, group ordering, and final thresholding semantics as the reference implementation.
 
@@ -1077,13 +1035,13 @@ For each active edge $(g,h)$ and each fused coefficient coordinate, the builder 
 This avoids allocating rows for inactive group pairs. 
 The implementation also preserves the original loss scaling and lambda correction convention, so that any observed difference between full-pair and active-edge runs comes from the represented graph rows.
 
-\section{Software Availability}
+\subsection{Software Availability}
 
 The algorithms are available in the open-source R package \texttt{sparsefusion} at \url{https://github.com/EngineerDanny/sparsefusion}. 
 A grouped regression problem is supplied as a feature matrix $X$, response vector $y$, group labels \texttt{groups}, and a symmetric fusion graph matrix $G$.
 For new data, the recommended entry point is \texttt{sparse\_fusion}. 
 The argument \texttt{fusion} selects \texttt{l1} or \texttt{l2} fusion, and the argument \texttt{solver} selects \texttt{active\_edge}, \texttt{full\_pairwise}, or \texttt{chain\_approx}. 
-The \texttt{active\_edge} solver is the exact sparse graph representation for L1 and L2 fusion, \texttt{full\_pairwise} runs the reference all-pair construction, and \texttt{chain\_approx} runs the approximate L1 chain solver.
+The \texttt{active\_edge} solver is the exact sparse graph representation for L1 and L2 fusion, \texttt{full\_pairwise} runs the reference full-pairwise construction, and \texttt{chain\_approx} runs the approximate L1 chain solver.
 For example, an exact sparse-graph L1 fit on new grouped data can be run as
 follows:
 \begin{verbatim}
@@ -1107,11 +1065,11 @@ in the repository.
 \section{Conclusion}
 This paper studied the computational representation of sparse fusion graphs in grouped fused regression. 
 The main finding is that a sparse statistical graph should remain sparse inside the optimizer. 
-For L1 fusion, the active-edge operator evaluates the same smoothed fusion gradient as the full-edge construction after zero-weight pairs are removed. 
-For L2 fusion, the active-edge augmented design gives the same quadratic fusion objective while constructing rows only for nonzero graph edges. 
+For L1 fusion, the active-edge L1 operator evaluates the same smoothed fusion gradient as the full-pairwise construction after zero-weight pairs are removed. 
+For L2 fusion, the active-edge L2 augmented design gives the same quadratic fusion objective while constructing rows only for nonzero graph edges. 
 These exact representations change the dominant fusion cost from all-pairs construction to construction that scales with the represented edge set.
 The empirical results support the same conclusion. 
-The exact L1 and L2 active-edge solvers preserve predictive accuracy relative to the corresponding full-construction references while reducing fit time and, in many cases, peak memory. 
+The exact active-edge L1 operator and active-edge L2 augmented-design solver preserve predictive accuracy relative to the corresponding full-pairwise references while reducing fit time and, in many cases, peak memory. 
 The chain approximation L1 solver gives an additional option when reducing the edge budget is more important than preserving the original graph exactly. 
 
 Several future directions remain open. 

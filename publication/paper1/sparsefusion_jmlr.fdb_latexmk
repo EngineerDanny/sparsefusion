@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex sparsefusion_jmlr"] 1781046398.53177 "sparsefusion_jmlr.aux" "sparsefusion_jmlr.bbl" "sparsefusion_jmlr" 1781046401.91692 0
+["bibtex sparsefusion_jmlr"] 1781049852.88685 "sparsefusion_jmlr.aux" "sparsefusion_jmlr.bbl" "sparsefusion_jmlr" 1781049855.96405 0
   "./refs.bib" 1781046387.81276 16232 010c5b85f86d4cef1a1e5cd4d421236e ""
   "/usr/local/texlive/2025/texmf-dist/bibtex/bst/natbib/plainnat.bst" 1233624470 26816 ffe5423d2019860bad9f54bc402fac15 ""
-  "sparsefusion_jmlr.aux" 1781046401.58628 20999 303f7cff2ee2fb6e06360663e342e4c0 "pdflatex"
+  "sparsefusion_jmlr.aux" 1781049855.675 21165 ebaf355fd571659169651e4091c77810 "pdflatex"
   (generated)
   "sparsefusion_jmlr.bbl"
   "sparsefusion_jmlr.blg"
   (rewritten before read)
-["pdflatex"] 1781046398.64506 "sparsefusion_jmlr.tex" "sparsefusion_jmlr.pdf" "sparsefusion_jmlr" 1781046401.91707 0
+["pdflatex"] 1781049852.99713 "sparsefusion_jmlr.tex" "sparsefusion_jmlr.pdf" "sparsefusion_jmlr" 1781049855.96422 0
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm" 1136768653 1536 05df9db6aeccc4eea94fec15c9024f79 ""
@@ -134,10 +134,10 @@
   "figures/hpc_l1_l2_three_datasets_memory.png" 1781026765.53792 88808 f50fd3bbe6b94ad152213425d6581eb1 ""
   "figures/hpc_l1_l2_three_datasets_timing.png" 1779905692.48881 90437 813afebc9fb34775b0bb3b1b1d04487a ""
   "jmlr2e.sty" 1777500766.15154 15712 e2712b3d8283b823dc75f9962fab3193 ""
-  "sparsefusion_jmlr.aux" 1781046401.58628 20999 303f7cff2ee2fb6e06360663e342e4c0 "pdflatex"
-  "sparsefusion_jmlr.bbl" 1781046398.64196 10657 f9bdc2cd5f2a6bf22b0139678edfa31b "bibtex sparsefusion_jmlr"
-  "sparsefusion_jmlr.out" 1781046401.58844 4567 e059d63668d2818de2aee48d3628dd10 "pdflatex"
-  "sparsefusion_jmlr.tex" 1781046289.71428 83340 07c53edc9efdff681a895f0374fbc6f5 ""
+  "sparsefusion_jmlr.aux" 1781049855.675 21165 ebaf355fd571659169651e4091c77810 "pdflatex"
+  "sparsefusion_jmlr.bbl" 1781049852.99465 10657 f9bdc2cd5f2a6bf22b0139678edfa31b "bibtex sparsefusion_jmlr"
+  "sparsefusion_jmlr.out" 1781049855.6763 4721 70ab5d406bafe30c100792c5b5ee30df "pdflatex"
+  "sparsefusion_jmlr.tex" 1781049844.28729 79098 5ce4e833071c59cf3f29bd9147dfd14c ""
   (generated)
   "sparsefusion_jmlr.aux"
   "sparsefusion_jmlr.log"
